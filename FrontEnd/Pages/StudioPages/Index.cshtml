@@ -1,0 +1,101 @@
+﻿@page
+@model FilmReference.FrontEnd.Pages.StudioPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<p>
+    @Model.Count record@(Model._replacementHelper.ShowCorrectRecordText(@Model.Count)) found
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Studios[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Studios[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Studios[0].Film)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var studio in Model.Studios)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => studio.Name)
+                @{ if (studio.Picture != null)
+                    {
+                        <label class="PicLabel" onmouseover="showPicture(event, @studio.StudioId)" onmouseout="hidePicture()">(Hover for pic)</label>
+                    }
+                }
+            </td>
+            @{
+                var stringValues = Model._stringHelper.DisplayValues(studio.Description, 50);
+            }
+            <td title="@stringValues.ToolTip">
+                @Html.DisplayFor(modelItem => stringValues.DisplayValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => studio.Film.Count)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-studioid="@studio.StudioId">Details</a> |
+                <a asp-page="./Edit" asp-route-studioid="@studio.StudioId">Edit</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@{ for (var i = 1; i <= Model.TotalPages; i++)
+    {
+        <a asp-page="Index" asp-route-currentpage="@i">@i</a>
+        if (i < Model.TotalPages)
+        {
+            @Html.Raw(" | ");
+        }
+    }
+}
+
+<div id="PictureDiv">
+    <img id="StudioImage" class="StudioImageSmall" />
+</div>
+
+<script type="text/javascript">
+
+    function showPicture(e, studioId) {
+        var left = (e.clientX + 50) + "px";
+        var top = e.clientY + "px";
+        var pictureDiv = $('#PictureDiv');
+
+        pictureDiv.css('visibility', 'visible');
+        pictureDiv.css('position', 'absolute');
+        pictureDiv.css('left', left);
+        pictureDiv.css('top', top);
+
+        $.ajax({
+            url: 'https://localhost:44363/Studio/' + studioId,
+            type: 'GET',
+            dataType: 'text',
+            success: function (data) {
+                $('#StudioImage').attr('src', data);
+            }
+        });
+    }
+
+    function hidePicture() {
+        $('#PictureDiv').css('visibility', 'hidden');
+    }
+
+</script>

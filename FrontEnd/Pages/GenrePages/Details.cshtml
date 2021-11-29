@@ -1,0 +1,52 @@
+﻿@page
+@model FilmReference.FrontEnd.Pages.GenrePages.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Genre</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Genre.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Genre.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Genre.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Genre.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Genre.Film)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var counter = 0;
+                foreach (var film in Model.Genre.Film)
+                {
+                    @Html.DisplayFor(model => film.Name)
+                    if (counter < Model.Genre.Film.Count - 1)
+                    {
+                        @Html.Raw(", ")
+                    }
+                    else
+                    {
+                        @Html.Raw(".")
+                    }
+                    counter++;
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-genreid="@Model.Genre.GenreId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -1,0 +1,45 @@
+﻿@page
+@model FilmReference.FrontEnd.Pages.IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome To FilmReference</h1>
+    <p>Use this application to track your favourite films and actors / actresses.</p>
+
+    <div id="FilmCarousel" class="carousel slide" data-ride="carousel" style="background-color: black">
+
+        <ul class="carousel-indicators">
+            @{
+                var counter = 0;
+                foreach (var film in Model.Films)
+                {
+                    <li data-target="#FilmCarousel" data-slide-to="@counter" class='@(counter == 0 ? "active" : "")'></li>
+                    counter++;
+                }
+                counter = 0;
+            }
+        </ul>
+
+        <div class="carousel-inner">
+            @foreach (var film in Model.Films)
+            {
+                <div class='@(counter == 0 ? "carousel-item active" : "carousel-item")'>
+                    <a asp-page="/FilmPages/Details" asp-route-filmid="@film.FilmId">
+                        <img src="@Model._imageHelper.ImageSource(film.Picture)" class="FilmImageLarge" alt="@film.Name" title="@film.Name" />
+                    </a>
+                </div>
+                counter++;
+            }
+        </div>
+
+        <a class="carousel-control-prev" href="#FilmCarousel" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#FilmCarousel" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+
+    </div>
+</div>

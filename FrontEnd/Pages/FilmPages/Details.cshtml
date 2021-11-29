@@ -1,0 +1,93 @@
+﻿@page
+@model FilmReference.FrontEnd.Pages.FilmPages.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div class="card">
+    <div class="card-header">
+        <h4>
+            @Html.DisplayFor(model => model.Film.Name)
+        </h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Film.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Film.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Film.Picture)
+            </dt>
+            <dd class="col-sm-10">
+                <img src="@Model._imageHelper.ImageSource(Model.Film.Picture)" class="FilmImage" />
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Film.Genre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Film.Genre.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Film.Director)
+            </dt>
+            <dd class="col-sm-10">
+                <a asp-page="/PersonPages/Details" asp-route-personid="@Model.Film.DirectorId">
+                    @Html.DisplayFor(model => model.Film.Director.FullName)
+                </a>
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Film.Studio)
+            </dt>
+            <dd class="col-sm-10">
+                <a asp-page="/StudioPages/Details" asp-route-studioid="@Model.Film.StudioId">
+                    @Html.DisplayFor(model => model.Film.Studio.Name)
+                </a>
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        @{
+            var counter = 1;
+        }
+        <h4>Starring</h4>
+        <div class="card-deck">
+            @foreach (var actor in Model.Actors)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h6>
+                            @actor.FullName
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <a asp-page="/PersonPages/Details" asp-route-personid="@actor.PersonId">
+                            <img src="@Model._imageHelper.ImageSource(actor.Picture)" class="PersonImageSmall" />
+                        </a>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-page="/PersonPages/Details" asp-route-personid="@actor.PersonId">
+                            Actor details
+                        </a>
+                    </div>
+                </div>
+                if (counter % 4 == 0)
+                {
+                    @Html.Raw("</div><br /><br /><div class='card-deck'>")
+                }
+                counter++;
+            }
+        </div>
+        <div>
+            <a asp-page="./Edit" asp-route-filmid="@Model.Film.FilmId">Edit</a> |
+            <a asp-page="./Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
+<br /><br />

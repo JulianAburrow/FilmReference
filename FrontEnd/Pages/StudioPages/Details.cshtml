@@ -1,0 +1,66 @@
+﻿@page
+@model FilmReference.FrontEnd.Pages.StudioPages.DetailsModel
+@using FilmReference.FrontEnd.Classes.Helpers
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Studio</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Studio.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Studio.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Studio.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Studio.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Studio.Picture)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model._imageHelper.ImageSource(Model.Studio.Picture)" class="StudioImage" />
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h3>Films</h3>
+    <table>
+        <tbody>
+            @{
+                var counter = 1;
+            }
+            <tr style="vertical-align: top">
+                @foreach (var film in Model.Films)
+                {
+                    <td>
+                        <a asp-page="/FilmPages/Details" asp-route-filmid="@film.FilmId">
+                            <img src="@Model._imageHelper.ImageSource(film.Picture)" class="FilmImageSmall" />
+                            <br />
+                            <label>@film.Name</label>
+                        </a>
+                    </td>
+                    if (counter % 4 == 0)
+                    {
+                        @Html.Raw("</tr><tr style=\"vertical-align: top\">");
+                    }
+                    counter++;
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-studioid="@Model.Studio.StudioId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -1,0 +1,98 @@
+﻿@page
+@model FilmReference.FrontEnd.Pages.FilmPages.EditModel
+@using FilmReference.FrontEnd.Classes.Helpers
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Film</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Film.FilmId" />
+            <div class="form-group">
+                <label asp-for="Film.Name" class="control-label"></label>
+                <input asp-for="Film.Name" class="form-control" />
+                <span asp-validation-for="Film.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Film.Description" class="control-label"></label>
+                @Html.TextAreaFor(f => f.Film.Description, 5, 10, new { @class = "form-control" })
+                <span asp-validation-for="Film.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Film.GenreId" class="control-label"></label>
+                <select asp-for="Film.GenreId" class="form-control" asp-items="@Model.SlGenre"></select>
+                <span asp-validation-for="Film.GenreId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Film.StudioId" class="control-label"></label>
+                <select asp-for="Film.StudioId" class="form-control" asp-items="@Model.SlStudio"></select>
+                <span asp-validation-for="Film.StudioId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Film.DirectorId" class="control-label"></label>
+                <select asp-for="Film.DirectorId" class="form-control" asp-items="@Model.SlDirector"></select>
+                <span asp-validation-for="Film.DirectorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Actors</label>
+                @Html.ListBoxFor(f => f.SelectedActorIds, @Model.SlActor, new { @class = "form-control", size = 10, id = "ActorList" })
+                <br />
+                <label class="control-label">Selected</label>
+                <br />
+                <label id="actorLabel"></label>
+            </div>
+            <div class="form-group">
+                <div class="custom-file">
+                    <label asp-for="Film.Picture" class="custom-file-label"></label>
+                    <input type="file" asp-for="Film.Picture" class="custom-file-input" />
+                    <span asp-validation-for="Film.Picture" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Current picture</label>
+                <br />
+                <img src="@Model._imageHelper.ImageSource(Model.Film.Picture)" class="PersonImageSmall" />                
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        setSelectedActors();
+    });
+
+    $('#ActorList').click(function () {
+        setSelectedActors();
+    });
+
+    function setSelectedActors() {
+        var selectedItems = $('#ActorList option:selected');
+        var labelText = "";
+        selectedItems.each(function () {
+            labelText += $(this).text() + "<br />";
+        });
+        $('#actorLabel').html(labelText);       
+    }
+
+</script>
+

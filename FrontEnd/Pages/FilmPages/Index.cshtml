@@ -1,0 +1,71 @@
+﻿@page
+@model FilmReference.FrontEnd.Pages.FilmPages.IndexModel
+@using FilmReference.DataAccess
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Films: @Model.GenreName</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<p>
+    <ul class="list-group list-group-horizontal">
+        @foreach (var genre in Model.Genres)
+        {
+            if (@Model.GenreName == genre.Name)
+            {
+                <li class="list-group-item" style="background-color: lightgrey">
+                    <a asp-page="./Index" asp-route-genreid="@genre.GenreId">@genre.Name</a>
+                </li>
+            }
+            else
+            {
+                <li class="list-group-item">
+                    <a asp-page="./Index" asp-route-genreid="@genre.GenreId">@genre.Name</a>
+                </li>
+            }
+        }
+    </ul>
+</p>
+<p>
+    @Model.Films.Count record@(Model._replacementHelper.ShowCorrectRecordText(@Model.Films.Count)) found
+</p>
+<div class="card-deck">
+    @{
+        var counter = 1;
+        @foreach (var film in Model.Films)
+        {
+            var stringValues = Model._stringHelper.DisplayValues(film.Description, 50);
+            <div class="card">
+                <div class="card-header">
+                    <h6>
+                        @Html.DisplayFor(modelItem => film.Name)
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <img src="@Model._imageHelper.ImageSource(film.Picture)" class="FilmImageSmall" />
+                    <br /><br />
+                    <p title="@stringValues.ToolTip">
+                        @Html.DisplayFor(modelItem => stringValues.DisplayValue)
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a asp-page="./Details" asp-route-filmid="@film.FilmId">Details</a> |
+                    <a asp-page="./Edit" asp-route-filmid="@film.FilmId">Edit</a>
+                </div>
+            </div>
+            if (counter % 4 == 0)
+            {
+                @Html.Raw("</div><br /><br /><div class='card-deck'>")
+            }
+            counter++;
+        }
+    }
+</div>
+
+<br />
+<br />

@@ -1,0 +1,92 @@
+﻿@page
+@model FilmReference.FrontEnd.DetailsModel
+@using FilmReference.FrontEnd.Config
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div class="card">
+    <div class="card-header">
+        <h4>
+            @Html.DisplayFor(model => model.Person.FullName)
+        </h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Person.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Person.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Person.IsActor)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Person.IsActor)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Person.IsDirector)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Person.IsDirector)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Person.Picture)
+            </dt>
+            <dd class="col-sm-10">
+                <img src="@Model._imageHelper.ImageSource(Model.Person.Picture)" class="PersonImage" />
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        @{
+            var counter = 1;
+        }
+        <h4>Films</h4>
+        <div class="card-deck">
+            @foreach (var film in Model.Films)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h6>
+                            @film.Name
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <a asp-page="/FilmPages/Details" asp-route-filmid="@film.FilmId">
+                            <img src="@Model._imageHelper.ImageSource(film.Picture)" class="FilmImageSmall" />
+                        </a>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-page="/FilmPages/Details" asp-route-filmid="@film.FilmId">
+                            Film details
+                        </a>
+                    </div>
+                </div>
+                if (counter % 4 == 0)
+                {
+                    @Html.Raw("</div><br /><br /><div class='card-deck'>")
+                }
+                counter++;
+            }
+        </div>
+        <div>
+            <a asp-page="./Edit" asp-route-personid="@Model.Person.PersonId">Edit</a> |
+            @if (!Model.Person.IsActor)
+            {
+                <a asp-page="@ConfigValues.StringValues.DirectorIndexPage">Back to list</a>
+            }
+            else
+            {
+                <a asp-page="@ConfigValues.StringValues.PersonIndexPage" asp-route-firstinitial="@Model.Person.FirstName.Substring(0, 1)">Back to list</a>
+            }
+        </div>
+    </div>
+</div>
+
+<br />
+<br />

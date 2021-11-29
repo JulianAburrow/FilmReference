@@ -1,0 +1,73 @@
+﻿@page
+@model FilmReference.FrontEnd.IndexModel
+
+@{
+    ViewData["Title"] = "Actors and Actresses";
+}
+
+<h1>Actors and Actresses: @Model.FirstInitial</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<p>
+    <ul class="list-group list-group-horizontal">
+        @{
+            foreach (var letter in Model.AtoZ)
+            {
+                if (@Model.FirstInitial == letter)
+                {
+                    <li class="list-group-item small active p-3" style="background-color: lightgrey">
+                        <a asp-page="./Index" asp-route-firstinitial="@letter">@letter</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="list-group-item small p-3">
+                        <a asp-page="./Index" asp-route-firstinitial="@letter">@letter</a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</p>
+<p>
+    @Model.Actors.Count record@(Model._replacementHelper.ShowCorrectRecordText(@Model.Actors.Count)) found
+</p>
+<div class="card-deck">
+    @{
+        var counter = 1;
+        @foreach (var actor in Model.Actors)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h6>
+                        @Html.DisplayFor(modelItem => actor.FullName)
+                    </h6>
+                </div>
+                <div class="card-body">
+                    @actor.FilmPerson.Count film@(Model._replacementHelper.ShowCorrectRecordText(actor.FilmPerson.Count))
+                    @if (actor.IsDirector)
+                    {
+                        <label>(as actor - is also a director)</label>
+                    }
+                    <br />
+                    <img src="@Model._imageHelper.ImageSource(actor.Picture)" class="PersonImageSmall" />
+                </div>
+                <div class="card-footer">
+                    <a asp-page="./Details" asp-route-personid="@actor.PersonId">Details</a> |
+                    <a asp-page="./Edit" asp-route-personid="@actor.PersonId">Edit</a>
+                </div>
+            </div>
+            if (counter % 4 == 0)
+            {
+                @Html.Raw("</div><br /><br /><div class='card-deck'>")
+            }
+            counter++;
+        }
+    }
+</div>
+
+<br />
+<br />

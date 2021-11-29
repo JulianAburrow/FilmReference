@@ -1,0 +1,61 @@
+﻿@page
+@model FilmReference.FrontEnd.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Person</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Person.FirstName" class="control-label"></label>
+                <input asp-for="Person.FirstName" class="form-control" autofocus />
+                <span asp-validation-for="Person.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Person.LastName" class="control-label"></label>
+                <input asp-for="Person.LastName" class="form-control" />
+                <span asp-validation-for="Person.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Person.Description" class="control-label"></label>
+                @Html.TextAreaFor(p => p.Person.Description, 5, 10, new { @class = "form-control" })
+                <span asp-validation-for="Person.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Person.IsActor" /> @Html.DisplayNameFor(model => model.Person.IsActor)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Person.IsDirector" /> @Html.DisplayNameFor(model => model.Person.IsDirector)
+                </label>
+            </div>
+            <div class="form-group">
+                <div class="custom-file">
+                    <label asp-for="Person.Picture" class="custom-file-label"></label>
+                    <input type="file" asp-for="Person.Picture" class="custom-file-input" />
+                    <span asp-validation-for="Person.Picture" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
