@@ -6,7 +6,7 @@ that they are ok.
 
 General
 
-There is a script to create the database with all tables, joins etc in the DbScript soltion folder. Run this first.
+There is a script to create the database with all tables, joins etc in the DbScript solution folder. Run this first.
 
 Ensure that the connection string in appsettings.json is correct for your SQL Server instance and run the application. This should load
 the application, which at this point will obviously contain no data.
@@ -27,16 +27,9 @@ the context class - which is, in this case, FilmReferenceContext. This class can
 
 Most PageModel classes in the FrontEnd project inherit from a custom class called FilmReferencePageModel, which in turn inherits
 from PageModel. This does very little in this application other than provide the context. If it was required to perform
-auditing on the creating and amendment of data FilmReferencePageModel is be an ideal place to trap the Id if the current user
+auditing on the creating and amendment of data FilmReferencePageModel is be an ideal place to trap the Id of the current user
 and pass it to the context so that the Id will be accessible to any code you might want to write as an override to SaveChangesAsync
 to automate the recording of the audit data.
-
-(I can show this in action in another project if required).
-
-Enjoy!
-
-Feel free to make changes, suggestions, (constructive) criticisms and whatever else comes to mind. Please just bear in mind that
-although I have been developing for twenty years or so I am still (relatively) new to .Net Core!
 
 Julian Aburrow
 
