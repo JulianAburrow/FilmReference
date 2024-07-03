@@ -1,0 +1,52 @@
+﻿@page "/films/listfilms"
+@inherits FilmsBasePageClass
+
+<PageTitle>Films</PageTitle>
+
+@if(FilmModels == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Films...</MudAlert>
+    return;
+}
+
+<h2>Films</h2>
+
+<a href="/film/create" class="btn btn-primary">Create Film</a>
+
+<br />
+<br />
+
+@if (FilmModels.Count == 0)
+{
+    <p>No Films found.</p>
+    return;
+}
+
+<MudTable Items="@FilmModels"
+          SortLabel="SortBy"
+          Hover
+          RowsPerPage="10"
+          FixedHeader
+          Height="500px">
+    <HeaderContent>
+        <MudTh title="Sort by Name">
+            <MudTableSortLabel SortBy="new Func<FilmModel, object>(x => x.Name)">
+                Name
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Name</MudTd>
+        <MudTd>
+            <a class="btn btn-primary" href="/colour/view/@context.FilmId">View</a>
+            &nbsp;
+            <a class="btn btn-primary" href="/colour/edit/@context.FilmId">Edit</a>
+            &nbsp;
+            <a class="btn btn-danger" href="/colour/delete/@context.FilmId">Delete</a>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 5, 10, 25, 50, 100, int.MaxValue }" />
+    </PagerContent>
+</MudTable>
