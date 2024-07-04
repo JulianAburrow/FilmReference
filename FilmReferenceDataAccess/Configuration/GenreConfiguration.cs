@@ -10,10 +10,10 @@ public class GenreConfiguration : IEntityTypeConfiguration<GenreModel>
             .IsUnicode(false);
         builder.Property(e => e.Description)
             .IsUnicode(false);
-        builder.HasMany(e => e.Film)
+        builder.HasMany(e => e.Films)
             .WithOne(e => e.Genre)
             .HasForeignKey(e => e.GenreId)
-            .IsRequired(true)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

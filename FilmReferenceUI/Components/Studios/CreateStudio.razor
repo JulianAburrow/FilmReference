@@ -1,0 +1,22 @@
+﻿@page "/studio/create"
+@inherits StudiosBasePageClass
+
+<PageTitle>Create Studio</PageTitle>
+
+<EditForm Model="@StudioDisplayModel" OnValidSubmit="Create">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <MudGrid>
+        <MudItem sm="7">
+            <MudCard>
+                <CreateUpdateStudioComponent StudioDisplayModel="@StudioDisplayModel" />
+                <MudCardActions>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    &nbsp;
+                    <a href="/colours/index" class="btn btn-primary">Cancel</a>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>

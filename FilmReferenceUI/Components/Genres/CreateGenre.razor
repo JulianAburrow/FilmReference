@@ -1,0 +1,22 @@
+﻿@page "/genre/create"
+@inherits GenresBasePageClass
+
+<PageTitle>Create Genre</PageTitle>
+
+<EditForm Model="@GenreDisplayModel" OnValidSubmit="Create">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <MudGrid>
+        <MudItem sm="7">
+            <MudCard>
+                <CreateUpdateGenreComponent GenreDisplayModel="@GenreDisplayModel" />
+                <MudCardActions>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    &nbsp;
+                    <a href="/genres/listgenres" class="btn btn-primary">Cancel</a>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>

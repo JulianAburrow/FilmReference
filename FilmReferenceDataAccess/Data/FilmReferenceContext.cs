@@ -1,11 +1,7 @@
-﻿using System;
+﻿namespace FilmReferenceDataAccess.Data;
 
-namespace FilmReferenceDataAccess.Data;
-
-public class FilmReferenceContext : DbContext
+public class FilmReferenceContext(DbContextOptions<FilmReferenceContext> options) : DbContext(options)
 {
-    public FilmReferenceContext(DbContextOptions<FilmReferenceContext> options) : base(options) { }
-
     public DbSet<FilmModel> Films { get; set; }
     public DbSet<FilmPersonModel> FilmPeople { get; set; }
     public DbSet<GenreModel> Genres { get; set; }
@@ -20,6 +16,4 @@ public class FilmReferenceContext : DbContext
         builder.ApplyConfiguration(new PersonConfiguration());
         builder.ApplyConfiguration(new StudioConfiguration());
     }
-
-
 }

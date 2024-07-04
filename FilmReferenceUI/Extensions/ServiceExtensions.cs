@@ -11,5 +11,7 @@ public static class ServiceExtensions
     public static void AddDependencies(this IServiceCollection services)
     {
         services.AddTransient<IFilmHandler, FilmHandler>();
+        services.AddTransient<IGenreHandler, GenreHandler>();
+        services.AddTransient<IStudioHandler, StudioHandler>();
     }
 }

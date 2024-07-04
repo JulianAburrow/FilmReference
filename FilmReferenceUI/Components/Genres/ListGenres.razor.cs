@@ -1,0 +1,13 @@
+﻿namespace FilmReferenceUI.Components.Genres;
+
+public partial class ListGenres
+{
+    List<GenreModel> GenreModels { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        GenreModels = await GenreHandler.GetGenresAsync();
+        Snackbar.Add($"{GenreModels.Count} item(s) found.", GenreModels.Count > 0 ? Severity.Info : Severity.Warning);
+        MainLayout.SetHeaderValue("Genres");
+    }
+}

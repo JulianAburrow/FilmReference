@@ -10,10 +10,10 @@ public class StudioConfiguration : IEntityTypeConfiguration<StudioModel>
             .IsUnicode(false);
         builder.Property(e => e.Description)
             .IsUnicode(false);
-        builder.HasMany(e => e.Film)
+        builder.HasMany(e => e.Films)
             .WithOne(e => e.Studio)
             .HasForeignKey(e => e.StudioId)
-            .IsRequired(true)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

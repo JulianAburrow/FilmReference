@@ -9,14 +9,12 @@
     return;
 }
 
-<h2>Films</h2>
-
 <a href="/film/create" class="btn btn-primary">Create Film</a>
 
 <br />
 <br />
 
-@if (FilmModels.Count == 0)
+@if (!FilmModels.Any())
 {
     <p>No Films found.</p>
     return;

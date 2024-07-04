@@ -6,7 +6,7 @@ public partial class GenreModel
 
     public string Name { get; set; } = string.Empty;
 
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
-    public ICollection<FilmModel> Film { get; set; } = null!;
+    public ICollection<FilmModel> Films { get; set; } = null!;
 }

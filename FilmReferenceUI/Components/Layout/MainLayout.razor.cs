@@ -1,4 +1,4 @@
-﻿namespace FilmReferenceUI.Shared;
+﻿namespace FilmReferenceUI.Components.Layout;
 
 public partial class MainLayout
 {
