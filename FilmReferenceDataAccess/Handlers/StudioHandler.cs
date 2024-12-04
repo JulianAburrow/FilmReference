@@ -55,7 +55,7 @@ public class StudioHandler(FilmReferenceContext context) : IStudioHandler
         }
         studioToUpdate.Name = studio.Name;
         studioToUpdate.Description = studio.Description;
-        studioToUpdate.Picture = studio.Picture;
+        studioToUpdate.PictureName = studio.PictureName;
 
         if (saveChanges)
         {

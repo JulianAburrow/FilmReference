@@ -1,0 +1,50 @@
+﻿@using MudBlazor
+
+<MudTable Items="@PersonModels"
+          SortLabel="SortBy"
+          Hover
+          RowsPerPage="10"
+          FixedHeader>
+    <HeaderContent>
+        <MudTh title="Sort by First Name">
+            <MudTableSortLabel SortBy="new Func<PersonModel, object>(x => x.FirstName)">
+                First Name
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh title="Sort by Last Name">
+            <MudTableSortLabel SortBy="new Func<PersonModel, object>(x => x.LastName)">
+                Last Name
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh title="Sort by Film Count as Director">
+            <MudTableSortLabel SortBy="new Func<PersonModel, object>(x => x.Films.Count)">
+                Films (as director)
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh title="Sort by Film Count as Actor">
+            <MudTableSortLabel SortBy="new Func<PersonModel, object>(x => x.FilmPerson.Count)">
+                Films (as actor)
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.FirstName</MudTd>
+        <MudTd>@context.LastName</MudTd>
+        <MudTd>@context.Films.Count</MudTd>
+        <MudTd>@context.FilmPerson.Count</MudTd>
+        <MudTd>
+            <a class="btn btn-primary" href="/person/view/@context.PersonId">View</a>
+            &nbsp;
+            <a class="btn btn-primary" href="/person/edit/@context.PersonId">Edit</a>
+            @if (@context.Films.Count == 0 && context.FilmPerson.Count == 0)
+            {
+                @:&nbsp;
+                <a class="btn btn-danger" href="/person/delete/@context.PersonId">Delete</a>
+            }
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 5, 10, 25, 50, 100, int.MaxValue }" />
+    </PagerContent>
+</MudTable>

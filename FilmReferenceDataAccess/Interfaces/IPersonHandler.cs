@@ -2,4 +2,15 @@
 
 public interface IPersonHandler
 {
+    Task<List<PersonModel>> GetPeopleAsync();
+
+    Task<PersonModel> GetPersonAsync(int personId);
+
+    Task CreatePersonAsync(PersonModel person, bool saveChanges);
+    
+    Task UpdatePersonAsync(PersonModel person, bool saveChanges);
+
+    Task DeletePersonAsync(int personId, bool saveChanges);
+
+    Task SaveChangesAsync();
 }

@@ -11,3 +11,4 @@ global using Microsoft.EntityFrameworkCore;
 global using MudBlazor;
 global using MudBlazor.Services;
 global using System.ComponentModel.DataAnnotations;
+global using FilmReferenceUI.Shared.SharedValues;

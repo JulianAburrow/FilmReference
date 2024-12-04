@@ -1,0 +1,35 @@
+﻿@using MudBlazor
+
+<MudTable Items="@StudioModels"
+          SortLabel="SortBy"
+          Hover
+          RowsPerPage="10"
+          FixedHeader>
+    <HeaderContent>
+        <MudTh title="Sort by Name">
+            <MudTableSortLabel SortBy="new Func<StudioModel, object>(x => x.Name)">
+                Name
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh title="Sort by Film Count">
+            <MudTableSortLabel SortBy="new Func<StudioModel, object>(x => x.Films.Count)">
+                Films
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Name</MudTd>
+        <MudTd>@context.Films.Count</MudTd>
+        <MudTd>
+            <a class="btn btn-primary" href="/studio/view/@context.StudioId">View</a>
+            &nbsp;
+            <a class="btn btn-primary" href="/studio/edit/@context.StudioId">Edit</a>
+            &nbsp;
+            <a class="btn btn-danger" href="/studio/delete/@context.StudioId">Delete</a>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 5, 10, 25, 50, 100, int.MaxValue }" />
+    </PagerContent>
+</MudTable>

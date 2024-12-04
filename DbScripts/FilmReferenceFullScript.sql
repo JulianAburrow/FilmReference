@@ -18,10 +18,10 @@ CREATE TABLE Person (
 	PersonId INT NOT NULL IDENTITY (1, 1),
 	FirstName NVARCHAR(50) NULL,
 	LastName NVARCHAR(50) NULL,
-	Description NVARCHAR(200) NOT NULL,
+	Description NVARCHAR(500) NULL,
 	IsActor BIT NOT NULL,
 	IsDirector BIT NOT NULL,
-	Picture VARBINARY(MAX) NULL,
+	PictureName NVARCHAR(100) NULL,
 	CONSTRAINT PK_Person PRIMARY KEY (PersonId)
 )
 GO
@@ -38,7 +38,7 @@ CREATE TABLE Studio (
 	StudioId INT NOT NULL IDENTITY (1, 1),
 	Name NVARCHAR(50) NOT NULL,
 	Description NVARCHAR(500) NULL,
-	Picture VARBINARY(MAX) NULL,
+	PictureName NVARCHAR(100) NULL,
 	CONSTRAINT PK_Studio PRIMARY KEY (StudioId)
 )
 GO
@@ -47,7 +47,7 @@ CREATE TABLE Film (
 	FilmId INT NOT NULL IDENTITY (1, 1),
 	Name NVARCHAR(50) NOT NULL,
 	Description NVARCHAR(500) NOT NULL,
-	Picture VARBINARY(MAX) NULL,
+	PictureName NVARCHAR(100) NULL,
 	GenreId INT NOT NULL,
 	DirectorId INT NOT NULL,
 	StudioId INT NOT NULL,
@@ -71,29 +71,4 @@ CREATE TABLE FilmPerson (
 	CONSTRAINT FK_FilmPerson_Person FOREIGN KEY (PersonId)
 		REFERENCES Person (PersonId)
 )
-GO
-
-ALTER TABLE Person ALTER COLUMN Description NVARCHAR(200) NULL
-GO
-
-USE FilmReference
-ALTER TABLE Person ADD FullName AS
-	CASE
-		WHEN LastName IS NULL THEN FirstName
-		WHEN FirstName IS NULL THEN LastName
-		ELSE FirstName + ' ' + LastName
-	END
-GO
-
-ALTER TABLE Person DROP COLUMN FullName
-GO
-
-ALTER TABLE Person ALTER COLUMN [FirstName] NVARCHAR(50) NOT NULL
-GO
-
-ALTER TABLE Person ADD FullName AS
-	CASE
-		WHEN LastName IS NULL THEN FirstName
-		ELSE FirstName + ' ' + LastName
-	END
 GO

@@ -1,6 +1,4 @@
-﻿using FilmReferenceDataAccess.Models;
-
-namespace FilmReferenceUI.Components.Films;
+﻿namespace FilmReferenceUI.Components.Films;
 
 public partial class ListFilms
 {
@@ -9,7 +7,7 @@ public partial class ListFilms
     protected override async Task OnInitializedAsync()
     {
         FilmModels = await FilmHandler.GetFilmsAsync();
-        Snackbar.Add($"{FilmModels.Count} item(s) found.", FilmModels.Count > 0 ? Severity.Info : Severity.Warning);
+        Snackbar.Add($"{FilmModels.Count} film(s) found.", FilmModels.Count > 0 ? Severity.Info : Severity.Warning);
         MainLayout.SetHeaderValue("Films");
     }
 }

@@ -1,0 +1,26 @@
+﻿@page "/genre/view/{GenreId:int}"
+@inherits GenresBasePageClass
+
+@if (GenreModel == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Genre...</MudAlert>
+    return;
+}
+
+<MudGrid>
+    <MudItem sm="7">
+        <MudCard>
+            <ViewDeleteGenreComponent GenreModel="GenreModel" />
+            <MudCardActions>
+                <a href="/genre/edit/@GenreModel.GenreId" class="btn btn-primary">Edit</a>
+                @if (!PreventDeleting)
+                {
+                    @:&nbsp;
+                    <a href="/genre/delete/@GenreModel.GenreId" class="btn btn-danger">Delete</a>                
+                }
+                &nbsp;
+                <a href="/genres/listgenres" class="btn btn-primary">Back to list</a>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>

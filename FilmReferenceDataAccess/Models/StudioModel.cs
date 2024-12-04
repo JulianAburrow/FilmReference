@@ -8,7 +8,7 @@ public class StudioModel
 
     public string? Description { get; set; }
 
-    public byte[]? Picture { get; set; } = null!;
+    public string? PictureName { get; set; } = string.Empty;
 
     public ICollection<FilmModel> Films { get; set; } = null!;
 }

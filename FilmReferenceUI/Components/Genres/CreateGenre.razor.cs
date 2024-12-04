@@ -7,10 +7,9 @@ public partial class CreateGenre
 
     private async Task Create()
     {
-        CopyDisplayModelToModel();
-
         try
         {
+            CopyDisplayModelToModel();
             await GenreHandler.CreateGenreAsync(GenreModel, true);
             Snackbar.Add($"Genre {GenreModel.Name} successfully created.", Severity.Success);
             NavigationManager.NavigateTo("/genres/listgenres");

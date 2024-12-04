@@ -8,7 +8,7 @@ public class FilmModel
 
     public string Description { get; set; } = string.Empty;
 
-    public byte[] Picture { get; set; } = null!;
+    public string? PictureName { get; set; } = string.Empty;
 
     public int GenreId { get; set; }
 
@@ -16,11 +16,11 @@ public class FilmModel
 
     public int StudioId { get; set; }
 
-    public GenreModel Genre { get; set; }
+    public GenreModel? Genre { get; set; }
 
-    public PersonModel Director { get; set; }
+    public PersonModel? Director { get; set; }
 
-    public StudioModel Studio { get; set; }
+    public StudioModel? Studio { get; set; }
 
-    public ICollection<FilmPersonModel> FilmPerson { get; set; }
+    public ICollection<FilmPersonModel>? FilmPerson { get; set; }
 }

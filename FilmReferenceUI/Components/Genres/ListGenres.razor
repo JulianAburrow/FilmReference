@@ -20,36 +20,4 @@
     return;
 }
 
-<MudTable Items="@GenreModels"
-          SortLabel="SortBy"
-          Hover
-          RowsPerPage="10"
-          FixedHeader
-          Height="500px">
-    <HeaderContent>
-        <MudTh title="Sort by Name">
-            <MudTableSortLabel SortBy="new Func<GenreModel, object>(x => x.Name)">
-                Name
-            </MudTableSortLabel>
-        </MudTh>
-        <MudTh title="Sort by Film Count">
-            <MudTableSortLabel SortBy="new Func<GenreModel, object>(x => x.Films.Count)">
-                Films
-            </MudTableSortLabel>
-        </MudTh>
-        <MudTh></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd>@context.Name</MudTd>
-        <MudTd>
-            <a class="btn btn-primary" href="/colour/view/@context.GenreId">View</a>
-            &nbsp;
-            <a class="btn btn-primary" href="/colour/edit/@context.GenreId">Edit</a>
-            &nbsp;
-            <a class="btn btn-danger" href="/colour/delete/@context.GenreId">Delete</a>
-        </MudTd>
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[] { 5, 10, 25, 50, 100, int.MaxValue }" />
-    </PagerContent>
-</MudTable>
+<ListGenresComponent GenreModels="GenreModels" />

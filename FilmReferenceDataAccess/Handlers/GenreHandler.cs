@@ -1,5 +1,4 @@
-﻿
-namespace FilmReferenceDataAccess.Handlers;
+﻿namespace FilmReferenceDataAccess.Handlers;
 
 public class GenreHandler(FilmReferenceContext context) : IGenreHandler
 {
@@ -31,13 +30,15 @@ public class GenreHandler(FilmReferenceContext context) : IGenreHandler
 
     public async Task<GenreModel> GetGenreAsync(int genreId) =>
         await _context.Genres
-            .AsNoTracking()
+            .Include(g => g.Films)
+        .AsNoTracking()
         .SingleOrDefaultAsync(g => g.GenreId == genreId);
 
     public async Task<List<GenreModel>> GetGenresAsync() =>
         await _context.Genres
-            .OrderBy(g => g.GenreId)
-            .AsNoTracking()
+            .Include(g => g.Films)
+            .OrderBy(g => g.Name)
+        .AsNoTracking()
         .ToListAsync();
 
     public async Task SaveChangesAsync() =>
@@ -46,8 +47,7 @@ public class GenreHandler(FilmReferenceContext context) : IGenreHandler
     public async Task UpdateGenreAsync(GenreModel genre, bool saveChanges)
     {
         var genreToUpdate = _context.Genres
-            .Where(g => g.GenreId == genre.GenreId)
-            .FirstOrDefault();
+            .FirstOrDefault(g => g.GenreId == genre.GenreId);
         if (genreToUpdate == null)
         {
             return;

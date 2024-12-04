@@ -4,9 +4,9 @@ public interface IFilmHandler
 {
     Task<List<FilmModel>> GetFilmsAsync();
 
-    Task<FilmModel> GetFilmModelAsync(int filmId);
+    Task<FilmModel> GetFilmAsync(int filmId);
 
-    Task CreateFilmAsync(FilmModel film, bool saveChanges);
+    Task CreateFilmAsync(FilmModel film, IEnumerable<int> selectedActorIds, bool saveChanges);
 
     Task UpdateFilmAsync(FilmModel film, bool saveChanges);
 

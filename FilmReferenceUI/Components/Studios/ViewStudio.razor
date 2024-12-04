@@ -1,0 +1,26 @@
+﻿@page "/studio/view/{StudioId:int}"
+@inherits StudiosBasePageClass
+
+@if (StudioModel == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Studio...</MudAlert>
+    return;
+}
+
+<MudGrid>
+    <MudItem sm="7">
+        <MudCard>
+            <ViewDeleteStudioComponent StudioModel="StudioModel" />
+            <MudCardActions>
+                <a href="/studio/edit/@StudioModel.StudioId" class="btn btn-primary">Edit</a>
+                @if (!PreventDeleting)
+                {
+                    @:&nbsp;
+                    <a href="/studio/delete/@StudioModel.StudioId" class="btn btn-danger">Delete</a>
+                }
+                &nbsp;
+                <a href="/studios/liststudios" class="btn btn-primary">Back to list</a>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>

@@ -8,20 +8,17 @@ public class PersonModel
 
     public string FirstName { get; set; } = string.Empty;
 
-    public string LastName { get; set; } = string.Empty;
+    public string? LastName { get; set; }
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public string FullName { get; set; } = string.Empty;
-
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
     public bool IsActor { get; set; }
 
     public bool IsDirector { get; set; }
 
-    public byte[] Picture { get; set; } = null!;
+    public string? PictureName { get; set; } = string.Empty;
 
-    public ICollection<FilmModel> Film { get; set; } = null!;
+    public ICollection<FilmModel> Films { get; set; } = null!;
 
     public ICollection<FilmPersonModel> FilmPerson { get; set; } = null!;
 }

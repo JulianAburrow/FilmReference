@@ -1,0 +1,49 @@
+﻿@using FilmReferenceUI.Shared.Helpers
+@using MudBlazor
+<MudCardContent>
+    <MudField Label="Name">@FilmModel.Name</MudField>
+    <MudField Label="Description">@FilmModel.Description</MudField>
+    <MudField Label="Genre">@FilmModel.Genre?.Name</MudField>
+    <MudField Label="Studio">@FilmModel.Studio?.Name</MudField>
+    <MudField Label="Director">@FilmModel.Director?.FirstName @FilmModel.Director?.LastName</MudField>
+    @* @if (FilmModel.Picture != null)
+    {
+        <MudField Label="Image" />
+        var title = $"{FilmModel.Name} cover";
+        <MudImage src="@(ImageHelper.ImageSource(FilmModel.Picture))" title="@title" Elevation="25" Class="rounded-lg" />
+    }
+    else
+    {
+        <MudField Label="No image supplied" />
+    } *@
+    @if (FilmModel.FilmPerson != null)
+    {
+        <h3>Starring</h3>
+        var counter = 1;
+        
+        
+                @foreach (var filmPersonModel in FilmModel.FilmPerson)
+                {
+                    <div style="border: 1px solid black; width: 23%; float: left; height: 200px; margin: 5px; padding: 5px">
+                        <table style="height: 100%">
+                            <tr>
+                                <th>@filmPersonModel.Person.FirstName @filmPersonModel.Person.LastName</th>
+                            </tr>
+                            <tr>
+                                <td>@filmPersonModel.Person.Description</td>
+                            </tr>
+                            <tr>
+                                <td style="height: 100%; vertical-align: bottom"><a href="/person/view/@filmPersonModel.PersonId" class="btn btn-primary">View</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                    if (counter % 4 == 0)
+                    {        
+                        @* break here *@
+                        <br />
+                    }
+                    counter++;
+                }
+        
+    }
+</MudCardContent>

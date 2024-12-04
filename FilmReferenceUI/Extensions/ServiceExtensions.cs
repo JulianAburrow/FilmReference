@@ -12,6 +12,7 @@ public static class ServiceExtensions
     {
         services.AddTransient<IFilmHandler, FilmHandler>();
         services.AddTransient<IGenreHandler, GenreHandler>();
+        services.AddTransient<IPersonHandler, PersonHandler>();
         services.AddTransient<IStudioHandler, StudioHandler>();
     }
 }

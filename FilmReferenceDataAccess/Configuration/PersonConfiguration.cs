@@ -6,16 +6,15 @@ public class PersonConfiguration : IEntityTypeConfiguration<PersonModel>
     {
         builder.ToTable("Person");
         builder.HasKey(nameof(PersonModel.PersonId));
-        builder.Property(e => e.FirstName)
-            .IsUnicode(false);
-        builder.Property(e => e.LastName)
-            .IsUnicode(false);
-        builder.Property(e => e.Description)
-            .IsUnicode(false);
+        builder.HasMany(e => e.Films)
+            .WithOne(e => e.Director)
+            .HasForeignKey(e => e.DirectorId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.NoAction);
         builder.HasMany(e => e.FilmPerson)
             .WithOne(e => e.Person)
             .HasForeignKey(e => e.PersonId)
-            .IsRequired(true)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

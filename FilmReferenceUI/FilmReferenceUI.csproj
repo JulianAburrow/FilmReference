@@ -7,12 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Shared\Components\CreateUpdatePersonComponent.razor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Shared\Components\CreateUpdatePersonComponent.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.13.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
-    <PackageReference Include="MudBlazor" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
+    <PackageReference Include="MudBlazor" Version="7.15.0" />
+    <PackageReference Include="System.Formats.Asn1" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FilmReferenceDataAccess\FilmReferenceDataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\actors\" />
+    <Folder Include="wwwroot\images\covers\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,16 @@
+﻿@using MudBlazor
+@using FilmReferenceUI.Shared.Helpers;
+
+<MudCardContent>
+    <MudField Label="First Name">@PersonModel.FirstName</MudField>
+    <MudField Label="Last Name">@PersonModel.LastName</MudField>
+    <MudField Label="Description">@PersonModel.Description</MudField>
+    <MudField Label="Actor">@PersonModel.IsActor</MudField>
+    <MudField Label="Director">@PersonModel.IsDirector</MudField>
+    @* @if (PersonModel.Picture != null)
+    {
+        <MudField Label="Image" />
+        var title = $"{PersonModel.FirstName} picture";
+        <MudImage src="@(ImageHelper.ImageSource(PersonModel.Picture))" title="@title" Elevation="25" Class="rounded-lg" />
+    } *@
+</MudCardContent>

@@ -2,8 +2,6 @@
 
 public partial class Home
 {
-    protected override void OnInitialized()
-    {
+    protected override void OnInitialized() =>
         MainLayout.SetHeaderValue("Home");
-    }
 }

@@ -9,9 +9,9 @@ public class StudioDisplayModel
     public string Name { get; set; } = string.Empty;
 
     [StringLength(500, ErrorMessage = "{0} cannot be more than {1} characters")]
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; } = string.Empty;
 
-    public byte[] Picture { get; set; } = null!;
+    public string? PictureName { get; set; } = string.Empty;
 
     public ICollection<FilmModel> Films { get; set; } = null!;
 }

@@ -1,0 +1,26 @@
+﻿@page "/film/view/{FilmId:int}"
+@inherits FilmsBasePageClass
+
+@if (FilmModel == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Film...</MudAlert>
+    return;
+}
+
+<MudGrid>
+    <MudItem sm="7">
+        <MudCard>
+            <ViewDeleteFilmComponent FilmModel="FilmModel" />
+            <MudCardActions>
+                <a href="/film/edit/@FilmModel.FilmId" class="btn btn-primary">Edit</a>
+                @if (!PreventDeleting)
+                {
+                    @:&nbsp;
+                    <a href="/film/delete/@FilmModel.FilmId" class="btn btn-danger">Delete</a>
+                }
+                &nbsp;
+                <a href="/films/listfilms" class="btn btn-primary">Back to list</a>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>

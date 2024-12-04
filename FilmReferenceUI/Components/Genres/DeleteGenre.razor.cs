@@ -1,0 +1,26 @@
+﻿namespace FilmReferenceUI.Components.Genres;
+
+public partial class DeleteGenre
+{
+    protected override async Task OnInitializedAsync()
+    {
+        GenreModel = await GenreHandler.GetGenreAsync(GenreId);
+        PreventDeleting = GenreModel.Films.Any();
+        MainLayout.SetHeaderValue("Delete Genre");
+    }
+
+    private async Task Delete()
+    {
+        try
+        {
+            await GenreHandler.DeleteGenreAsync(GenreId, true);
+            Snackbar.Add($"Genre {GenreModel.Name} successfully deleted", Severity.Success);
+            NavigationManager.NavigateTo("genres/listgenres");
+        }
+        catch
+        {
+            Snackbar.Add($"An error occurred deleting genre {GenreModel.Name}. Please try again.", Severity.Error);
+        }
+        
+    }
+}

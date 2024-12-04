@@ -1,5 +1,28 @@
-﻿<h3>CreateUpdateFilmComponent</h3>
+﻿@using MudBlazor
 
-@code {
-
+@if (StudioModels == null || GenreModels == null || PersonModels == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading...</MudAlert>
+    return;
 }
+
+<MudCardContent>
+    <MudTextField Label="Name" @bind-Value="FilmDisplayModel.Name" AutoFocus OnlyValidateIfDirty="true" />
+    <MudTextField Label="Description" @bind-Value="FilmDisplayModel.Description" Lines="3" />
+    <MudSelect Label="Genre" @bind-Value="@FilmDisplayModel.GenreId">
+        @foreach (var genreModel in GenreModels)
+        {
+            <MudSelectItem T="int" Value="@genreModel.GenreId">
+                @genreModel.Name
+            </MudSelectItem>
+        }
+    </MudSelect>
+    <MudSelect Label="Studio" @bind-Value="@FilmDisplayModel.StudioId">
+        @foreach (var studioModel in StudioModels)
+        {
+            <MudSelectItem T="int" Value="@studioModel.StudioId">
+                @studioModel.Name
+            </MudSelectItem>
+        }
+    </MudSelect>
+</MudCardContent>
