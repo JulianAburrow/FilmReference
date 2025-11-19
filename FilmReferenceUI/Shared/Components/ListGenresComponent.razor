@@ -1,38 +1,8 @@
-﻿@using MudBlazor
-
-<MudTable Items="@GenreModels"
-          SortLabel="SortBy"
-          Hover
-          RowsPerPage="10"
-          FixedHeader>
-    <HeaderContent>
-        <MudTh title="Sort by Name">
-            <MudTableSortLabel SortBy="new Func<GenreModel, object>(x => x.Name)">
-                Name
-            </MudTableSortLabel>
-        </MudTh>
-        <MudTh title="Sort by Film Count">
-            <MudTableSortLabel SortBy="new Func<GenreModel, object>(x => x.Films.Count)">
-                Films
-            </MudTableSortLabel>
-        </MudTh>
-        <MudTh></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd>@context.Name</MudTd>
-        <MudTd>@context.Films.Count</MudTd>
-        <MudTd>
-            <a class="btn btn-primary" href="/genre/view/@context.GenreId">View</a>
-            &nbsp;
-            <a class="btn btn-primary" href="/genre/edit/@context.GenreId">Edit</a>
-            @if (@context.Films.Count == 0)
-            {
-                @:&nbsp;
-                <a class="btn btn-danger" href="/genre/delete/@context.GenreId">Delete</a>
-            }
-        </MudTd>
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[] { 5, 10, 25, 50, 100, int.MaxValue }" />
-    </PagerContent>
-</MudTable>
+﻿<MudGrid Justify="Justify.Center" Spacing="2">
+    @foreach (var genreModel in GenreModels)
+    {
+        <MudItem xs="12" sm="6" md="3">
+            <GenreComponent Genre="genreModel" />
+        </MudItem>
+    }
+</MudGrid>

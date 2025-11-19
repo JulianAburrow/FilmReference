@@ -1,0 +1,48 @@
+﻿@page "/studio/create"
+@inherits StudiosBasePageClass
+
+<PageTitle>Create Studio</PageTitle>
+
+<EditForm Model="@StudioDisplayModel" OnValidSubmit="CreateStudioAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <MudGrid>
+        <MudItem sm="7">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Name" @bind-Value="StudioDisplayModel.Name" AutoFocus OnlyValidateIfDirty="true" />
+                    <MudTextField Label="Description" @bind-Value="StudioDisplayModel.Description" />
+                    <br />
+                    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile">
+                        <ActivatorContent>
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.FileUpload">
+                                Upload File
+                            </MudButton>
+                        </ActivatorContent>
+                    </MudFileUpload>
+                    @if (Image is not null)
+                    {
+                        <br />
+                        @ImageName
+                        <br />
+                        <MudButton HtmlTag="label"
+                                   OnClick="RemoveImage"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Error">
+                            Remove Image
+                        </MudButton>
+                    }
+                </MudCardContent>
+                <MudCardActions>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    &nbsp;
+                    <a href="/studios/liststudios" class="btn btn-primary">Cancel</a>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>

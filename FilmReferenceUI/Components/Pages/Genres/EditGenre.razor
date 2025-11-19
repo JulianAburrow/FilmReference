@@ -1,0 +1,28 @@
+﻿@page "/genre/edit/{GenreId:int}"
+@inherits GenresBasePageClass
+
+<PageTitle>Edit Genre</PageTitle>
+
+@if (GenreDisplayModel == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Colour...</MudAlert>
+    return;
+}
+
+<EditForm Model="@GenreDisplayModel" OnValidSubmit="Update">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <MudGrid>
+        <MudItem>
+            <MudCard>
+                <CreateUpdateGenreComponent GenreDisplayModel="@GenreDisplayModel" />
+                <MudCardActions>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    &nbsp;
+                    <a class="btn btn-primary" href="/genres/listgenres">Cancel</a>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>

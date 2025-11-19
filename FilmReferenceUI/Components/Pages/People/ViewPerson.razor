@@ -1,0 +1,41 @@
+﻿@page "/person/view/{PersonId:int}"
+@inherits PeopleBasePageClass
+
+@if (PersonModel == null || PersonModel.FilmPerson == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Person...</MudAlert>
+    return;
+}
+
+<MudGrid>
+    <MudItem sm="7">
+        <MudCard>
+            <ViewDeletePersonComponent PersonModel="PersonModel" />
+            <MudCardActions>
+                <a href="/person/edit/@PersonModel.PersonId" class="btn btn-primary">Edit</a>
+                @if (!PreventDeleting)
+                {
+                    @:&nbsp;
+                    <a href="/person/delete/@PersonModel.PersonId" class="btn btn-danger">Delete</a>
+                }
+                &nbsp;
+                <a href="/people/listpeople" class="btn btn-primary">Back to list</a>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+
+@if (!PersonModel.FilmPerson.Any())
+{
+    <p>No films found for this person</p>
+    return;
+}
+
+<MudGrid>
+    @foreach(var filmPerson in PersonModel.FilmPerson)
+    {
+        <MudItem sm="3">
+            <FilmComponent Film="filmPerson.Film" />
+        </MudItem>
+    }
+</MudGrid>

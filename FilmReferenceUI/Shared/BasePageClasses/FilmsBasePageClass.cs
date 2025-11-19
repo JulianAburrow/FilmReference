@@ -1,4 +1,5 @@
-﻿namespace FilmReferenceUI.Shared.BasePageClasses;
+﻿
+namespace FilmReferenceUI.Shared.BasePageClasses;
 
 public class FilmsBasePageClass : BasePageClass
 {
@@ -35,18 +36,32 @@ public class FilmsBasePageClass : BasePageClass
 
     protected List<PersonModel> DirectorModels { get; set; } = [];
 
-    protected void CopyDisplayModelToModel()
+    protected async Task CopyDisplayModelToModelAsync()
     {
         FilmModel.Name = FilmDisplayModel.Name;
         FilmModel.Description = FilmDisplayModel.Description;
         FilmModel.GenreId = FilmDisplayModel.GenreId;
         FilmModel.StudioId = FilmDisplayModel.StudioId;
         FilmModel.DirectorId = FilmDisplayModel.DirectorId;
+        FilmModel.FilmPerson = [];
+        foreach (var actorId in SelectedActors)
+        {            
+            FilmModel.FilmPerson.Add(new FilmPersonModel
+            {
+                FilmId = FilmModel.FilmId,
+                PersonId = actorId
+            });
+        }
 
-        if (Image != null)
+        if (Image is not null)
         {
-            //FilmModel.Picture = ToByteArray(Image.OpenReadStream());
-            //FilmModel.Picture = imageMemoryStream;
+            var imageMemoryStream = await ToMemoryStreamAsync(Image.OpenReadStream(MaxFileSize));
+            FilmModel.BoxCover = imageMemoryStream.ToArray();
+            Image = null;
+        }
+        else
+        {
+            FilmModel.BoxCover = FilmDisplayModel.BoxCover;
         }
     }
 
@@ -57,14 +72,10 @@ public class FilmsBasePageClass : BasePageClass
         FilmDisplayModel.GenreId = FilmModel.GenreId;
         FilmDisplayModel.StudioId = FilmModel.StudioId;
         FilmDisplayModel.DirectorId = FilmModel.DirectorId;
-        FilmDisplayModel.PictureName = FilmModel.PictureName;
-    }
-
-    protected void RemoveImage()
-    {
-        Image = null!;
-        FilmDisplayModel.PictureName = string.Empty;
-        FileName = string.Empty;
-        StateHasChanged();
+        FilmDisplayModel.BoxCover = FilmModel.BoxCover;
+        foreach (var filmPerson in FilmModel.FilmPerson ?? [])
+        {
+            SelectedActors = SelectedActors.Append(filmPerson.PersonId);
+        }
     }
 }

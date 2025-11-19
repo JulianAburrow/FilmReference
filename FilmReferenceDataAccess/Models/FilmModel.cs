@@ -8,13 +8,13 @@ public class FilmModel
 
     public string Description { get; set; } = string.Empty;
 
-    public string? PictureName { get; set; } = string.Empty;
-
     public int GenreId { get; set; }
 
     public int DirectorId { get; set; }
 
     public int StudioId { get; set; }
+
+    public byte[]? BoxCover { get; set; }
 
     public GenreModel? Genre { get; set; }
 

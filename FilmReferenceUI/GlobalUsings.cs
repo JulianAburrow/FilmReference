@@ -2,13 +2,15 @@
 global using FilmReferenceDataAccess.Handlers;
 global using FilmReferenceDataAccess.Interfaces;
 global using FilmReferenceDataAccess.Models;
+global using FilmReferenceUI.Components;
 global using FilmReferenceUI.Components.Layout;
 global using FilmReferenceUI.Extensions;
 global using FilmReferenceUI.Models;
 global using FilmReferenceUI.Shared.BasePageClasses;
+global using FilmReferenceUI.Shared.Helpers;
+global using FilmReferenceUI.Shared.SharedValues;
 global using Microsoft.AspNetCore.Components;
 global using Microsoft.EntityFrameworkCore;
 global using MudBlazor;
 global using MudBlazor.Services;
 global using System.ComponentModel.DataAnnotations;
-global using FilmReferenceUI.Shared.SharedValues;

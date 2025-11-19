@@ -1,6 +1,4 @@
-﻿@using MudBlazor
-@using Microsoft.AspNetCore.Components
-@inherits PeopleBasePageClass
+﻿@inherits PeopleBasePageClass
 
 <MudCardContent>
     <MudTextField Label="First Name" @bind-Value="PersonDisplayModel.FirstName" AutoFocus OnlyValidateIfDirty="true" />
@@ -17,13 +15,11 @@
                        StartIcon="@Icons.Material.Filled.FileUpload">
                 Upload File
             </MudButton>
-            <MudButton HtmlTag="label"
-                       OnClick="RemoveImage"
-                       Variant="Variant.Filled"
-                       Color="Color.Error">
-                Remove Image
-            </MudButton>
         </ActivatorContent>
-    </MudFileUpload>
-    @FileName
+	</MudFileUpload>
+	<MudButton HtmlTag="label"
+			   Variant="Variant.Filled"
+			   Color="Color.Error">
+		Remove Image
+	</MudButton>
 </MudCardContent>

@@ -1,0 +1,25 @@
+﻿<MudCard Class="ma-2 pa-2">
+    <MudCardHeader>
+        <MudText Typo="Typo.h6">@Film.Name</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText><b>Studio</b>: <MudLink Href=@($"/studio/view/{Film.StudioId}")>@Film.Studio?.Name</MudLink></MudText>
+        <MudText><b>Genre</b>: @Film.Genre?.Name</MudText>
+        <MudText><b>Description</b>: @Film.Description</MudText>
+        <br />
+        <ViewImageComponent ImageData="@Film.BoxCover" ImageTitle="@($"{Film.Name} Box Cover")" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/film/view/{Film.FilmId}")>
+            View
+        </MudButton>
+        &nbsp;
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/film/edit/{Film.FilmId}")>
+            Edit
+        </MudButton>
+        &nbsp;
+        <MudButton Variant="Variant.Filled" Color="Color.Warning" Href=@($"/film/delete/{Film.FilmId}")>
+            Delete
+        </MudButton>
+    </MudCardActions>
+</MudCard>

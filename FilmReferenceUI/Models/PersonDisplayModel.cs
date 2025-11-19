@@ -20,7 +20,7 @@ public class PersonDisplayModel
 
     public bool IsDirector { get; set; }
 
-    public string? PictureName { get; set; } = string.Empty;
+    public byte[]? Picture { get; set; }
 
     public ICollection<FilmModel> Films { get; set; } = null!;
 

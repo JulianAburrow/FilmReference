@@ -28,11 +28,23 @@ public class StudioHandler(FilmReferenceContext context) : IStudioHandler
         }
     }
 
-    public async Task<StudioModel> GetStudioAsync(int studioId) =>
-        await _context.Studios
+    public async Task<StudioModel> GetStudioAsync(int studioId)
+    {
+        var studio = await _context.Studios
             .Include(s => s.Films)
+                .ThenInclude(f => f.Director)
+            .Include(s => s.Films)
+                .ThenInclude(f => f.Genre)
             .AsNoTracking()
             .SingleOrDefaultAsync(s => s.StudioId == studioId);
+
+        studio?.Films = studio.Films
+            .OrderBy(f => f.Name)
+            .ToList();
+
+        return studio ?? new StudioModel();
+    }
+        
 
     public async Task<List<StudioModel>> GetStudiosAsync() =>
         await _context.Studios
@@ -55,7 +67,7 @@ public class StudioHandler(FilmReferenceContext context) : IStudioHandler
         }
         studioToUpdate.Name = studio.Name;
         studioToUpdate.Description = studio.Description;
-        studioToUpdate.PictureName = studio.PictureName;
+        studioToUpdate.Logo = studio.Logo;
 
         if (saveChanges)
         {

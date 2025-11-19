@@ -1,0 +1,21 @@
+﻿<MudCard Class="ma-2 pa-2">
+    <MudCardHeader>
+        <MudText Typo="Typo.h6">@Studio.Name</MudText>
+    </MudCardHeader>
+
+    <MudCardContent>
+        <MudText>@Studio.Description</MudText>
+        <br />
+        <ViewImageComponent ImageData="@Studio.Logo" ImageTitle="@($"{Studio.Name} Logo")" />
+    </MudCardContent>
+
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/studio/view/{Studio.StudioId}")>
+            View
+        </MudButton>
+        &nbsp;
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/studio/edit/{Studio.StudioId}")>
+            Edit
+        </MudButton>
+    </MudCardActions>
+</MudCard>

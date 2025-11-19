@@ -2,8 +2,8 @@
 
 <MudThemeProvider />
 <MudDialogProvider />
-<MudSnackbarProvider />
 <MudPopoverProvider />
+<MudSnackbarProvider />
 
 <PageTitle>Film Reference</PageTitle>
 
@@ -19,6 +19,11 @@
             <NavMenu />
         </MudDrawer>
         <MudMainContent>
+            <MudBreadcrumbs Items="BreadCrumbs">
+                <SeparatorTemplate>
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+                </SeparatorTemplate>
+            </MudBreadcrumbs>
             @Body
         </MudMainContent>
     </MudLayout>
