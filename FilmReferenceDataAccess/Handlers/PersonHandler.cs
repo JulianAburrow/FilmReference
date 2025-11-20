@@ -36,13 +36,24 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
             .AsNoTracking()
             .ToListAsync();
 
-    public async Task<PersonModel> GetPersonAsync(int personId) =>
-        await _context.People
-            .Include(p => p.Films)
-            .Include (p => p.FilmPerson)
-            .OrderBy(p => p.FirstName)
+    public async Task<PersonModel> GetPersonAsync(int personId)
+    {
+        var person = await _context.People
+            .Include(p => p.FilmPerson)
+                .ThenInclude(fp => fp.Film)
+                    .ThenInclude(f => f.Genre)
+            .Include(p => p.FilmPerson)
+                .ThenInclude(fp => fp.Film)
+                    .ThenInclude(f => f.Studio)
             .AsNoTracking()
             .SingleOrDefaultAsync(p => p.PersonId == personId);
+
+        person?.FilmPerson = person.FilmPerson
+                .OrderBy(fp => fp.Film.Name)
+                .ToList();
+
+        return person ?? new PersonModel();
+    }
 
     public async Task SaveChangesAsync() =>
         await _context.SaveChangesAsync();
@@ -61,7 +72,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         personToUpdate.Description = person.Description;
         personToUpdate.IsActor = person.IsActor;
         personToUpdate.IsDirector = person.IsDirector;
-        personToUpdate.PictureName = person.PictureName;
+        personToUpdate.Picture = person.Picture;
 
         if (saveChanges)
         {

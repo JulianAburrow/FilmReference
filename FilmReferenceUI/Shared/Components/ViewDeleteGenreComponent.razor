@@ -1,5 +1,17 @@
-﻿@using MudBlazor
-<MudCardContent>
+﻿<MudCardContent>
     <MudField Label="Name">@GenreModel.Name</MudField>
     <MudField Label="Description">@GenreModel.Description</MudField>
-</MudCardContent>
+    @if (GenreModel.Films != null && GenreModel.Films.Count > 0)
+    {
+        <h3>Films</h3>
+
+        <MudGrid Spacing="2" Justify="Justify.FlexStart">
+            @foreach (var filmModel in GenreModel.Films)
+            {
+                <MudItem xs="12" sm="6" md="4">
+                    <FilmComponent Film="@filmModel" />
+                </MudItem>
+            }
+        </MudGrid>
+    }
+    </MudCardContent>

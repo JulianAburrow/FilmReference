@@ -1,0 +1,14 @@
+﻿<MudStack Justify="Justify.Center">
+	@if (ImageData is not null)
+	{
+		<MudImage src="@(ImageHelper.ImageSource(ImageData))"
+				  title="@ImageTitle"
+				  Elevation="25"
+				  Class="rounded-lg"
+				  Style="max-width:200px; height:auto;" />
+	}
+	else
+	{
+		<MudField>No Image Available</MudField>
+	}
+</MudStack>

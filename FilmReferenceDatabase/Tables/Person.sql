@@ -1,0 +1,10 @@
+﻿CREATE TABLE Person (
+	PersonId INT NOT NULL IDENTITY (1, 1),
+	FirstName NVARCHAR(50) NULL,
+	LastName NVARCHAR(50) NULL,
+	Description NVARCHAR(500) NULL,
+	IsActor BIT NOT NULL,
+	IsDirector BIT NOT NULL,
+	Picture VARBINARY(MAX) NULL,
+	CONSTRAINT PK_Person PRIMARY KEY (PersonId)
+)

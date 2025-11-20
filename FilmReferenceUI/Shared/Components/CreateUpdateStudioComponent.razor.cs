@@ -2,5 +2,5 @@
 
 public partial class CreateUpdateStudioComponent
 {
-    [Parameter] public StudioDisplayModel StudioDisplayModel { get; set; } = new();
+    [Parameter] public new StudioDisplayModel StudioDisplayModel { get; set; } = new();
 }

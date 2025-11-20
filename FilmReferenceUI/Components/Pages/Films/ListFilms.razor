@@ -1,0 +1,43 @@
+﻿@page "/films/listfilms"
+@inherits FilmsBasePageClass
+
+<PageTitle>Films</PageTitle>
+
+@if(FilmModels == null || GenreModels == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Films...</MudAlert>
+    return;
+}
+
+<a href="/film/create" class="btn btn-primary">Create Film</a>
+
+<br /><br />
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => FilterFilms(0))">
+    All
+</MudButton>
+
+@foreach (var genreModel in GenreModels)
+{
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               OnClick="@(() => FilterFilms(genreModel.GenreId))"
+               Class="ma-1">
+        @genreModel.Name
+    </MudButton>
+}
+
+<br />
+<br />
+
+@if (!FilmModels.Any())
+{
+    <p>No Films found for the selected Genre.</p>
+    return;
+}
+else
+{
+    <p>@FilteredFilmModels.Count() @(FilteredFilmModels.Count() == 1 ? "film" : "films") found for the selected genre.</p>
+}
+
+<ListFilmsComponent FilmModels="FilteredFilmModels" />

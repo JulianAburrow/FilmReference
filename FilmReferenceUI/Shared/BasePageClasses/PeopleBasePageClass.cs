@@ -1,6 +1,4 @@
-﻿using System.Net.WebSockets;
-
-namespace FilmReferenceUI.Shared.BasePageClasses;
+﻿namespace FilmReferenceUI.Shared.BasePageClasses;
 
 public class PeopleBasePageClass : BasePageClass
 {
@@ -12,7 +10,7 @@ public class PeopleBasePageClass : BasePageClass
 
     protected PersonDisplayModel PersonDisplayModel { get; set; } = new();
 
-    protected async void CopyDisplayModelToModel()
+    protected async Task CopyDisplayModelToModel()
     {
         PersonModel.FirstName = PersonDisplayModel.FirstName;
         PersonModel.LastName = PersonDisplayModel.LastName;
@@ -20,10 +18,15 @@ public class PeopleBasePageClass : BasePageClass
         PersonModel.IsActor = PersonDisplayModel.IsActor;
         PersonModel.IsDirector = PersonDisplayModel.IsDirector;
 
-        if (Image != null )
+        if (Image is not null)
         {
-            //PersonModel.Picture = ToByteArray(Image.OpenReadStream());
-            //PersonModel.Picture = imageMemoryStream;
+            var imageMemoryStream = await ToMemoryStreamAsync(Image.OpenReadStream(MaxFileSize));
+            PersonModel.Picture = imageMemoryStream.ToArray();
+            Image = null;
+        }
+        else
+        {
+            PersonModel.Picture = PersonDisplayModel.Picture;
         }
     }
 
@@ -34,7 +37,7 @@ public class PeopleBasePageClass : BasePageClass
         PersonDisplayModel.Description = PersonModel.Description;
         PersonDisplayModel.IsActor = PersonModel.IsActor;
         PersonDisplayModel.IsDirector = PersonModel.IsDirector;
-        PersonDisplayModel.PictureName = PersonModel.PictureName;
+        PersonDisplayModel.Picture = PersonModel.Picture;
         PersonDisplayModel.Films = PersonModel.Films;
     }
 }

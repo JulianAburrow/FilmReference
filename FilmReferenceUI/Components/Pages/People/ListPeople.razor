@@ -1,0 +1,42 @@
+﻿@page "/people/listpeople"
+@inherits PeopleBasePageClass
+
+@if (PersonModels == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading People...</MudAlert>
+    return;
+}
+
+<a href="/person/create" class="btn btn-primary">Create Person</a>
+
+<br />
+<br />
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => FilterPeople("All"))">
+    All
+</MudButton>
+
+@foreach (var letter in Enumerable.Range('A', 26).Select(c => ((char)c).ToString()))
+{
+    <MudButton Variant="Variant.Filled"
+        Color="Color.Primary"
+        OnClick="@(() => FilterPeople(letter))"
+        Class="ma-1">
+        @letter
+    </MudButton>
+}
+
+<br />
+<br />
+
+@if (!FilteredPersonModels.Any())
+{
+	<p>No People found with a first name beginning with '@SelectedFilter'.</p>
+	return;
+}
+else
+{
+    <p>@FilteredPersonModels.Count() @(FilteredPersonModels.Count() == 1 ? "person" : "people") found when filtering for '@SelectedFilter'.</p>
+}
+
+<ListPeopleComponent PersonModels="FilteredPersonModels" />

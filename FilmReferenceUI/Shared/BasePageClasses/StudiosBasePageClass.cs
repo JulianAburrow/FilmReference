@@ -1,4 +1,7 @@
-﻿namespace FilmReferenceUI.Shared.BasePageClasses;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using System.Threading.Tasks;
+
+namespace FilmReferenceUI.Shared.BasePageClasses;
 
 public class StudiosBasePageClass : BasePageClass
 {
@@ -10,19 +13,30 @@ public class StudiosBasePageClass : BasePageClass
 
     protected StudioDisplayModel StudioDisplayModel { get; set; } = new();
 
-    protected void CopyDisplayModelToModel()
+    protected async Task CopyDisplayModelToModel()
     {
         StudioModel.Name = StudioDisplayModel.Name;
         StudioModel.Description = StudioDisplayModel.Description;
-        StudioModel.PictureName = StudioDisplayModel.PictureName;
+        StudioModel.Logo = StudioDisplayModel.Logo;
         StudioModel.Films = StudioDisplayModel.Films;
+
+        if (Image != null)
+        {
+            var imageMemoryStream = await ToMemoryStreamAsync(Image.OpenReadStream(MaxFileSize));
+            StudioModel.Logo = imageMemoryStream.ToArray();
+            Image = null;
+        }
+        else
+        {
+            StudioModel.Logo = StudioDisplayModel.Logo;
+        }
     }
 
     protected void CopyModelToDisplayModel()
     {
         StudioDisplayModel.Name = StudioModel.Name;
         StudioDisplayModel.Description = StudioModel.Description;
-        StudioDisplayModel.PictureName = StudioModel.PictureName;
+        StudioDisplayModel.Logo = StudioModel.Logo;
         StudioDisplayModel.Films = StudioModel.Films;
     }
 }

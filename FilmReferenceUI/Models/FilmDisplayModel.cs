@@ -12,7 +12,7 @@
         [StringLength(500, ErrorMessage = "{0} cannot be more than {1} characters")]
         public string Description { get; set; } = string.Empty;
 
-        public string? PictureName { get; set; } = string.Empty;
+        public byte[]? BoxCover { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "{0} is required")]
         [Display(Name = "Genre")]
@@ -32,6 +32,6 @@
 
         public StudioModel Studio { get; set; } = null!;
 
-        public ICollection<FilmPersonModel> FilmPerson { get; set; } = null!;
+        public ICollection<FilmPersonModel>? FilmPerson { get; set; } = null!;
     }
 }

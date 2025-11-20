@@ -28,11 +28,21 @@ public class GenreHandler(FilmReferenceContext context) : IGenreHandler
         }
     }
 
-    public async Task<GenreModel> GetGenreAsync(int genreId) =>
-        await _context.Genres
+    public async Task<GenreModel> GetGenreAsync(int genreId)
+    {
+        var genre = await _context.Genres
             .Include(g => g.Films)
-        .AsNoTracking()
-        .SingleOrDefaultAsync(g => g.GenreId == genreId);
+                .ThenInclude(f => f.Studio)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(g => g.GenreId == genreId);
+
+        genre?.Films = genre.Films
+            .OrderBy(f => f.Name)
+            .ToList();
+
+        return genre ?? new GenreModel();
+    }
+        
 
     public async Task<List<GenreModel>> GetGenresAsync() =>
         await _context.Genres

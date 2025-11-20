@@ -1,4 +1,5 @@
-﻿namespace FilmReferenceUI.Components.Layout;
+﻿
+namespace FilmReferenceUI.Components.Layout;
 
 public partial class MainLayout
 {
@@ -9,11 +10,19 @@ public partial class MainLayout
         _drawerOpen = !_drawerOpen;
     }
 
+    private readonly List<BreadcrumbItem> BreadCrumbs = [];
+
     private string HeaderText { get; set; } = null!;
 
     public void SetHeaderValue(string headerText)
     {
         HeaderText = headerText;
         StateHasChanged();
+    }
+
+    public void SetBreadcrumbs(List<BreadcrumbItem> breadcrumbs)
+    {
+        BreadCrumbs.Clear();
+        BreadCrumbs.AddRange(breadcrumbs);
     }
 }

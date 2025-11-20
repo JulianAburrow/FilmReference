@@ -1,0 +1,16 @@
+﻿CREATE TABLE Film (
+	FilmId INT NOT NULL IDENTITY (1, 1),
+	Name NVARCHAR(50) NOT NULL,
+	Description NVARCHAR(500) NOT NULL,
+	BoxCover VARBINARY(MAX) NULL,
+	GenreId INT NOT NULL,
+	DirectorId INT NOT NULL,
+	StudioId INT NOT NULL,
+	CONSTRAINT PK_Film PRIMARY KEY (FilmId),
+	CONSTRAINT FK_Film_Genre FOREIGN KEY (GenreId)
+		REFERENCES Genre (GenreId),
+	CONSTRAINT FK_Film_Person FOREIGN KEY (DirectorId)
+		REFERENCES Person (PersonId),
+	CONSTRAINT FK_Film_Studio FOREIGN KEY (StudioId)
+		REFERENCES Studio (StudioId)
+)

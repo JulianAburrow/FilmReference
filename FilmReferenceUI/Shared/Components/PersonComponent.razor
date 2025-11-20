@@ -1,0 +1,21 @@
+﻿<MudCard Class="ma-2 pa-2">
+    <MudCardHeader>
+        <MudText Typo="Typo.h6">@Person.FirstName @Person.LastName</MudText>
+    </MudCardHeader>
+
+    <MudCardContent>
+        <MudText>@Person.Description</MudText>
+        <br />
+        <ViewImageComponent ImageData="@Person.Picture" ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
+    </MudCardContent>
+
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/person/view/{Person.PersonId}")>
+            View
+        </MudButton>
+        &nbsp;
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/person/edit/{Person.PersonId}")>
+            Edit
+        </MudButton>
+    </MudCardActions>
+</MudCard>

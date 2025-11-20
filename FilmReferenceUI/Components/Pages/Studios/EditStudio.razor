@@ -1,0 +1,56 @@
+﻿@page "/studio/edit/{StudioId:int}"
+@inherits StudiosBasePageClass
+
+<PageTitle>Edit Studio</PageTitle>
+
+@if (StudioDisplayModel == null)
+{
+    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Studio...</MudAlert>
+    return;
+}
+
+<EditForm Model="@StudioDisplayModel" OnValidSubmit="UpdateStudioAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <MudGrid>
+        <MudItem sm="7">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Name" @bind-Value="StudioDisplayModel.Name" AutoFocus OnlyValidateIfDirty="true" />
+                    <MudTextField Label="Description" @bind-Value="StudioDisplayModel.Description" />
+                    <ViewImageComponent ImageData="@StudioDisplayModel.Logo" ImageTitle=@($"{@StudioModel.Name} Logo") />
+                    <br />
+                    <br />
+                    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile">
+                        <ActivatorContent>
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.FileUpload">
+                                Upload File
+                            </MudButton>
+                        </ActivatorContent>
+                    </MudFileUpload>
+                    <br />
+                    @ImageName
+                    <br />
+                    @if (StudioDisplayModel.Logo is not null || Image is not null)
+                    {
+                        <MudButton HtmlTag="label"
+                                   OnClick="RemoveLogoAndImage"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Error">
+                            Remove Image
+                        </MudButton>
+                    }
+                </MudCardContent>
+                <MudCardActions>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    &nbsp;
+                    <a class="btn btn-primary" href="/studios/liststudios">Cancel</a>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
