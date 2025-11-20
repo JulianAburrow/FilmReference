@@ -1,7 +1,7 @@
-﻿<MudGrid Justify="Justify.Center" Spacing="2">
+﻿<MudGrid Justify="Justify.FlexStart" Spacing="2">
     @foreach (var genreModel in GenreModels)
     {
-        <MudItem xs="12" sm="6" md="3">
+        <MudItem xs="12" sm="6" md="4" lg="3">
             <GenreComponent Genre="genreModel" />
         </MudItem>
     }

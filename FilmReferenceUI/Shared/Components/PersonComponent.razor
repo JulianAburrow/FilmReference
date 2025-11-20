@@ -1,4 +1,4 @@
-﻿<MudCard Class="ma-2 pa-2">
+﻿<MudCard Class="ma-2 pa-2" Style="width: 100%; max-width: 350px;">
     <MudCardHeader>
         <MudText Typo="Typo.h6">@Person.FirstName @Person.LastName</MudText>
     </MudCardHeader>
@@ -9,7 +9,7 @@
         <ViewImageComponent ImageData="@Person.Picture" ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
     </MudCardContent>
 
-    <MudCardActions>
+    <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/person/view/{Person.PersonId}")>
             View
         </MudButton>
