@@ -1,11 +1,11 @@
-﻿<MudStack Justify="Justify.Center">
+﻿<MudStack Justify="Justify.FlexStart">
 	@if (ImageData is not null)
 	{
 		<MudImage src="@(ImageHelper.ImageSource(ImageData))"
 				  title="@ImageTitle"
 				  Elevation="25"
 				  Class="rounded-lg"
-				  Style="max-width:200px; height:auto;" />
+				  Style="max-width:100%; height:auto;" />
 	}
 	else
 	{

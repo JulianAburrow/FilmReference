@@ -1,4 +1,4 @@
-﻿<MudCard Class="ma-2 pa-2">
+﻿<MudCard Class="ma-2 pa-2" Style="width: 100%; max-width: 350px;">
     <MudCardHeader>
         <MudText Typo="Typo.h6">@Genre.Name</MudText>
     </MudCardHeader>
@@ -7,7 +7,7 @@
         <MudText>@Genre.Description</MudText>
     </MudCardContent>
 
-    <MudCardActions>
+    <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/genre/view/{Genre.GenreId}")>
             View
         </MudButton>

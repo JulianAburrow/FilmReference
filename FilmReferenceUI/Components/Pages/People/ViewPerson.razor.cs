@@ -5,7 +5,7 @@ public partial class ViewPerson
     protected override async Task OnInitializedAsync()
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
-        PreventDeleting = PersonModel.FilmPerson.Any() || PersonModel.Films.Any();
+        PreventDeleting = PersonModel.FilmPerson.Count != 0;
         MainLayout.SetHeaderValue("View Person");
     }
 }

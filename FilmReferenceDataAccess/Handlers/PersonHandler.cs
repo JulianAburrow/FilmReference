@@ -33,6 +33,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
             .Include(p => p.Films)
             .Include(p => p.FilmPerson)
             .OrderBy(p => p.FirstName)
+                .ThenBy(p => p.LastName)
             .AsNoTracking()
             .ToListAsync();
 
