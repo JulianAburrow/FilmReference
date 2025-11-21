@@ -17,7 +17,7 @@ public class StudioHandler(FilmReferenceContext context) : IStudioHandler
     {
         var studioToDelete = _context.Studios
             .FirstOrDefault(s => s.StudioId == studioId);
-        if (studioToDelete == null)
+        if (studioToDelete is null)
         {
             return;
         }
@@ -61,7 +61,7 @@ public class StudioHandler(FilmReferenceContext context) : IStudioHandler
         var studioToUpdate = _context.Studios
             .Where(s => s.StudioId == studio.StudioId)
             .FirstOrDefault();
-        if (studioToUpdate == null)
+        if (studioToUpdate is null)
         {
             return;
         }

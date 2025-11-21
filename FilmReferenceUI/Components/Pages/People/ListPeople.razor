@@ -1,7 +1,7 @@
 ﻿@page "/people/listpeople"
 @inherits PeopleBasePageClass
 
-@if (PersonModels == null)
+@if (PersonModels is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading People...</MudAlert>
     return;

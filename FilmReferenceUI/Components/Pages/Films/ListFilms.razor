@@ -3,7 +3,7 @@
 
 <PageTitle>Films</PageTitle>
 
-@if(FilmModels == null || GenreModels == null)
+@if(FilmModels is null || GenreModels is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Films...</MudAlert>
     return;

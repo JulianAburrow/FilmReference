@@ -52,7 +52,7 @@ public class FilmHandler : IFilmHandler
         var filmToDelete = _context.Films
             .Include(f => f.FilmPerson)
             .FirstOrDefault(f => f.FilmId == filmId);
-        if (filmToDelete == null)
+        if (filmToDelete is null)
         {
             return;
         }
@@ -118,7 +118,7 @@ public class FilmHandler : IFilmHandler
     {
         var filmToUpdate = _context.Films
             .FirstOrDefault(f => f.FilmId == film.FilmId);
-        if (filmToUpdate == null)
+        if (filmToUpdate is null)
         {
             return;
         }

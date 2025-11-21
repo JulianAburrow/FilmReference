@@ -3,7 +3,7 @@
 
 <PageTitle>Studios</PageTitle>
 
-@if (StudioModels == null)
+@if (StudioModels is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Studios...</MudAlert>
     return;
