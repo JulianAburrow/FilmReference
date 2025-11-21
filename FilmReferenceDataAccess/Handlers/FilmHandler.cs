@@ -90,16 +90,21 @@ public class FilmHandler : IFilmHandler
 
         return film ?? new FilmModel();
     }
-        
 
     public async Task<List<FilmModel>> GetAllFilmsAsync() =>
         await _context.Films
-            .Include(f => f.Studio)
-            .Include(f => f.Director)
-            .Include(f => f.Genre)
-        .OrderBy(f => f.Name)
-        .AsNoTracking()
-        .ToListAsync();
+            .AsNoTracking()
+            .OrderBy(f => f.Name)
+            .Select(f => new FilmModel
+            {
+                FilmId = f.FilmId,
+                Name = f.Name,
+                Description = f.Description,
+                BoxCover = f.BoxCover,
+                Studio = new StudioModel { StudioId = f.StudioId, Name = f.Studio.Name },
+                Genre = new GenreModel { GenreId = f.GenreId, Name = f.Genre.Name }
+            })
+            .ToListAsync();
 
     public async Task<List<FilmModel>> GetFilmsByGenreAsync(int genreId) =>
         await _context.Films
