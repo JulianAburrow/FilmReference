@@ -2,7 +2,9 @@
     @foreach (var filmModel in FilmModels)
     {
         <MudItem xs="12" sm="6" md="4" lg="3" Class="equal-height-item">
-            <FilmComponent Film="filmModel" />
+            <div class="equal-height-item">
+                <FilmComponent Film="filmModel" />
+            </div>
         </MudItem>
     }
 </MudGrid>

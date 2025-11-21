@@ -30,11 +30,18 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
 
     public async Task<List<PersonModel>> GetPeopleAsync() =>
         await _context.People
-            .Include(p => p.Films)
-            .Include(p => p.FilmPerson)
-            .OrderBy(p => p.FirstName)
-                .ThenBy(p => p.LastName)
             .AsNoTracking()
+            .OrderBy(p => p.FirstName)
+            .ThenBy(p => p.LastName)
+            .Select(p => new PersonModel
+            {
+                PersonId = p.PersonId,
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                Description = p.Description,
+                Picture = p.Picture,
+                Films = p.Films.Select(f => new FilmModel { FilmId = f.FilmId, Name = f.Name }).ToList()
+            })
             .ToListAsync();
 
     public async Task<PersonModel> GetPersonAsync(int personId)

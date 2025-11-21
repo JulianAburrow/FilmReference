@@ -34,8 +34,10 @@
 <MudGrid>
     @foreach(var filmPerson in PersonModel.FilmPerson)
     {
-        <MudItem sm="3">
-            <FilmComponent Film="filmPerson.Film" />
+        <MudItem xs="12" sm="6" md="4" Class="equal-height-item">
+            <div class="equal-height-item">
+                <FilmComponent Film="filmPerson.Film" />
+            </div>
         </MudItem>
     }
 </MudGrid>
