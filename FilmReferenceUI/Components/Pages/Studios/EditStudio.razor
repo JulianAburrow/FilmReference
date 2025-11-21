@@ -3,7 +3,7 @@
 
 <PageTitle>Edit Studio</PageTitle>
 
-@if (StudioDisplayModel == null)
+@if (StudioDisplayModel is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Studio...</MudAlert>
     return;

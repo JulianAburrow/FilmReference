@@ -3,7 +3,7 @@
 
 <PageTitle>Delete Film</PageTitle>
 
-@if (FilmModel == null)
+@if (FilmModel is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Film...</MudAlert>
     return;

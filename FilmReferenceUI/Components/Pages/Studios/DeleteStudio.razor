@@ -3,7 +3,7 @@
 
 <PageTitle>Delete Studio</PageTitle>
 
-@if (StudioModel == null)
+@if (StudioModel is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Studio...</MudAlert>
     return;

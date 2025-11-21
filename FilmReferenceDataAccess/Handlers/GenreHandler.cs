@@ -17,7 +17,7 @@ public class GenreHandler(FilmReferenceContext context) : IGenreHandler
     {
         var genreToDelete = _context.Genres
             .FirstOrDefault(g => g.GenreId == genreId);
-        if (genreToDelete == null)
+        if (genreToDelete is null)
         {
             return;
         }
@@ -58,7 +58,7 @@ public class GenreHandler(FilmReferenceContext context) : IGenreHandler
     {
         var genreToUpdate = _context.Genres
             .FirstOrDefault(g => g.GenreId == genre.GenreId);
-        if (genreToUpdate == null)
+        if (genreToUpdate is null)
         {
             return;
         }

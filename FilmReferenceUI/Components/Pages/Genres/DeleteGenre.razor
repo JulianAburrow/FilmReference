@@ -3,7 +3,7 @@
 
 <PageTitle>Delete Genre</PageTitle>
 
-@if (GenreModel == null)
+@if (GenreModel is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Genre...</MudAlert>
     return;

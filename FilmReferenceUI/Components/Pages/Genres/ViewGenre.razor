@@ -1,7 +1,7 @@
 ﻿@page "/genre/view/{GenreId:int}"
 @inherits GenresBasePageClass
 
-@if (GenreModel == null)
+@if (GenreModel is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Genre...</MudAlert>
     return;

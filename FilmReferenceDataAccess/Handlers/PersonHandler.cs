@@ -17,7 +17,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
     {
         var personToDelete = _context.People
             .FirstOrDefault(p => p.PersonId == personId);
-        if (personToDelete == null)
+        if (personToDelete is null)
         {
             return;
         }
@@ -64,7 +64,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         var personToUpdate = _context.People
             .Where(p => p.PersonId == person.PersonId)
             .FirstOrDefault();
-        if (personToUpdate == null)
+        if (personToUpdate is null)
         {
             return;
         }

@@ -3,7 +3,7 @@
 
 <PageTitle>Genres</PageTitle>
 
-@if (GenreModels == null)
+@if (GenreModels is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Genres...</MudAlert>
     return;

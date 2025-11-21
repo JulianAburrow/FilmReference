@@ -27,7 +27,7 @@ public class BasePageClass : ComponentBase
 
     protected void UploadFile(IBrowserFile file)
     {
-        if (file == null)
+        if (file is null)
         {
             return;
         }

@@ -3,7 +3,7 @@
 
 <PageTitle>Edit Genre</PageTitle>
 
-@if (GenreDisplayModel == null)
+@if (GenreDisplayModel is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Colour...</MudAlert>
     return;
