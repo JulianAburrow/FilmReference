@@ -101,6 +101,7 @@ public class FilmHandler : IFilmHandler
                 Name = f.Name,
                 Description = f.Description,
                 BoxCover = f.BoxCover,
+                GenreId = f.GenreId,
                 Studio = new StudioModel { StudioId = f.StudioId, Name = f.Studio.Name },
                 Genre = new GenreModel { GenreId = f.GenreId, Name = f.Genre.Name }
             })

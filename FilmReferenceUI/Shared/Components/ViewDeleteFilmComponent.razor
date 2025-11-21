@@ -6,21 +6,4 @@
     <MudField Label="Director">@FilmModel.Director?.FirstName @FilmModel.Director?.LastName</MudField>
     <br />
     <ViewImageComponent ImageData="FilmModel.BoxCover" ImageTitle=@($"{FilmModel.Name} Box Cover") />
-    <br />
-
-    @if (FilmModel.FilmPerson != null && FilmModel.FilmPerson.Count > 0)
-    {
-        <h3>Starring</h3>
-
-        <MudGrid GutterSize="3">
-            @foreach (var filmPersonModel in FilmModel.FilmPerson)
-            {
-                <MudItem xs="12" sm="6" md="4" Class="equal-height-item">
-                    <div class="equal-height-item">
-                        <PersonComponent Person="@filmPersonModel.Person" />
-                    </div>
-                </MudItem>
-            }
-        </MudGrid>
-    }
 </MudCardContent>

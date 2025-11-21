@@ -1,7 +1,7 @@
 ﻿@page "/film/view/{FilmId:int}"
 @inherits FilmsBasePageClass
 
-@if (FilmModel is null)
+@if (FilmModel is null || FilmModel.FilmPerson is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Film...</MudAlert>
     return;
@@ -24,3 +24,15 @@
         </MudCard>
     </MudItem>
 </MudGrid>
+
+@if (!Cast.Any())
+{
+    <p>No stars found for this film</p>
+    return;
+}
+
+<br />
+
+<h3>Starring</h3>
+
+<ListPeopleComponent PersonModels="@Cast" />

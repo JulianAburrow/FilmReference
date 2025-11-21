@@ -39,6 +39,8 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
                 FirstName = p.FirstName,
                 LastName = p.LastName,
                 Description = p.Description,
+                IsActor = p.IsActor,
+                IsDirector = p.IsDirector,
                 Picture = p.Picture,
                 Films = p.Films.Select(f => new FilmModel { FilmId = f.FilmId, Name = f.Name }).ToList()
             })

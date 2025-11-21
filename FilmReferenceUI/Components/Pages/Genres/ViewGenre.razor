@@ -1,7 +1,7 @@
 ﻿@page "/genre/view/{GenreId:int}"
 @inherits GenresBasePageClass
 
-@if (GenreModel is null)
+@if (GenreModel is null || GenreModel.Films is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Genre...</MudAlert>
     return;
@@ -24,3 +24,15 @@
         </MudCard>
     </MudItem>
 </MudGrid>
+
+@if (!GenreModel.Films.Any())
+{
+    <p>No films found for this genre</p>
+    return;
+}
+
+<br />
+
+<h3>Films</h3>
+
+<ListFilmsComponent FilmModels="GenreModel.Films.ToList()" />
