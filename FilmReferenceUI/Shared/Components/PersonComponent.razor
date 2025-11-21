@@ -4,6 +4,10 @@
     </MudCardHeader>
 
     <MudCardContent>
+        @if (Person.IsDirector)
+        {
+            <MudText>Director</MudText>
+        }
         <MudText>@Person.Description</MudText>
         <br />
         <ViewImageComponent ImageData="@Person.Picture" ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
