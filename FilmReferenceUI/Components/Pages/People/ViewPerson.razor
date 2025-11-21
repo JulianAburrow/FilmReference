@@ -25,19 +25,14 @@
     </MudItem>
 </MudGrid>
 
-@if (!PersonModel.FilmPerson.Any())
+@if (!FilmStarredIn.Any())
 {
     <p>No films found for this person</p>
     return;
 }
 
-<MudGrid>
-    @foreach(var filmPerson in PersonModel.FilmPerson)
-    {
-        <MudItem xs="12" sm="6" md="4" Class="equal-height-item">
-            <div class="equal-height-item">
-                <FilmComponent Film="filmPerson.Film" />
-            </div>
-        </MudItem>
-    }
-</MudGrid>
+<br />
+
+<h3>Films</h3>
+
+<ListFilmsComponent FilmModels="@FilmStarredIn" />

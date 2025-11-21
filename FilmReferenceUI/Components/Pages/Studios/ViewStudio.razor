@@ -1,7 +1,7 @@
 ﻿@page "/studio/view/{StudioId:int}"
 @inherits StudiosBasePageClass
 
-@if (StudioModel is null)
+@if (StudioModel is null || StudioModel.Films is null)
 {
     <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Studio...</MudAlert>
     return;
@@ -24,3 +24,15 @@
         </MudCard>
     </MudItem>
 </MudGrid>
+
+@if (!StudioModel.Films.Any())
+{
+    <p>No films found for this studio</p>
+    return;
+}
+
+<br />
+
+<h3>Films</h3>
+
+<ListFilmsComponent FilmModels="@StudioModel.Films.ToList()" />

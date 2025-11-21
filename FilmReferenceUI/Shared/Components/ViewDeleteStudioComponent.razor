@@ -4,17 +4,4 @@
     <br />
     <ViewImageComponent ImageData="StudioModel.Logo" ImageTitle=@($"{@StudioModel.Name} Logo") />
     <br />
-    @if (StudioModel.Films != null && StudioModel.Films.Count > 0)
-    {
-        <h3>Films</h3>
-
-        <MudGrid Spacing="2" Justify="Justify.FlexStart">
-            @foreach (var filmModel in StudioModel.Films)
-            {
-                <MudItem xs="12" sm="6" md="4">
-                    <FilmComponent Film="@filmModel" />
-                </MudItem>
-            }
-        </MudGrid>
-    }
 </MudCardContent>
