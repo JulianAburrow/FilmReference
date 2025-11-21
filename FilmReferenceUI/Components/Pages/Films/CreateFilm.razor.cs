@@ -45,9 +45,4 @@ public partial class CreateFilm
             Snackbar.Add($"An error occurred creating film {FilmModel.Name}. Please try again.", Severity.Error);
         }
     }
-
-    private string GetMultiSelectionText(List<string> selectedValues)
-    {
-        return $"{selectedValues.Count} actor{(selectedValues.Count > 1 ? "s have" : " has")} been selected";
-    }
 }

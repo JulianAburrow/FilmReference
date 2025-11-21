@@ -68,7 +68,12 @@
                     }
                     <br />
                     <br />
-                    <MudSelect T="int" Label="Actors" @bind-Value="value" @bind-SelectedValues="SelectedActors" MultiSelection="true" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
+                    <MudSelect T="int"
+                        Label="Actors"
+                        @bind-Value="value"
+                        @bind-SelectedValues="SelectedActors"
+                        MultiSelection="true"
+                        MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
                         @foreach (var actorModel in ActorModels)
                         {
                             <MudSelectItem T="int" Value="@actorModel.PersonId">
