@@ -78,4 +78,28 @@ public class FilmsBasePageClass : BasePageClass
             SelectedActors = SelectedActors.Append(filmPerson.PersonId);
         }
     }
+
+    protected string GetMultiSelectionText(List<string> selectedValues)
+    {
+        if (selectedValues.Count == 0)
+        {
+            return "No actors have been selected";
+        }
+        var actorList = new StringBuilder();
+        var counter = 0;
+        foreach (var value in selectedValues)
+        {
+            actorList.Append(ActorModels
+                .Where(a =>
+                    a.PersonId == int.Parse(value)).Select(a => $"{a.FirstName} {a.LastName}")
+                .FirstOrDefault());
+            if (counter < selectedValues.Count - 1)
+            {
+                actorList.Append(", ");
+            }
+            counter++;
+        }
+
+        return actorList.ToString();
+    }
 }

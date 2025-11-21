@@ -29,11 +29,6 @@ public partial class EditFilm
         }
     }
 
-    private string GetMultiSelectionText(List<string> selectedValues)
-    {
-        return $"{selectedValues.Count} actor{(selectedValues.Count > 1 ? "s have" : " has")} been selected";
-    }
-
     private void RemoveBoxCoverAndImage()
     {
         FilmDisplayModel.BoxCover = null;
