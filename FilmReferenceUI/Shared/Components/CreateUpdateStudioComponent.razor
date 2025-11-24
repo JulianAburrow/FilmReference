@@ -4,7 +4,7 @@
     <MudTextField Label="Name" @bind-Value="StudioDisplayModel.Name" AutoFocus OnlyValidateIfDirty="true" />
     <MudTextField Label="Description" @bind-Value="StudioDisplayModel.Description" />
     <br />
-    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile">
+    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" Accept="image/*">
         <ActivatorContent>
             <MudButton HtmlTag="label"
                 Variant="Variant.Filled"

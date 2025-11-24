@@ -23,7 +23,7 @@ public class BasePageClass : ComponentBase
     protected override void OnInitialized()
     {
         MainLayout.SetHeaderValue(string.Empty);
-    }
+    }   
 
     protected void UploadFile(IBrowserFile file)
     {
@@ -31,6 +31,13 @@ public class BasePageClass : ComponentBase
         {
             return;
         }
+
+        if (!file.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+        {
+            Snackbar.Add("Only image files are allowed.", Severity.Warning);
+            return;
+        }
+
         try
         {
             Image = file;
