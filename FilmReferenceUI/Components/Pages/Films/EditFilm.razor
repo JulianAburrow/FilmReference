@@ -47,7 +47,7 @@
 					<ViewImageComponent ImageData="FilmDisplayModel.BoxCover" ImageTitle=@($"{FilmDisplayModel.Name} Box Cover") />
                     <br />
                     <br />
-                    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile">
+                    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" Accept="image/*">
                         <ActivatorContent>
                             <MudButton HtmlTag="label"
                                        Variant="Variant.Filled"
