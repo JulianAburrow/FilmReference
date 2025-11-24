@@ -3,7 +3,7 @@
 
 @if (FilmModel is null || FilmModel.FilmPerson is null)
 {
-    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Film...</MudAlert>
+    <LoadingComponent DisplayValue="Loading film" />
     return;
 }
 

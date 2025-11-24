@@ -1,6 +1,102 @@
 ﻿@page "/"
-@inherits BasePageClass
+@inherits HomeBasePageClass
 
 <PageTitle>Film Reference</PageTitle>
 
 <h1>Film Reference</h1>
+
+<p>Welcome to your film reference application!</p>
+
+<p>Use this application to manage all your favoutite films...</p>
+
+<h2>Search</h2>
+
+<EditForm Model="@SearchModel" OnValidSubmit="DoSearch">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+	<MudGrid>
+		<MudItem sm="7">
+			<MudCard>
+				<MudCardContent>
+					<MudSelect Label="Search For" T="int" @bind-Value="SearchModel.SearchType">
+						<MudSelectItem T="int" Value="SharedValues.PleaseSelectValue">
+							@SharedValues.PleaseSelectText
+						</MudSelectItem>
+						@foreach (var searchOption in Enum.GetValues<SearchTypeEnum>())
+						{
+							<MudSelectItem T="int" Value="@((int)searchOption)">
+								@searchOption
+							</MudSelectItem>
+						}
+					</MudSelect>
+					<MudTextField Label="Search For" @bind-Value="SearchModel.SearchText" />
+				</MudCardContent>
+				<MudCardActions>
+					<button type="submit" class="btn btn-primary">Search</button>
+					&nbsp;
+					<button type="button" class="btn btn-danger" @onclick="ClearSearch">Clear Search</button>
+				</MudCardActions>
+			</MudCard>
+		</MudItem>
+	</MudGrid>
+</EditForm>
+
+@if (!SubmitClicked)
+{
+	return;
+}
+
+<br />
+
+@if (SearchModel.SearchType == (int)SearchTypeEnum.Film)
+{
+	@if(FilmsFound.Count == 0)
+	{
+		<LoadingComponent DisplayValue="No films found" />
+		return;
+	}
+
+	<h4>Films Found</h4>
+
+	<ListFilmsComponent FilmModels="FilmsFound" />
+}
+
+@if (SearchModel.SearchType == (int)SearchTypeEnum.Genre)
+{
+	@if (GenresFound.Count == 0)
+	{
+		<LoadingComponent DisplayValue="No genres found" />
+		return;
+	}
+
+	<h4>Genres Found</h4>
+
+	<ListGenresComponent GenreModels="GenresFound" />
+}
+
+@if (SearchModel.SearchType == (int)SearchTypeEnum.Person)
+{
+	@if(PeopleFound.Count == 0)
+	{
+		<LoadingComponent DisplayValue="No people found" />
+		return;
+	}
+
+	<h4>People Found</h4>
+
+	<ListPeopleComponent PersonModels="PeopleFound" />
+}
+
+@if (SearchModel.SearchType == (int)SearchTypeEnum.Studio)
+{
+	@if(StudiosFound.Count == 0)
+	{
+		<LoadingComponent DisplayValue="No studios found." />
+		return;
+	}
+
+	<h4>Studios Found</h4>
+
+	<ListStudiosComponent StudioModels="StudiosFound" />
+}

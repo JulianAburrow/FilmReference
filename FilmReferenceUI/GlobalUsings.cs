@@ -7,6 +7,7 @@ global using FilmReferenceUI.Components.Layout;
 global using FilmReferenceUI.Extensions;
 global using FilmReferenceUI.Models;
 global using FilmReferenceUI.Shared.BasePageClasses;
+global using FilmReferenceUI.Shared.Enums;
 global using FilmReferenceUI.Shared.Helpers;
 global using FilmReferenceUI.Shared.SharedValues;
 global using Microsoft.AspNetCore.Components;

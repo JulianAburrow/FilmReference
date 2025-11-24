@@ -5,7 +5,7 @@
 
 @if(FilmModels is null || GenreModels is null)
 {
-    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Films...</MudAlert>
+    <LoadingComponent />
     return;
 }
 

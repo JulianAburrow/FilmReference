@@ -3,7 +3,7 @@
 
 @if (GenreModel is null || GenreModel.Films is null)
 {
-    <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center">Loading Genre...</MudAlert>
+	<LoadingComponent DisplayValue="Loading genre" />
     return;
 }
 
