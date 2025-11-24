@@ -14,5 +14,6 @@ public static class ServiceExtensions
         services.AddTransient<IGenreHandler, GenreHandler>();
         services.AddTransient<IPersonHandler, PersonHandler>();
         services.AddTransient<IStudioHandler, StudioHandler>();
+        services.AddTransient<ISearchHandler, SearchHandler>();
     }
 }

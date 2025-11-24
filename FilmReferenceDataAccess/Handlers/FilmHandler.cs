@@ -1,14 +1,9 @@
 ﻿
 namespace FilmReferenceDataAccess.Handlers;
 
-public class FilmHandler : IFilmHandler
+public class FilmHandler(FilmReferenceContext context) : IFilmHandler
 {
-    private readonly FilmReferenceContext _context;
-
-    public FilmHandler(FilmReferenceContext context)
-    {
-        _context = context;
-    }
+    private readonly FilmReferenceContext _context = context;
 
     public async Task CreateFilmAsync(FilmModel film, IEnumerable<int> selectedActorIds, bool saveChanges)
     {
