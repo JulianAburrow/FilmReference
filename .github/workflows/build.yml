@@ -22,14 +22,13 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore FilmReferenceBlazor.sln
+        run: dotnet restore
 
-      - name: Build only non-SQL projects
+      - name: Build UI, DataAccess and Test projects
         run: |
-          dotnet build FilmReferenceBlazor.sln --no-restore --configuration Release \
-            /p:ExcludeProjects="FilmReferenceDatabase.sqlproj"
+          dotnet build FilmReferenceUI/FilmReferenceUI.csproj --no-restore --configuration Release
+          dotnet build FilmReferenceDataAccess/FilmReferenceDataAccess.csproj --no-restore --configuration Release
+          dotnet build FilmReferenceBlazor.Tests/FilmReferenceBlazor.Tests.csproj --no-restore --configuration Release
 
       - name: Run tests
-        run: |
-          dotnet test FilmReference.Tests/FilmReference.Tests.csproj \
-            --no-build --configuration Release --verbosity normal
+        run: dotnet test FilmReferenceBlazor.Tests/FilmReferenceBlazor.Tests.csproj --no-build --configuration Release --verbosity normal
