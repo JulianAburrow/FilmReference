@@ -1,0 +1,36 @@
+name: Build and Test FilmReference
+
+on:
+  push:
+    branches:
+      - "**"   # triggers on all branches
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Setup .NET (adjust version if needed)
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Step 3: Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Step 4: Build the application
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      # Step 5: Run tests
+      - name: Run tests
+        run: dotnet test --no-build --configuration Release --verbosity normal
