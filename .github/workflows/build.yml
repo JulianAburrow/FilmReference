@@ -3,7 +3,7 @@ name: Build and Test FilmReference
 on:
   push:
     branches:
-      - "**"   # triggers on all branches
+      - "**"
   pull_request:
     branches:
       - "**"
@@ -13,24 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Setup .NET (adjust version if needed)
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '8.0.x'
 
-      # Step 3: Restore dependencies
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore FilmReferenceBlazor.sln
 
-      # Step 4: Build the application
-      - name: Build
-        run: dotnet build --no-restore --configuration Release
+      - name: Build only non-SQL projects
+        run: |
+          dotnet build FilmReferenceBlazor.sln --no-restore --configuration Release \
+            /p:ExcludeProjects="FilmReferenceDatabase.sqlproj"
 
-      # Step 5: Run tests
       - name: Run tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: |
+          dotnet test FilmReference.Tests/FilmReference.Tests.csproj \
+            --no-build --configuration Release --verbosity normal
