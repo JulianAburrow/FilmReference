@@ -78,8 +78,8 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
 
         if (film?.FilmPerson != null)
         {
-            film.FilmPerson = film.FilmPerson?
-                .OrderBy(fp => fp.Person.FirstName)
+            film.FilmPerson = film.FilmPerson
+                .OrderBy(fp => fp.Person?.FirstName ?? string.Empty)
                 .ToList();
         }
 
