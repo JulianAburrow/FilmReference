@@ -15,14 +15,18 @@
 
 <br /><br />
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => FilterFilms(0))">
+<MudButton Variant="Variant.Filled"
+           Color="@(SelectedGenreId == 0 ? Color.Error : Color.Primary)"
+           OnClick="@(() => FilterFilms(0))">
+
+
     All
 </MudButton>
 
 @foreach (var genreModel in GenreModels)
 {
     <MudButton Variant="Variant.Filled"
-               Color="Color.Primary"
+               Color="@(SelectedGenreId == genreModel.GenreId ? Color.Error : Color.Primary)"
                OnClick="@(() => FilterFilms(genreModel.GenreId))"
                Class="ma-1">
         @genreModel.Name
@@ -32,14 +36,25 @@
 <br />
 <br />
 
+@{
+    var SelectedGenreName = SelectedGenreId == 0 ? "All Genres" : GenreModels.FirstOrDefault(g => g.GenreId == SelectedGenreId)?.Name;
+}
+
 @if (!FilmModels.Any())
 {
-    <p>No Films found for the selected Genre.</p>
+    <p>No Films found @(SelectedGenreId == 0 ? "in any genre" : "for the genre @SelectedGenreName").</p>
     return;
 }
 else
 {
-    <p>@FilteredFilmModels.Count() @(FilteredFilmModels.Count() == 1 ? "film" : "films") found for the selected genre.</p>
+
+    var count = FilteredFilmModels.Count();
+    var label = count == 1 ? "film" : "films";
+    var genreText = SelectedGenreName == "All Genres"
+        ? "in all genres"
+        : $"for the genre {SelectedGenreName}";
+
+    <p>@count @label found @genreText</p>
 }
 
 <ListFilmsComponent FilmModels="FilteredFilmModels" />
