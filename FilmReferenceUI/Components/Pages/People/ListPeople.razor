@@ -14,14 +14,17 @@
 <br />
 <br />
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => FilterPeople("All"))">
+<MudButton
+    Variant="Variant.Filled"
+    Color="@(SelectedFilter.ToLower() == "all" ? Color.Error : Color.Primary)"
+    OnClick="@(() => FilterPeople("All"))">
     All
 </MudButton>
 
 @foreach (var letter in Enumerable.Range('A', 26).Select(c => ((char)c).ToString()))
 {
     <MudButton Variant="Variant.Filled"
-        Color="Color.Primary"
+        Color="@(SelectedFilter.ToLower() == letter.ToLower() ? Color.Error : Color.Primary)"
         OnClick="@(() => FilterPeople(letter))"
         Class="ma-1">
         @letter
