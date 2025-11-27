@@ -1,8 +1,7 @@
 ﻿namespace FilmReferenceBlazor.Tests;
 
-public class StudioHandlerTests
+public class StudioTests
 {
-
     [Fact]
     public async Task CreateStudioAsync_ShouldAddStudio_WhenSaveChangesTrue()
     {
@@ -55,11 +54,11 @@ public class StudioHandlerTests
         {
             StudioId = 3,
             Name = "Universal",
-            Films = new List<FilmModel>
-            {
-                new FilmModel { FilmId = 1, Name = "Z Movie" },
-                new FilmModel { FilmId = 2, Name = "A Movie" }
-            }
+            Films =
+            [
+                new() { FilmId = 1, Name = "Z Movie" },
+                new() { FilmId = 2, Name = "A Movie" }
+            ]
         };
         context.Studios.Add(studio);
         await context.SaveChangesAsync();
