@@ -2,7 +2,7 @@
 
 public partial class ViewPerson
 {
-    private List<FilmModel> FilmStarredIn { get; set; } = [];
+    private List<FilmModel> FilmsStarredIn { get; set; } = [];
 
     protected override async Task OnInitializedAsync()
     {
@@ -15,7 +15,7 @@ public partial class ViewPerson
         }
         foreach (var filmPerson in PersonModel.FilmPerson)
         {
-            FilmStarredIn.Add(filmPerson.Film);
+            FilmsStarredIn.Add(filmPerson.Film);
         }
     }
 }
