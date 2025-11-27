@@ -28,7 +28,7 @@
 <br />
 <br />
 
-@if (!FilmStarredIn.Any())
+@if (!FilmsStarredIn.Any())
 {
     <p>No films found for this person</p>
     return;
@@ -36,4 +36,4 @@
 
 <h3>Films</h3>
 
-<ListFilmsComponent FilmModels="@FilmStarredIn" />
+<ListFilmsComponent FilmModels="@FilmsStarredIn" />

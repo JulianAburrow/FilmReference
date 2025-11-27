@@ -13,7 +13,6 @@ public partial class ListFilms
         FilmModels = await FilmHandler.GetAllFilmsAsync();
         await FilterFilms(SelectedGenreId);
         GenreModels = await GenreHandler.GetGenresAsync();
-        Snackbar.Add($"{FilmModels.Count} film(s) found.", FilmModels.Count > 0 ? Severity.Info : Severity.Warning);
         MainLayout.SetHeaderValue("Films");
     }
 
@@ -29,5 +28,7 @@ public partial class ListFilms
             .Where(f =>
                 f.GenreId == genreId)
             .ToList();
+
+        Snackbar.Add($"{FilteredFilmModels.Count} film(s) found for genre filter '{GenreModels.First(g => g.GenreId == genreId).Name}'", FilteredFilmModels.Count > 0 ? Severity.Info : Severity.Warning);
     }
 }

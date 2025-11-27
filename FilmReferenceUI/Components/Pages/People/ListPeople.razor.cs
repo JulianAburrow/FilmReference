@@ -12,7 +12,6 @@ public partial class ListPeople
     {
         PersonModels = await PersonHandler.GetPeopleAsync();
         await FilterPeople(SelectedFilter);
-        Snackbar.Add($"{PersonModels.Count} person(s) found", PersonModels.Count > 0 ? Severity.Info : Severity.Warning);
         MainLayout.SetHeaderValue("People");
     }
 
@@ -29,6 +28,8 @@ public partial class ListPeople
             .Where(p =>
                 p.FirstName.StartsWith(filter, StringComparison.OrdinalIgnoreCase))
             .ToList();
+
+        Snackbar.Add($"{FilteredPersonModels.Count} person(s) found for filter '{filter}'", FilteredPersonModels.Count > 0 ? Severity.Info : Severity.Warning);
     }
 }
 
