@@ -102,16 +102,6 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
             })
             .ToListAsync();
 
-    public async Task<List<FilmModel>> GetFilmsByGenreAsync(int genreId) =>
-        await _context.Films
-            .Include(f => f.Studio)
-            .Include(f => f.Director)
-            .Include(f => f.Genre)
-        .Where(f => f.GenreId == genreId)
-        .OrderBy(f => f.Name)
-        .AsNoTracking()
-        .ToListAsync();
-
     public async Task SaveChangesAsync() =>
         await _context.SaveChangesAsync();
 
