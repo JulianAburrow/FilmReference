@@ -1,3 +1,5 @@
+[![Build FilmReferenceBlazor](https://github.com/JulianAburrow/FilmReferenceBlazor/actions/workflows/build.yml/badge.svg)](https://github.com/JulianAburrow/FilmReferenceBlazor/actions/workflows/build.yml)
+
 # 🎬 FilmReference Application
 
 FilmReference is a Blazor WebAssembly application designed to manage and explore films, genres, studios, and people in a clean, responsive UI.  
