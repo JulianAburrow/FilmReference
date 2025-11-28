@@ -2,9 +2,7 @@
     @foreach (var studioModel in StudioModels)
     {
         <MudItem xs="12" sm="6" md="4" lg="3" Class="equal-height-item">
-            <div class="equal-height-item">
-                <StudioComponent Studio="studioModel" />
-            </div>
+            <StudioComponent Studio="studioModel" />
         </MudItem>
     }
 </MudGrid>
