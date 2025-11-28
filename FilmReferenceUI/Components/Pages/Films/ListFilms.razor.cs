@@ -22,13 +22,19 @@ public partial class ListFilms
         if (genreId == 0)
         {
             FilteredFilmModels = FilmModels;
-            return;
         }
-        FilteredFilmModels = FilmModels
-            .Where(f =>
-                f.GenreId == genreId)
-            .ToList();
+        else
+        {
+            FilteredFilmModels = FilmModels
+                .Where(f =>
+                    f.GenreId == genreId)
+                .ToList();
+        }
 
-        Snackbar.Add($"{FilteredFilmModels.Count} film(s) found for genre filter '{GenreModels.First(g => g.GenreId == genreId).Name}'", FilteredFilmModels.Count > 0 ? Severity.Info : Severity.Warning);
+        var genreName = GenreModels.FirstOrDefault(g => g.GenreId == genreId)?.Name ?? "All";
+
+        Snackbar.Add(
+            $"{FilteredFilmModels.Count} {(FilteredFilmModels.Count == 1 ? "film" : "films")} found for filter '{genreName}'",
+            FilteredFilmModels.Count > 0 ? Severity.Info : Severity.Warning);
     }
 }

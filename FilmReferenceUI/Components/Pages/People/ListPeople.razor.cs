@@ -29,7 +29,12 @@ public partial class ListPeople
                 p.FirstName.StartsWith(filter, StringComparison.OrdinalIgnoreCase))
             .ToList();
 
-        Snackbar.Add($"{FilteredPersonModels.Count} person(s) found for filter '{filter}'", FilteredPersonModels.Count > 0 ? Severity.Info : Severity.Warning);
+        var count = FilteredPersonModels.Count;
+        var message = count == 1
+            ? $"1 person found for filter '{filter}'"
+            : $"{count} people found for filter '{filter}'";
+
+        Snackbar.Add(message, count > 0 ? Severity.Info : Severity.Warning);
     }
 }
 
