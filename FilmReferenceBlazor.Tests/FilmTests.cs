@@ -58,19 +58,30 @@ public class FilmHandlerTests
     public async Task GetFilmAsync_ShouldReturnFilmWithOrderedActors()
     {
         using var context = DbContextHelper.GetInMemoryContext();
-        var film = new FilmModel { Name = "Film" };
+        var genre = TestDataFactory.CreateGenre();
+        var studio = TestDataFactory.CreateStudio();
+        var director = TestDataFactory.CreateDirector();
+        var film = TestDataFactory.CreateFilm("Film", studio, genre, director);
+
         var personA = new PersonModel { FirstName = "Zoe" };
         var personB = new PersonModel { FirstName = "Alice" };
         var fpA = new FilmPersonModel { Film = film, Person = personA };
         var fpB = new FilmPersonModel { Film = film, Person = personB };
 
-        context.AddRange(film, personA, personB, fpA, fpB);
+        context.AddRange(genre, studio, director, film, personA, personB, fpA, fpB);
         context.SaveChanges();
 
         var handler = new FilmHandler(context);
         var result = await handler.GetFilmAsync(film.FilmId);
 
-        result.FilmPerson.Select(fp => fp.Person.FirstName).Should().ContainInOrder("Alice", "Zoe");
+        result.FilmPerson.Select(fp => fp.PersonId).Should().Contain([personA.PersonId, personB.PersonId]);
+        result.Should().NotBeNull();
+        result.Name.Should().Be("Film");
+
+        var actorNames = result.FilmPerson.Select(fp => fp.Person.FirstName).ToList();
+        actorNames.Should().Contain(new[] { "Alice", "Zoe" });
+        actorNames.Should().ContainInOrder("Alice", "Zoe");
+
     }
 
     [Fact]

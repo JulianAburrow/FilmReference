@@ -16,11 +16,11 @@ public class FilmModel
 
     public byte[]? BoxCover { get; set; }
 
-    public GenreModel Genre { get; set; } = new();
+    public GenreModel Genre { get; set; } = null!;
 
-    public PersonModel Director { get; set; } = new();
+    public PersonModel Director { get; set; } = null!;
 
-    public StudioModel Studio { get; set; } = new();
+    public StudioModel Studio { get; set; } = null!;
 
     public ICollection<FilmPersonModel> FilmPerson { get; set; } = [];
 }
