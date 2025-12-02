@@ -37,4 +37,9 @@ public partial class ListFilms
             $"{FilteredFilmModels.Count} {(FilteredFilmModels.Count == 1 ? "film" : "films")} found for filter '{genreName}'",
             FilteredFilmModels.Count > 0 ? Severity.Info : Severity.Warning);
     }
+
+    private int GetFilmCountForGenre(int genreId)
+    {
+        return FilmModels.Count(f => f.GenreId == genreId);
+    }
 }

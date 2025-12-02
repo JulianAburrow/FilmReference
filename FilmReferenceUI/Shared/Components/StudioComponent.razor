@@ -6,6 +6,8 @@
     <MudCardContent>
         <MudText>@Studio.Description</MudText>
         <br />
+        <MudText>@Studio.Films.Count @(Studio.Films.Count == 1 ? "film" : "films") for this studio</MudText>
+        <br />
         <ViewImageComponent ImageData="@Studio.Logo" ImageTitle="@($"{Studio.Name} Logo")" />
     </MudCardContent>
 

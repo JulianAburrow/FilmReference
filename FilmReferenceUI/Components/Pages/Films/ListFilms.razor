@@ -15,22 +15,24 @@
 
 <br /><br />
 
-<MudButton Variant="Variant.Filled"
-           Color="@(SelectedGenreId == 0 ? Color.Error : Color.Primary)"
-           OnClick="@(() => FilterFilms(0))">
-
-
-    All
-</MudButton>
+<MudTooltip Text="@($"{FilmModels.Count} {(FilmModels.Count == 1 ? "film" : "films")} in total")">
+    <MudButton Variant="Variant.Filled"
+               Color="@(SelectedGenreId == 0 ? Color.Error : Color.Primary)"
+               OnClick="@(() => FilterFilms(0))">
+        All Films
+    </MudButton>
+</MudTooltip>
 
 @foreach (var genreModel in GenreModels)
 {
-    <MudButton Variant="Variant.Filled"
-               Color="@(SelectedGenreId == genreModel.GenreId ? Color.Error : Color.Primary)"
-               OnClick="@(() => FilterFilms(genreModel.GenreId))"
-               Class="ma-1">
-        @genreModel.Name
-    </MudButton>
+    <MudTooltip Text="@($"{GetFilmCountForGenre(genreModel.GenreId)} {(GetFilmCountForGenre(genreModel.GenreId) == 1 ? "film" : "films")} in this category")">
+        <MudButton Variant="Variant.Filled"
+                   Color="@(SelectedGenreId == genreModel.GenreId ? Color.Error : Color.Primary)"
+                   OnClick="@(() => FilterFilms(genreModel.GenreId))"
+                   Class="ma-1">
+            @genreModel.Name
+        </MudButton>
+    </MudTooltip>
 }
 
 <br />

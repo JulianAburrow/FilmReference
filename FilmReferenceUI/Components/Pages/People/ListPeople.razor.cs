@@ -36,5 +36,10 @@ public partial class ListPeople
 
         Snackbar.Add(message, count > 0 ? Severity.Info : Severity.Warning);
     }
+
+    private int GetPersonCountForInitial(string initialLetter)
+    {
+        return PersonModels.Count(p => p.FirstName.StartsWith(initialLetter));
+    }
 }
 
