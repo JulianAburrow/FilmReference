@@ -50,24 +50,22 @@ public class StudioTests
         using var context = DbContextHelper.GetInMemoryContext();
         var handler = new StudioHandler(context);
 
-        var studio = new StudioModel
-        {
-            StudioId = 3,
-            Name = "Universal",
-            Films =
-            [
-                new() { FilmId = 1, Name = "Z Movie" },
-                new() { FilmId = 2, Name = "A Movie" }
-            ]
-        };
-        context.Studios.Add(studio);
+        var studio = new StudioModel { Name = "Universal" };
+        var genre = new GenreModel {  Name = "Action" };
+        var director = new PersonModel { FirstName = "Director" };
+        var filmA = new FilmModel { Name = "Z Movie", Studio = studio, Genre = genre, Director = director };
+        var filmB = new FilmModel { Name = "A Movie", Studio = studio, Genre = genre, Director = director };
+
+        context.AddRange(studio, filmA, filmB);
         await context.SaveChangesAsync();
 
-        var result = await handler.GetStudioAsync(3);
+        var result = await handler.GetStudioAsync(studio.StudioId);
 
         result.Should().NotBeNull();
         result.Films.Should().HaveCount(2);
-        result.Films.First().Name.Should().Be("A Movie"); // ordered
+
+        var filmNames = result.Films.Select(f => f.Name).ToList();
+        filmNames.Should().ContainInOrder("A Movie", "Z Movie");
     }
 
     [Fact]
