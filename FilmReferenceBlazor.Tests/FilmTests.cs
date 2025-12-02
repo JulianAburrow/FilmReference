@@ -58,17 +58,10 @@ public class FilmHandlerTests
     public async Task GetFilmAsync_ShouldReturnFilmWithOrderedActors()
     {
         using var context = DbContextHelper.GetInMemoryContext();
-        var genre = new GenreModel { Name = "Drama" };
-        var studio = new StudioModel { Name = "Test Studio" };
-        var director = new PersonModel { FirstName = "Director" };
-
-        var film = new FilmModel
-        {
-            Name = "Film",
-            Genre = genre,
-            Studio = studio,
-            Director = director
-        };
+        var genre = TestDataFactory.CreateGenre();
+        var studio = TestDataFactory.CreateStudio();
+        var director = TestDataFactory.CreateDirector();
+        var film = TestDataFactory.CreateFilm("Film", studio, genre, director);
 
         var personA = new PersonModel { FirstName = "Zoe" };
         var personB = new PersonModel { FirstName = "Alice" };
