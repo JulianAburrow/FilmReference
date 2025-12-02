@@ -5,7 +5,7 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
 {
     private readonly FilmReferenceContext _context = context;
 
-    public async Task CreateFilmAsync(FilmModel film, IEnumerable<int> selectedActorIds, bool saveChanges)
+    public async Task CreateFilmAsync(FilmModel film, IEnumerable<int>? selectedActorIds, bool saveChanges)
     {
         var filmToAdd = new FilmModel
         {
