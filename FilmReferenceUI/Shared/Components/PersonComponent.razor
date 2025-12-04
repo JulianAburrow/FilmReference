@@ -4,10 +4,13 @@
     </MudCardHeader>
 
     <MudCardContent>
-        @if (Person.IsDirector)
-        {
-            <MudText>Director</MudText>
-        }
+        @{
+            var textToShow = Person.IsActor && Person.IsDirector ? "Directs as well as acts"
+                   : Person.IsDirector ? "Director"
+                   : Person.IsActor ? "Actor / Actress"
+                   : string.Empty;
+        }        
+        <MudText>@textToShow</MudText>
         <MudText>@Person.Description</MudText>
         <br />
         <ViewImageComponent ImageData="@Person.Picture" ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
