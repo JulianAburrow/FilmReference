@@ -1,7 +1,19 @@
 ﻿<MudNavMenu>
     <MudNavLink Href="">Home / Search</MudNavLink>
-    <MudNavLink Href="/films/listfilms">Films</MudNavLink>
-    <MudNavLink Href="/people/listpeople">People</MudNavLink>
-    <MudNavLink Href="/genres/listgenres">Genres</MudNavLink>
-    <MudNavLink Href="/studios/liststudios">Studios</MudNavLink>
+    <MudNavGroup Title="Films" Expanded="true">
+        <MudNavLink Href="/films/listfilms">View Films</MudNavLink>
+        <MudNavLink Href="/film/create">Create Film</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="People" Expanded="true">
+        <MudNavLink Href="/people/listpeople">View People</MudNavLink>
+        <MudNavLink Href="/person/create">Create Person</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Genres" Expanded="true">
+        <MudNavLink Href="/genres/listgenres">View Genres</MudNavLink>
+        <MudNavLink Href="/genre/create">Create Genre</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Studios" Expanded="true">
+        <MudNavLink Href="/studios/liststudios">View Studios</MudNavLink>
+        <MudNavLink Href="/studio/create">Create Studio</MudNavLink>
+    </MudNavGroup>
 </MudNavMenu>

@@ -7,7 +7,7 @@
         @{
             var textToShow = Person.IsActor && Person.IsDirector ? "Directs as well as acts"
                    : Person.IsDirector ? "Director"
-                   : Person.IsActor ? "Actor / Actress"
+                   : Person.IsActor ? "Actress"
                    : string.Empty;
         }        
         <MudText>@textToShow</MudText>
