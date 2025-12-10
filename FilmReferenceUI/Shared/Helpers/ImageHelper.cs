@@ -6,4 +6,11 @@ public static class ImageHelper
     {
         return string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(imageContent));
     }
+
+    public static async Task<MemoryStream> ToMemoryStream(Stream stream)
+    {
+        using var memoryStream = new MemoryStream();
+        await stream.CopyToAsync(memoryStream);
+        return memoryStream;
+    }
 }

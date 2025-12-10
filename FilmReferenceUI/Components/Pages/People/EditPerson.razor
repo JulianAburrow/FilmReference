@@ -16,38 +16,7 @@
     <MudGrid>
         <MudItem sm="7">
             <MudCard>
-                <MudCardContent>
-                    <MudTextField Label="First Name" @bind-Value="PersonDisplayModel.FirstName" AutoFocus OnlyValidateIfDirty="true" />
-                    <MudTextField Label="Last Name" @bind-Value="PersonDisplayModel.LastName" />
-                    <MudTextField Label="Description" @bind-Value="PersonDisplayModel.Description" Lines="3" />
-                    <MudCheckBox Label="Actress" @bind-Value="PersonDisplayModel.IsActor" />
-                    <MudCheckBox Label="Director" @bind-Value="PersonDisplayModel.IsDirector" />
-                    <ViewImageComponent ImageData="PersonDisplayModel.Picture" ImageTitle=@($"{PersonDisplayModel.FirstName} {PersonDisplayModel.LastName} Picture") />
-                    <br />
-                    <br />
-                    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" Accept="image/*">
-                        <ActivatorContent>
-                            <MudButton HtmlTag="label"
-                                       Variant="Variant.Filled"
-                                       Color="Color.Primary"
-                                       StartIcon="@Icons.Material.Filled.FileUpload">
-                                Upload File
-                            </MudButton>
-                        </ActivatorContent>
-                    </MudFileUpload>
-                    <br />
-                    @ImageName
-                    <br />
-                    @if (PersonDisplayModel.Picture is not null || Image is not null)
-                    {
-                        <MudButton HtmlTag="label"
-                                   OnClick="RemovePictureAndImage"
-                                   Variant="Variant.Filled"
-                                   Color="Color.Error">
-                            Remove Image
-                        </MudButton>
-                    }
-                </MudCardContent>
+                <CreateUpdatePersonComponent PersonDisplayModel="PersonDisplayModel" />
                 <MudCardActions>
                     <button type="submit" class="btn btn-primary">Update</button>
                     &nbsp;
