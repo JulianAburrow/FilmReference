@@ -4,7 +4,9 @@
     <MudTextField Label="Name" @bind-Value="StudioDisplayModel.Name" AutoFocus OnlyValidateIfDirty="true" />
     <MudTextField Label="Description" @bind-Value="StudioDisplayModel.Description" />
     <br />
-    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" Accept="image/*">
+    <ViewImageComponent ImageData="StudioDisplayModel.Logo" ImageTitle=@($"{StudioDisplayModel.Name} Box Cover") />
+    <br />
+    <MudFileUpload T="IBrowserFile" FilesChanged="LocalUploadImage" Accept="image/*">
         <ActivatorContent>
             <MudButton HtmlTag="label"
                 Variant="Variant.Filled"
@@ -14,16 +16,16 @@
             </MudButton>
         </ActivatorContent>
     </MudFileUpload>
-    @if (Image is not null)
+    @if (StudioDisplayModel.Logo is not null)
     {
         <br />
         @ImageName
         <br />
         <MudButton HtmlTag="label"
-            OnClick="RemoveImage"
+            OnClick="LocalRemoveImage"
             Variant="Variant.Filled"
             Color="Color.Error">
             Remove Image
         </MudButton>        
     }
-    </MudCardContent>
+</MudCardContent>

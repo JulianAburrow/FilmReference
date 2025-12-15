@@ -18,11 +18,9 @@ public class PeopleBasePageClass : BasePageClass
         PersonModel.IsActor = PersonDisplayModel.IsActor;
         PersonModel.IsDirector = PersonDisplayModel.IsDirector;
 
-        if (Image is not null)
+        if (ImageForDisplay is not null)
         {
-            var imageMemoryStream = await ToMemoryStreamAsync(Image.OpenReadStream(MaxFileSize));
-            PersonModel.Picture = imageMemoryStream.ToArray();
-            Image = null;
+            PersonModel.Picture = ImageForDisplay;
         }
         else
         {

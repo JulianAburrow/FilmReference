@@ -1,4 +1,6 @@
-﻿<MudCardContent>
+﻿@inherits PeopleBasePageClass
+
+<MudCardContent>
     <MudTextField Label="First Name" @bind-Value="PersonDisplayModel.FirstName" AutoFocus OnlyValidateIfDirty="true" />
     <MudTextField Label="Last Name" @bind-Value="PersonDisplayModel.LastName" />
     <MudTextField Label="Description" @bind-Value="PersonDisplayModel.Description" Lines="3" />
@@ -7,7 +9,7 @@
     <br />
     <ViewImageComponent ImageData="PersonDisplayModel.Picture" ImageTitle=@($"{PersonDisplayModel.FirstName} {PersonDisplayModel.LastName} Photo") />
     <br />
-    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" Accept="image/*">
+    <MudFileUpload T="IBrowserFile" FilesChanged="LocalUploadImage" Accept="image/*">
         <ActivatorContent>
             <MudButton HtmlTag="label"
                        Variant="Variant.Filled"
@@ -23,7 +25,7 @@
         @ImageName
         <br />
         <MudButton HtmlTag="label"
-                   OnClick="RemoveImage"
+                   OnClick="LocalRemoveImage"
                    Variant="Variant.Filled"
                    Color="Color.Error">
             Remove Image

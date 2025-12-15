@@ -11,10 +11,6 @@ public class FilmsBasePageClass : BasePageClass
 
     [Inject] protected IPersonHandler PersonHandler { get; set; } = null!;
 
-    protected int value { get; set; } = -1;
-
-    protected IEnumerable<int> SelectedActors { get; set; } = [];
-
     [Parameter] public int FilmId { get; set; }
 
     protected FilmModel FilmModel { get; set; } = new FilmModel
@@ -32,7 +28,7 @@ public class FilmsBasePageClass : BasePageClass
 
     protected List<PersonModel> PersonModels { get; set; } = [];
 
-    protected List<PersonModel> ActorModels { get; set; } = [];
+    public List<PersonModel> ActorModels { get; set; } = [];
 
     protected List<PersonModel> DirectorModels { get; set; } = [];
 
@@ -43,25 +39,15 @@ public class FilmsBasePageClass : BasePageClass
         FilmModel.GenreId = FilmDisplayModel.GenreId;
         FilmModel.StudioId = FilmDisplayModel.StudioId;
         FilmModel.DirectorId = FilmDisplayModel.DirectorId;
+        FilmModel.BoxCover = FilmDisplayModel.BoxCover;
         FilmModel.FilmPerson = [];
-        foreach (var actorId in SelectedActors)
+        foreach (var selectedActressId in FilmDisplayModel.SelectedActressIds)
         {            
             FilmModel.FilmPerson.Add(new FilmPersonModel
             {
                 FilmId = FilmModel.FilmId,
-                PersonId = actorId
+                PersonId = selectedActressId
             });
-        }
-
-        if (Image is not null)
-        {
-            var imageMemoryStream = await ToMemoryStreamAsync(Image.OpenReadStream(MaxFileSize));
-            FilmModel.BoxCover = imageMemoryStream.ToArray();
-            Image = null;
-        }
-        else
-        {
-            FilmModel.BoxCover = FilmDisplayModel.BoxCover;
         }
     }
 
@@ -75,31 +61,7 @@ public class FilmsBasePageClass : BasePageClass
         FilmDisplayModel.BoxCover = FilmModel.BoxCover;
         foreach (var filmPerson in FilmModel.FilmPerson ?? [])
         {
-            SelectedActors = SelectedActors.Append(filmPerson.PersonId);
+            FilmDisplayModel.SelectedActressIds = FilmDisplayModel.SelectedActressIds.Append(filmPerson.PersonId);
         }
-    }
-
-    protected string GetMultiSelectionText(List<string> selectedValues)
-    {
-        if (selectedValues.Count == 0)
-        {
-            return "No actors have been selected";
-        }
-        var actorList = new StringBuilder();
-        var counter = 0;
-        foreach (var value in selectedValues)
-        {
-            actorList.Append(ActorModels
-                .Where(a =>
-                    a.PersonId == int.Parse(value)).Select(a => $"{a.FirstName} {a.LastName}")
-                .FirstOrDefault());
-            if (counter < selectedValues.Count - 1)
-            {
-                actorList.Append(", ");
-            }
-            counter++;
-        }
-
-        return actorList.ToString();
     }
 }
