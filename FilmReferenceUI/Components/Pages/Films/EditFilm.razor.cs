@@ -19,7 +19,7 @@ public partial class EditFilm
         try
         {
             await CopyDisplayModelToModelAsync();
-            await FilmHandler.UpdateFilmAsync(FilmModel, SelectedActors, true);
+            await FilmHandler.UpdateFilmAsync(FilmModel, FilmDisplayModel.SelectedActressIds, true);
             Snackbar.Add($"Film {FilmModel.Name} successfully updated.", Severity.Success);
             NavigationManager.NavigateTo("films/listfilms");
         }
@@ -27,12 +27,5 @@ public partial class EditFilm
         {
             Snackbar.Add($"An error occurred updating film {FilmModel.Name}. Please try again.", Severity.Error);
         }
-    }
-
-    private void RemoveBoxCoverAndImage()
-    {
-        FilmDisplayModel.BoxCover = null;
-        Image = null;
-        ImageName = null;
     }
 }

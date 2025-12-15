@@ -17,74 +17,11 @@
         <MudItem sm="7">
             <MudCard>
                 <MudCardContent>
-                    <MudTextField Label="Name" @bind-Value="FilmDisplayModel.Name" AutoFocus OnlyValidateIfDirty="true" />
-                    <MudTextField Label="Description" @bind-Value="FilmDisplayModel.Description" Lines="3" />
-                    <MudSelect T="int" Label="Genre" @bind-Value="@FilmDisplayModel.GenreId">
-                        @foreach (var genreModel in GenreModels)
-                        {
-                            <MudSelectItem T="int" Value="@genreModel.GenreId">
-                                @genreModel.Name
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
-                    <MudSelect T="int" Label="Studio" @bind-Value="@FilmDisplayModel.StudioId">
-                        @foreach (var studioModel in StudioModels)
-                        {
-                            <MudSelectItem T="int" Value="@studioModel.StudioId">
-                                @studioModel.Name
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
-                    <MudSelect T="int" Label="Director" @bind-Value="@FilmDisplayModel.DirectorId">
-                        @foreach (var directorModel in DirectorModels)
-                        {
-                            <MudSelectItem T="int" Value="@directorModel.PersonId">
-                                @directorModel.FirstName @directorModel.LastName
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
-                    <br />
-					<ViewImageComponent ImageData="FilmDisplayModel.BoxCover" ImageTitle=@($"{FilmDisplayModel.Name} Box Cover") />
-                    <br />
-                    <br />
-                    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" Accept="image/*">
-                        <ActivatorContent>
-                            <MudButton HtmlTag="label"
-                                       Variant="Variant.Filled"
-                                       Color="Color.Primary"
-                                       StartIcon="@Icons.Material.Filled.FileUpload">
-                                Upload File
-                            </MudButton>
-                        </ActivatorContent>
-                    </MudFileUpload>
-                    <br />
-                    @ImageName
-                    <br />
-                    @if (FilmDisplayModel.BoxCover is not null || Image is not null)
-                    {
-                        <MudButton HtmlTag="label"
-                                   OnClick="RemoveBoxCoverAndImage"
-                                   Variant="Variant.Filled"
-                                   Color="Color.Error">
-                            Remove Image
-                        </MudButton>
-                    }
-                    <br />
-                    <br />
-                    <MudSelect
-                        T="int"
-                        Label="Actors"
-                        @bind-Value="value"
-                        @bind-SelectedValues="SelectedActors"
-                        MultiSelection="true"
-                        MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
-                        @foreach (var actorModel in ActorModels)
-                        {
-                            <MudSelectItem T="int" Value="@actorModel.PersonId">
-                                @actorModel.FirstName @actorModel.LastName
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
+                    <CreateUpdateFilmComponent FilmDisplayModel="FilmDisplayModel"
+                                               GenreModels="GenreModels"
+                                               StudioModels="StudioModels"
+                                               DirectorModels="DirectorModels"
+                                               ActorModels="ActorModels" />
                 </MudCardContent>
                 <MudCardActions>
                     <button type="submit" class="btn btn-primary">Update</button>

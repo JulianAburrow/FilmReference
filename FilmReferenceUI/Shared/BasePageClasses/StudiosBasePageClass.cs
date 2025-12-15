@@ -19,17 +19,6 @@ public class StudiosBasePageClass : BasePageClass
         StudioModel.Description = StudioDisplayModel.Description;
         StudioModel.Logo = StudioDisplayModel.Logo;
         StudioModel.Films = StudioDisplayModel.Films;
-
-        if (Image != null)
-        {
-            var imageMemoryStream = await ToMemoryStreamAsync(Image.OpenReadStream(MaxFileSize));
-            StudioModel.Logo = imageMemoryStream.ToArray();
-            Image = null;
-        }
-        else
-        {
-            StudioModel.Logo = StudioDisplayModel.Logo;
-        }
     }
 
     protected void CopyModelToDisplayModel()

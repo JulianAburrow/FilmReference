@@ -11,6 +11,7 @@ global using FilmReferenceUI.Shared.Enums;
 global using FilmReferenceUI.Shared.Helpers;
 global using FilmReferenceUI.Shared.SharedValues;
 global using Microsoft.AspNetCore.Components;
+global using Microsoft.AspNetCore.Components.Forms;
 global using Microsoft.EntityFrameworkCore;
 global using MudBlazor;
 global using MudBlazor.Services;

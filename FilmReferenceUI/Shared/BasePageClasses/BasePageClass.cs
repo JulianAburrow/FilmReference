@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using System.IO.Enumeration;
+﻿using System.Threading.Tasks;
 
 namespace FilmReferenceUI.Shared.BasePageClasses;
 
@@ -14,9 +12,11 @@ public class BasePageClass : ComponentBase
 
     protected bool PreventDeleting;
 
-    protected IBrowserFile? Image = null;
+    //protected IBrowserFile? Image = null;
 
     protected string? ImageName = null;
+
+    protected byte[]? ImageForDisplay = null;
 
     protected long MaxFileSize = 1024 * 1024 * 3;
 
@@ -25,7 +25,7 @@ public class BasePageClass : ComponentBase
         MainLayout.SetHeaderValue(string.Empty);
     }   
 
-    protected void UploadFile(IBrowserFile file)
+    protected async Task GlobalUploadImage(IBrowserFile? file)
     {
         if (file is null)
         {
@@ -40,8 +40,9 @@ public class BasePageClass : ComponentBase
 
         try
         {
-            Image = file;
             ImageName = file.Name;
+            var imageMemoryStream = await ImageHelper.ToMemoryStream(file.OpenReadStream(MaxFileSize));
+            ImageForDisplay = imageMemoryStream.ToArray();
             Snackbar.Add($"File {ImageName} successfully uploaded", Severity.Success);
         }
         catch
@@ -50,9 +51,9 @@ public class BasePageClass : ComponentBase
         }
     }
 
-    protected void RemoveImage()
+    protected void GlobalRemoveImage()
     {
-        Image = null;
+        ImageForDisplay = null;
         ImageName = null;
         Snackbar.Add("Image successfully removed.", Severity.Success);
         StateHasChanged();

@@ -5,7 +5,7 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
 {
     private readonly FilmReferenceContext _context = context;
 
-    public async Task CreateFilmAsync(FilmModel film, IEnumerable<int>? selectedActorIds, bool saveChanges)
+    public async Task CreateFilmAsync(FilmModel film, IEnumerable<int> selectedActressIds, bool saveChanges)
     {
         var filmToAdd = new FilmModel
         {
@@ -24,14 +24,14 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
             await SaveChangesAsync();
         }
 
-        if (selectedActorIds != null && selectedActorIds.Any())
+        if (selectedActressIds != null && selectedActressIds.Any())
         {
-            foreach (var selectedActorId in selectedActorIds)
+            foreach (var selectedActressId in selectedActressIds)
             {
                 _context.FilmPeople.Add(new FilmPersonModel
                 {
                     FilmId = filmToAdd.FilmId,
-                    PersonId = selectedActorId,
+                    PersonId = selectedActressId,
                 });
             }
 
@@ -105,7 +105,7 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
     public async Task SaveChangesAsync() =>
         await _context.SaveChangesAsync();
 
-    public async Task UpdateFilmAsync(FilmModel film, IEnumerable<int> selectedActorIds, bool saveChanges)
+    public async Task UpdateFilmAsync(FilmModel film, IEnumerable<int> selectedActressIds, bool saveChanges)
     {
         var filmToUpdate = _context.Films
             .FirstOrDefault(f => f.FilmId == film.FilmId);
@@ -125,15 +125,15 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
             await SaveChangesAsync();
         }
 
-        if (selectedActorIds != null && selectedActorIds.Any())
+        if (selectedActressIds != null && selectedActressIds.Any())
         {
             _context.FilmPeople.RemoveRange(_context.FilmPeople.Where(fp => fp.FilmId == filmToUpdate.FilmId));
-            foreach (var selectedActorId in selectedActorIds)
+            foreach (var selectedActressId in selectedActressIds)
             {
                 _context.FilmPeople.Add(new FilmPersonModel
                 {
                     FilmId = filmToUpdate.FilmId,
-                    PersonId = selectedActorId,
+                    PersonId = selectedActressId,
                 });
             }
             if (saveChanges)

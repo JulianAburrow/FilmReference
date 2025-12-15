@@ -25,11 +25,4 @@ public partial class EditPerson
             Snackbar.Add($"An error occurred editing {PersonModel.FirstName}. Please try again.", Severity.Error);
         }
     }
-
-    private void RemovePictureAndImage()
-    {
-        PersonDisplayModel.Picture = null;
-        Image = null;
-        ImageName = null;
-    }
 }

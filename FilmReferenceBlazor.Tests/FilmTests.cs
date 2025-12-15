@@ -10,7 +10,7 @@ public class FilmHandlerTests
 
         var film = new FilmModel { Name = "Test Film", Description = "Desc", GenreId = 1, StudioId = 1 };
 
-        await handler.CreateFilmAsync(film, null, saveChanges: true);
+        await handler.CreateFilmAsync(film, [], saveChanges: true);
 
         var result = await context.Films.SingleOrDefaultAsync();
         result.Should().NotBeNull();

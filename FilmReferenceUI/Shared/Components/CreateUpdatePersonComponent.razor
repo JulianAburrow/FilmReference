@@ -7,7 +7,9 @@
     <MudCheckBox Label="Actress" @bind-Value="PersonDisplayModel.IsActor" />
     <MudCheckBox Label="Director" @bind-Value="PersonDisplayModel.IsDirector" />
     <br />
-    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" Accept="image/*">
+    <ViewImageComponent ImageData="PersonDisplayModel.Picture" ImageTitle=@($"{PersonDisplayModel.FirstName} {PersonDisplayModel.LastName} Photo") />
+    <br />
+    <MudFileUpload T="IBrowserFile" FilesChanged="LocalUploadImage" Accept="image/*">
         <ActivatorContent>
             <MudButton HtmlTag="label"
                        Variant="Variant.Filled"
@@ -17,9 +19,16 @@
             </MudButton>
         </ActivatorContent>
 	</MudFileUpload>
-	<MudButton HtmlTag="label"
-			   Variant="Variant.Filled"
-			   Color="Color.Error">
-		Remove Image
-	</MudButton>
+    @if (PersonDisplayModel.Picture is not null)
+    {
+        <br />
+        @ImageName
+        <br />
+        <MudButton HtmlTag="label"
+                   OnClick="LocalRemoveImage"
+                   Variant="Variant.Filled"
+                   Color="Color.Error">
+            Remove Image
+        </MudButton>
+    }
 </MudCardContent>

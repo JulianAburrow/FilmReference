@@ -23,11 +23,4 @@ public partial class EditStudio
             Snackbar.Add($"And error occurred updating studio {StudioModel.Name}. Please try again.", Severity.Error);
         }
     }
-
-    private void RemoveLogoAndImage()
-    {
-        StudioDisplayModel.Logo = null;
-        Image = null;
-        ImageName = null;
-    }
 }

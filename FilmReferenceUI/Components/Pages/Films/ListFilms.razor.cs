@@ -2,7 +2,7 @@
 
 public partial class ListFilms
 {
-    List<FilmModel> FilmModels { get; set; } = null!;
+    private List<FilmModel> FilmModels { get; set; } = null!;
 
     private List<FilmModel> FilteredFilmModels { get; set; } = null!;
 
@@ -11,8 +11,8 @@ public partial class ListFilms
     protected override async Task OnInitializedAsync()
     {
         FilmModels = await FilmHandler.GetAllFilmsAsync();
-        await FilterFilms(SelectedGenreId);
         GenreModels = await GenreHandler.GetGenresAsync();
+        await FilterFilms(SelectedGenreId);
         MainLayout.SetHeaderValue("Films");
     }
 

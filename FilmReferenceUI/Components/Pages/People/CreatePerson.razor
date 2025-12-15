@@ -8,36 +8,7 @@
     <MudGrid>
         <MudItem sm="7">
             <MudCard>
-                <MudCardContent>
-                    <MudTextField Label="First Name" @bind-Value="PersonDisplayModel.FirstName" AutoFocus OnlyValidateIfDirty="true" />
-                    <MudTextField Label="Last Name" @bind-Value="PersonDisplayModel.LastName" />
-                    <MudTextField Label="Description" @bind-Value="PersonDisplayModel.Description" Lines="3" />
-                    <MudCheckBox Label="Actress" @bind-Value="PersonDisplayModel.IsActor" />
-                    <MudCheckBox Label="Director" @bind-Value="PersonDisplayModel.IsDirector" />
-                    <br />
-                    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" Accept="image/*">
-                        <ActivatorContent>
-                            <MudButton HtmlTag="label"
-                                       Variant="Variant.Filled"
-                                       Color="Color.Primary"
-                                       StartIcon="@Icons.Material.Filled.FileUpload">
-                                Upload File
-                            </MudButton>
-                        </ActivatorContent>
-                    </MudFileUpload>
-                    @if (Image is not null)
-                    {
-                        <br />
-                        @ImageName
-                        <br />
-                        <MudButton HtmlTag="label"
-                                   OnClick="RemoveImage"
-                                   Variant="Variant.Filled"
-                                   Color="Color.Error">
-                            Remove Image
-                        </MudButton>
-                    }
-                </MudCardContent>
+                <CreateUpdatePersonComponent PersonDisplayModel="PersonDisplayModel" />
                 <MudCardActions>
                     <button type="submit" class="btn btn-primary">Create</button>
                     &nbsp;
