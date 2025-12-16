@@ -57,7 +57,7 @@
 		return;
 	}
 
-	<h4>Films Found</h4>
+	<h4>@FilmsFound.Count @(FilmsFound.Count == 1 ? "film" : "films") found matching search term '@SearchModel.SearchText'</h4>
 
 	<ListFilmsComponent FilmModels="FilmsFound" />
 }
@@ -70,7 +70,7 @@
 		return;
 	}
 
-	<h4>Genres Found</h4>
+	<h4>@GenresFound.Count @(GenresFound.Count == 1 ? "genre" : "genres") found matching search term '@SearchModel.SearchText'</h4>
 
 	<ListGenresComponent GenreModels="GenresFound" />
 }
@@ -83,7 +83,7 @@
 		return;
 	}
 
-	<h4>People Found</h4>
+	<h4>@PeopleFound.Count @(PeopleFound.Count == 1 ? "person" : "people") found matching search term '@SearchModel.SearchText'</h4>
 
 	<ListPeopleComponent PersonModels="PeopleFound" />
 }
@@ -96,7 +96,7 @@
 		return;
 	}
 
-	<h4>Studios Found</h4>
+	<h4>@StudiosFound.Count @(StudiosFound.Count == 1 ? "studio" : "studios") found matching search term '@SearchModel.SearchText'</h4>
 
 	<ListStudiosComponent StudioModels="StudiosFound" />
 }

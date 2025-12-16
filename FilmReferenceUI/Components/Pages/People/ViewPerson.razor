@@ -34,6 +34,6 @@
     return;
 }
 
-<h3>Films</h3>
+<h3>@FilmsStarredIn.Count @(FilmsStarredIn.Count == 1 ? "film" : "films")</h3>
 
 <ListFilmsComponent FilmModels="@FilmsStarredIn" />
