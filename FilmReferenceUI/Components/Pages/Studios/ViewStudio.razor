@@ -34,6 +34,6 @@
     return;
 }
 
-<h3>Films</h3>
+<h3>@StudioModel.Films.Count @(StudioModel.Films.Count == 1 ? "film" : "films")</h3>
 
 <ListFilmsComponent FilmModels="@StudioModel.Films.ToList()" />

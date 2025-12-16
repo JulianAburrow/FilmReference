@@ -15,27 +15,12 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
 
     public async Task<List<GenreModel>> SearchGenresAsync(string searchText) =>
         await _context.Genres
+            .Include(g => g.Films)
             .Where(g =>
                 g.Name.Contains(searchText) ||
                 (g.Description != null && g.Description.Contains(searchText)))
             .AsNoTracking()
             .ToListAsync();
-
-    //public async Task<List<PersonModel>> SearchPeopleAsync(string searchText)
-    //{
-    //    var splitSearchText = searchText.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-    //    var splitFirstName = splitSearchText[0];
-
-    //    return await _context.People
-    //        .Where(p =>
-    //            p.FirstName.Contains(searchText) ||
-    //            (p.LastName != null && p.LastName.Contains(searchText)) ||
-    //            (p.FirstName.Contains(splitSearchText[0]) && p.LastName != null &&
-    //             splitSearchText.Length > 1 && p.LastName.Contains(splitSearchText[1])) ||
-    //            (p.Description != null && p.Description.Contains(searchText)))
-    //        .AsNoTracking()
-    //        .ToListAsync();
-    //}
 
     public async Task<List<PersonModel>> SearchPeopleAsync(string searchText)
     {
@@ -69,6 +54,7 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
 
     public async Task<List<StudioModel>> SearchStudiosAsync(string searchText) =>
         await _context.Studios
+            .Include(s => s.Films)
             .Where(s =>
                 s.Name.Contains(searchText) ||
                 (s.Description != null && s.Description.Contains(searchText)))

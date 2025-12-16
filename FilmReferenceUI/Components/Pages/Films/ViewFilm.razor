@@ -34,6 +34,6 @@
     return;
 }
 
-<h3>Starring</h3>
+<h3>@Cast.Count @(Cast.Count == 1 ? "star" : "stars")</h3>
 
 <ListPeopleComponent PersonModels="@Cast" />
