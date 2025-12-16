@@ -21,14 +21,51 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
             .AsNoTracking()
             .ToListAsync();
 
-    public async Task<List<PersonModel>> SearchPeopleAsync(string searchText) =>
-        await _context.People
-            .Where(p =>
-                p.FirstName.Contains(searchText) ||
-                (p.LastName != null && p.LastName.Contains(searchText)) ||
-                (p.Description != null && p.Description.Contains(searchText)))
+    //public async Task<List<PersonModel>> SearchPeopleAsync(string searchText)
+    //{
+    //    var splitSearchText = searchText.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    //    var splitFirstName = splitSearchText[0];
+
+    //    return await _context.People
+    //        .Where(p =>
+    //            p.FirstName.Contains(searchText) ||
+    //            (p.LastName != null && p.LastName.Contains(searchText)) ||
+    //            (p.FirstName.Contains(splitSearchText[0]) && p.LastName != null &&
+    //             splitSearchText.Length > 1 && p.LastName.Contains(splitSearchText[1])) ||
+    //            (p.Description != null && p.Description.Contains(searchText)))
+    //        .AsNoTracking()
+    //        .ToListAsync();
+    //}
+
+    public async Task<List<PersonModel>> SearchPeopleAsync(string searchText)
+    {
+        if (string.IsNullOrWhiteSpace(searchText))
+            return [];
+
+        var parts = searchText
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Select(p => p.Trim())
+            .ToArray();
+
+        IQueryable<PersonModel> query = _context.People;
+
+        foreach (var part in parts)
+        {
+            var p = part; // avoid modified closure
+
+            query = query.Where(person =>
+                EF.Functions.Like(person.FirstName, $"%{p}%") ||
+                EF.Functions.Like(person.LastName, $"%{p}%") ||
+                EF.Functions.Like(person.Description, $"%{p}%")
+            );
+        }
+
+        return await query
+            .OrderBy(p => p.FirstName)
+            .ThenBy(p => p.LastName)
             .AsNoTracking()
             .ToListAsync();
+    }
 
     public async Task<List<StudioModel>> SearchStudiosAsync(string searchText) =>
         await _context.Studios
