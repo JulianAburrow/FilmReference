@@ -57,7 +57,7 @@
     <MudSelect T="int"
                @key="ActorModels"
                Label="Actors"
-               @bind-SelectedValues="@FilmDisplayModel.SelectedActressIds"
+               @bind-SelectedValues="@FilmDisplayModel.SelectedCastMemberIds"
                Immediate="true"
                MultiSelection="true"
                MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">

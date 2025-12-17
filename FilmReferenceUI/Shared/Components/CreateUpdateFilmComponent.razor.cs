@@ -38,7 +38,7 @@ public partial class CreateUpdateFilmComponent
     {
         if (selectedValues is null || selectedValues.Count == 0)
         {
-            return "No actresses have been selected";
+            return "No castt members have been selected";
         }
 
         var names = selectedValues
@@ -50,6 +50,6 @@ public partial class CreateUpdateFilmComponent
             .Where(n => !string.IsNullOrEmpty(n))
             .ToList();
 
-        return names.Count == 0 ? "No actresses have been selected" : string.Join(", ", names);
+        return names.Count == 0 ? "No cast members have been selected" : string.Join(", ", names);
     }
 }

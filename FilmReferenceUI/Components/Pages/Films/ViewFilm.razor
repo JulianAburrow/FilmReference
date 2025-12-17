@@ -30,10 +30,10 @@
 
 @if (!Cast.Any())
 {
-    <p>No stars found for this film</p>
+    <p>No cast members found for this film</p>
     return;
 }
 
-<h3>@Cast.Count @(Cast.Count == 1 ? "star" : "stars")</h3>
+<h3>@Cast.Count cast @(Cast.Count == 1 ? "member" : "members")</h3>
 
 <ListPeopleComponent PersonModels="@Cast" />

@@ -16,7 +16,7 @@ public class PersonDisplayModel
     [StringLength(500, ErrorMessage = "{0} cannot be more than {1} characters")]
     public string? Description { get; set; }
 
-    public bool IsActor { get; set; }
+    public bool IsCastMember { get; set; }
 
     public bool IsDirector { get; set; }
 
