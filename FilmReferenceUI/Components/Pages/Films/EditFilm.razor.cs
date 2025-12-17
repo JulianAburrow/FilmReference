@@ -9,7 +9,7 @@ public partial class EditFilm
         StudioModels = await StudioHandler.GetStudiosAsync();
         PersonModels = await PersonHandler.GetPeopleAsync();
         DirectorModels = PersonModels.Where(p => p.IsDirector).ToList();
-        ActorModels = PersonModels.Where(p => p.IsActor).ToList();
+        ActorModels = PersonModels.Where(p => p.IsCastMember).ToList();
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue("Edit Film");
     }
@@ -19,7 +19,7 @@ public partial class EditFilm
         try
         {
             await CopyDisplayModelToModelAsync();
-            await FilmHandler.UpdateFilmAsync(FilmModel, FilmDisplayModel.SelectedActressIds, true);
+            await FilmHandler.UpdateFilmAsync(FilmModel, FilmDisplayModel.SelectedCastMemberIds, true);
             Snackbar.Add($"Film {FilmModel.Name} successfully updated.", Severity.Success);
             NavigationManager.NavigateTo("films/listfilms");
         }

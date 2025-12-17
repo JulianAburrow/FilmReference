@@ -12,7 +12,7 @@ public class PersonModel
 
     public string? Description { get; set; }
 
-    public bool IsActor { get; set; }
+    public bool IsCastMember { get; set; }
 
     public bool IsDirector { get; set; }
 

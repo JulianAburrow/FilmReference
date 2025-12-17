@@ -41,12 +41,12 @@ public class FilmsBasePageClass : BasePageClass
         FilmModel.DirectorId = FilmDisplayModel.DirectorId;
         FilmModel.BoxCover = FilmDisplayModel.BoxCover;
         FilmModel.FilmPerson = [];
-        foreach (var selectedActressId in FilmDisplayModel.SelectedActressIds)
+        foreach (var selectedCastMemberId in FilmDisplayModel.SelectedCastMemberIds)
         {            
             FilmModel.FilmPerson.Add(new FilmPersonModel
             {
                 FilmId = FilmModel.FilmId,
-                PersonId = selectedActressId
+                PersonId = selectedCastMemberId
             });
         }
     }
@@ -61,7 +61,7 @@ public class FilmsBasePageClass : BasePageClass
         FilmDisplayModel.BoxCover = FilmModel.BoxCover;
         foreach (var filmPerson in FilmModel.FilmPerson ?? [])
         {
-            FilmDisplayModel.SelectedActressIds = FilmDisplayModel.SelectedActressIds.Append(filmPerson.PersonId);
+            FilmDisplayModel.SelectedCastMemberIds = FilmDisplayModel.SelectedCastMemberIds.Append(filmPerson.PersonId);
         }
     }
 }

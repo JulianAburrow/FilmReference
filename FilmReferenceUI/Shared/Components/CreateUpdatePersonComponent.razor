@@ -4,7 +4,7 @@
     <MudTextField Label="First Name" @bind-Value="PersonDisplayModel.FirstName" AutoFocus OnlyValidateIfDirty="true" />
     <MudTextField Label="Last Name" @bind-Value="PersonDisplayModel.LastName" />
     <MudTextField Label="Description" @bind-Value="PersonDisplayModel.Description" Lines="3" />
-    <MudCheckBox Label="Actress" @bind-Value="PersonDisplayModel.IsActor" />
+    <MudCheckBox Label="Cast Member" @bind-Value="PersonDisplayModel.IsCastMember" />
     <MudCheckBox Label="Director" @bind-Value="PersonDisplayModel.IsDirector" />
     <br />
     <ViewImageComponent ImageData="PersonDisplayModel.Picture" ImageTitle=@($"{PersonDisplayModel.FirstName} {PersonDisplayModel.LastName} Photo") />

@@ -39,7 +39,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
                 FirstName = p.FirstName,
                 LastName = p.LastName,
                 Description = p.Description,
-                IsActor = p.IsActor,
+                IsCastMember = p.IsCastMember,
                 IsDirector = p.IsDirector,
                 Picture = p.Picture,
                 Films = p.Films.Select(f => new FilmModel { FilmId = f.FilmId, Name = f.Name }).ToList()
@@ -80,7 +80,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         personToUpdate.FirstName = person.FirstName;
         personToUpdate.LastName = person.LastName;
         personToUpdate.Description = person.Description;
-        personToUpdate.IsActor = person.IsActor;
+        personToUpdate.IsCastMember = person.IsCastMember;
         personToUpdate.IsDirector = person.IsDirector;
         personToUpdate.Picture = person.Picture;
 

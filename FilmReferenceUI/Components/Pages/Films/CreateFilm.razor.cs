@@ -17,7 +17,7 @@ public partial class CreateFilm
             Name = SharedValues.PleaseSelectText,
         });
         PersonModels = await PersonHandler.GetPeopleAsync();
-        ActorModels = [.. PersonModels.Where(p => p.IsActor)];
+        ActorModels = [.. PersonModels.Where(p => p.IsCastMember)];
         DirectorModels = [.. PersonModels.Where(p => p.IsDirector)];
         DirectorModels.Insert(0, new PersonModel
         {
@@ -36,7 +36,7 @@ public partial class CreateFilm
         try
         {
             await CopyDisplayModelToModelAsync();
-            await FilmHandler.CreateFilmAsync(FilmModel, FilmDisplayModel.SelectedActressIds, true);
+            await FilmHandler.CreateFilmAsync(FilmModel, FilmDisplayModel.SelectedCastMemberIds, true);
             Snackbar.Add($"Film {FilmModel.Name} successfully created.", Severity.Success);
             NavigationManager.NavigateTo("films/listfilms");
         }

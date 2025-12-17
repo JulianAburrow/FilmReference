@@ -26,7 +26,7 @@
         [Display(Name = "Studio")]
         public int StudioId { get; set; }
 
-        public IEnumerable<int> SelectedActressIds { get; set; } = [];
+        public IEnumerable<int> SelectedCastMemberIds { get; set; } = [];
 
         public GenreModel Genre { get; set; } = null!;
 

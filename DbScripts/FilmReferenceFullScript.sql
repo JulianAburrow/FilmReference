@@ -19,7 +19,7 @@ CREATE TABLE Person (
 	FirstName NVARCHAR(50) NULL,
 	LastName NVARCHAR(50) NULL,
 	Description NVARCHAR(500) NULL,
-	IsActor BIT NOT NULL,
+	IsCastMember BIT NOT NULL,
 	IsDirector BIT NOT NULL,
 	PictureName NVARCHAR(100) NULL,
 	CONSTRAINT PK_Person PRIMARY KEY (PersonId)

@@ -5,11 +5,11 @@
 
     <MudCardContent>
         @{
-            var textToShow = (Person.IsActor, Person.IsDirector) switch
+            var textToShow = (Person.IsCastMember, Person.IsDirector) switch
             {
                 (true, true)   => "Directs as well as acts",
                 (false, true)  => "Director",
-                (true, false)  => "Actress",
+                (true, false)  => "Cast Member",
                 _              => string.Empty
             };
         }  

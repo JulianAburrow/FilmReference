@@ -2,7 +2,7 @@
     <MudField Label="First Name">@PersonModel.FirstName</MudField>
     <MudField Label="Last Name">@PersonModel.LastName</MudField>
     <MudField Label="Description">@PersonModel.Description</MudField>
-    <MudField Label="Actor">@PersonModel.IsActor</MudField>
+    <MudField Label="Actor">@PersonModel.IsCastMember</MudField>
     <MudField Label="Director">@PersonModel.IsDirector</MudField>
     <br />
 	<ViewImageComponent ImageData="PersonModel.Picture" ImageTitle=@($"{@PersonModel.FirstName} {@PersonModel.LastName} Photo") />

@@ -15,7 +15,7 @@ public class PeopleBasePageClass : BasePageClass
         PersonModel.FirstName = PersonDisplayModel.FirstName;
         PersonModel.LastName = PersonDisplayModel.LastName;
         PersonModel.Description = PersonDisplayModel.Description;
-        PersonModel.IsActor = PersonDisplayModel.IsActor;
+        PersonModel.IsCastMember = PersonDisplayModel.IsCastMember;
         PersonModel.IsDirector = PersonDisplayModel.IsDirector;
 
         if (ImageForDisplay is not null)
@@ -33,7 +33,7 @@ public class PeopleBasePageClass : BasePageClass
         PersonDisplayModel.FirstName = PersonModel.FirstName;
         PersonDisplayModel.LastName = PersonModel.LastName;
         PersonDisplayModel.Description = PersonModel.Description;
-        PersonDisplayModel.IsActor = PersonModel.IsActor;
+        PersonDisplayModel.IsCastMember = PersonModel.IsCastMember;
         PersonDisplayModel.IsDirector = PersonModel.IsDirector;
         PersonDisplayModel.Picture = PersonModel.Picture;
         PersonDisplayModel.Films = PersonModel.Films;
