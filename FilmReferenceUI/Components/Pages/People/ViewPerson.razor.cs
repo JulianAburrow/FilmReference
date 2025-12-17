@@ -4,6 +4,8 @@ public partial class ViewPerson
 {
     private List<FilmModel> FilmsStarredIn { get; set; } = [];
 
+    private List<FilmModel> FilmsDirected { get; set; } = [];
+
     protected override async Task OnInitializedAsync()
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
@@ -17,5 +19,8 @@ public partial class ViewPerson
         {
             FilmsStarredIn.Add(filmPerson.Film);
         }
+        FilmsDirected = PersonModel.Films
+            .OrderBy(f => f.Name)
+            .ToList();
     }
 }

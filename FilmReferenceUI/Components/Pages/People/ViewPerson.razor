@@ -28,12 +28,23 @@
 <br />
 <br />
 
-@if (!FilmsStarredIn.Any())
+@if (!FilmsStarredIn.Any() && !FilmsDirected.Any())
 {
     <p>No films found for this person</p>
     return;
 }
 
-<h3>@FilmsStarredIn.Count @(FilmsStarredIn.Count == 1 ? "film" : "films")</h3>
+@if (FilmsStarredIn.Any())
+{
+    <h3>@FilmsStarredIn.Count @(FilmsStarredIn.Count == 1 ? "film" : "films") as cast member</h3>
 
-<ListFilmsComponent FilmModels="@FilmsStarredIn" />
+    <ListFilmsComponent FilmModels="@FilmsStarredIn" />
+}
+
+@if (FilmsDirected.Any())
+{
+    <h3>@FilmsDirected.Count @(FilmsDirected.Count == 1 ? "film" : "films") as director</h3>
+
+    <ListFilmsComponent FilmModels="@FilmsDirected" />
+}
+
