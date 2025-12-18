@@ -28,7 +28,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         }
     }
 
-    public async Task<List<PersonModel>> GetPeopleAsync() =>
+    public async Task<List<PersonModel>> GetCastMembersAsync() =>
         await _context.People
             .AsNoTracking()
             .OrderBy(p => p.FirstName)
@@ -44,6 +44,26 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
                 Picture = p.Picture,
                 Films = p.Films.Select(f => new FilmModel { FilmId = f.FilmId, Name = f.Name }).ToList()
             })
+            .Where(p => p.IsCastMember)
+            .ToListAsync();
+
+    public async Task<List<PersonModel>> GetDirectorsAsync() =>
+        await _context.People
+            .AsNoTracking()
+            .OrderBy(p => p.FirstName)
+            .ThenBy(p => p.LastName)
+            .Select(p => new PersonModel
+            {
+                PersonId = p.PersonId,
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                Description = p.Description,
+                IsCastMember = p.IsCastMember,
+                IsDirector = p.IsDirector,
+                Picture = p.Picture,
+                Films = p.Films.Select(f => new FilmModel { FilmId = f.FilmId, Name = f.Name }).ToList()
+            })
+            .Where(p => p.IsDirector)
             .ToListAsync();
 
     public async Task<PersonModel> GetPersonAsync(int personId)

@@ -38,7 +38,7 @@ public partial class CreateUpdateFilmComponent
     {
         if (selectedValues is null || selectedValues.Count == 0)
         {
-            return "No castt members have been selected";
+            return "No cast members have been selected";
         }
 
         var names = selectedValues

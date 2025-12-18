@@ -103,7 +103,7 @@ public class PersonTests
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetPeopleAsync();
+        var result = await handler.GetCastMembersAsync();
 
         result.Should().HaveCount(2);
         result.First().FirstName.Should().Be("Alice"); // ordered by FirstName then LastName

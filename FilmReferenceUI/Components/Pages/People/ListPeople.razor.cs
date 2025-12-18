@@ -2,20 +2,40 @@
 
 public partial class ListPeople
 {
+    [Parameter] public string Role { get; set; } = string.Empty;
+
     protected List<PersonModel> PersonModels { get; set; } = null!;
 
     protected List<PersonModel> FilteredPersonModels { get; set;  } = null!;
 
     private string SelectedFilter = "A";
 
-    protected override async Task OnInitializedAsync()
+    private bool Loading = false;
+
+    protected override async Task OnParametersSetAsync()
     {
-        PersonModels = await PersonHandler.GetPeopleAsync();
-        await FilterPeople(SelectedFilter);
-        MainLayout.SetHeaderValue("People");
+        if (Loading)
+        {
+            return;
+        }
+
+        Loading = true;
+
+        _ = Enum.TryParse<RoleEnum>(Role, true, out var roleEnum);
+
+        var (header, people) = roleEnum switch
+        {
+            RoleEnum.CastMembers => ("Cast Members", await PersonHandler.GetCastMembersAsync()),
+            RoleEnum.Directors => ("Directors", await PersonHandler.GetDirectorsAsync()),
+            _ => ("Error - no role selected", []),
+        };
+
+        MainLayout.SetHeaderValue(header);
+        PersonModels = people;
+        FilterPeople(SelectedFilter);
     }
 
-    private async Task FilterPeople(string filter)
+    private void FilterPeople(string filter)
     {
         SelectedFilter = filter;
         if (filter == "All")
