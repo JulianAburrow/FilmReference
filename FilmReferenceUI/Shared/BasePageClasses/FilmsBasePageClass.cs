@@ -28,7 +28,7 @@ public class FilmsBasePageClass : BasePageClass
 
     protected List<PersonModel> PersonModels { get; set; } = [];
 
-    public List<PersonModel> ActorModels { get; set; } = [];
+    public List<PersonModel> CastMemberModels { get; set; } = [];
 
     protected List<PersonModel> DirectorModels { get; set; } = [];
 

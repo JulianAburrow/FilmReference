@@ -15,7 +15,7 @@
         <h4>This Person cannot be deleted as they have films associated with them.</h4>
     </MudAlert>
     <br />
-    <a href="/people/listpeople" class="btn btn-primary">Back to list</a>
+    <a class="btn btn-primary" href="@($"/people/listpeople/{LinkForReturn}")">Back to list</a>
     return;
 }
 else
@@ -32,9 +32,12 @@ else
         <MudCard>
             <ViewDeletePersonComponent PersonModel="PersonModel" />
             <MudCardActions>
-                <button class="btn btn-danger" @onclick="DeletePersonAsync">Delete</button>
-                &nbsp;
-                <a class="btn btn-primary" href="/people/listpeople">Cancel</a>
+                @if (!PreventDeleting)
+                {
+                    <button class="btn btn-danger" @onclick="DeletePersonAsync">Delete</button>
+                    @:&nbsp;
+                }                
+                <a class="btn btn-primary" href="@($"/people/listpeople/{LinkForReturn}")">Cancel</a>
             </MudCardActions>
         </MudCard>
     </MudItem>

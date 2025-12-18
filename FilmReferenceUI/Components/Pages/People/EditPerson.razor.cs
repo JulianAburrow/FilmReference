@@ -1,6 +1,4 @@
-﻿using MudBlazor.Utilities;
-
-namespace FilmReferenceUI.Components.Pages.People;
+﻿namespace FilmReferenceUI.Components.Pages.People;
 
 public partial class EditPerson
 {
@@ -9,6 +7,7 @@ public partial class EditPerson
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue("Edit Person");
+        SetLinkForReturn();
     }
 
     private async void Update()
@@ -18,7 +17,7 @@ public partial class EditPerson
             await CopyDisplayModelToModel();
             await PersonHandler.UpdatePersonAsync(PersonModel, true);
             Snackbar.Add($"Person {PersonModel.FirstName} successfully updated.", Severity.Success);
-            NavigationManager.NavigateTo("people/listpeople");
+            NavigationManager.NavigateTo($"/people/listpeople/{LinkForReturn}");
         }
         catch
         {
