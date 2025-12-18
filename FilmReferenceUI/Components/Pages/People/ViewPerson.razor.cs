@@ -9,7 +9,7 @@ public partial class ViewPerson
     protected override async Task OnInitializedAsync()
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
-        PreventDeleting = PersonModel.FilmPerson.Count != 0;
+        PreventDeleting = PersonModel.FilmPerson.Count != 0 || PersonModel.Films.Count != 0;
         MainLayout.SetHeaderValue("View Person");
         if (PersonModel.FilmPerson is null)
         {
@@ -22,5 +22,6 @@ public partial class ViewPerson
         FilmsDirected = PersonModel.Films
             .OrderBy(f => f.Name)
             .ToList();
+        SetLinkForReturn();
     }
 }
