@@ -7,6 +7,8 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
 
     public async Task<List<FilmModel>> SearchFilmsAsync(string searchText) =>
         await _context.Films
+            .Include(f => f.Genre)
+            .Include(f => f.Studio)
             .Where(f =>
                 f.Name.Contains(searchText) ||
                 f.Description.Contains(searchText))
