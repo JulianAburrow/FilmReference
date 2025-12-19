@@ -2,8 +2,8 @@
     <MudField Label="First Name">@PersonModel.FirstName</MudField>
     <MudField Label="Last Name">@PersonModel.LastName</MudField>
     <MudField Label="Description">@PersonModel.Description</MudField>
-    <MudField Label="Actor">@PersonModel.IsCastMember</MudField>
-    <MudField Label="Director">@PersonModel.IsDirector</MudField>
+    <MudField Label="Actor">@(PersonModel.IsCastMember ? "Yes" : "No")</MudField>
+    <MudField Label="Director">@(PersonModel.IsDirector ? "Yes" : "No")</MudField>
     <br />
 	<ViewImageComponent ImageData="PersonModel.Picture" ImageTitle=@($"{@PersonModel.FirstName} {@PersonModel.LastName} Photo") />
 </MudCardContent>
