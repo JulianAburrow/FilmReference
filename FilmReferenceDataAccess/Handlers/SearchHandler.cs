@@ -12,6 +12,7 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
             .Where(f =>
                 f.Name.Contains(searchText) ||
                 f.Description.Contains(searchText))
+            .OrderBy(f => f.Name)
             .AsNoTracking()
             .ToListAsync();
 
@@ -21,6 +22,7 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
             .Where(g =>
                 g.Name.Contains(searchText) ||
                 (g.Description != null && g.Description.Contains(searchText)))
+            .OrderBy(g => g.Name)
             .AsNoTracking()
             .ToListAsync();
 
@@ -60,6 +62,7 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
             .Where(s =>
                 s.Name.Contains(searchText) ||
                 (s.Description != null && s.Description.Contains(searchText)))
+            .OrderBy(s => s.Name)
             .AsNoTracking()
             .ToListAsync();
 }
