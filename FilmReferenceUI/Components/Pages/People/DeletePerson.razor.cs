@@ -16,7 +16,7 @@ public partial class DeletePerson
         {
             await PersonHandler.DeletePersonAsync(PersonId, true);
             Snackbar.Add($"Person {PersonModel.FirstName} successfully deleted.", Severity.Success);
-            NavigationManager.NavigateTo("people/listpeople");
+            NavigationManager.NavigateTo($"people/listpeople/{LinkForReturn}");
         }
         catch
         {
