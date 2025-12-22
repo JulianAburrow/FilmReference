@@ -1,4 +1,4 @@
-﻿@page "/people/listpeople/{role}"
+﻿@page "/people/listpeople/{role}/{selectedfilter}"
 @inherits PeopleBasePageClass
 
 @if (PersonModels is null)
@@ -14,38 +14,28 @@
 <br />
 <br />
 
-<MudTooltip Text="@($"{PersonModels.Count} {(PersonModels.Count == 1 ? "person" : "people")} in total")">
+@foreach (var letter in Enumerable.Range('A', 26).Select(c => ((char)c).ToString()))
+{    
     <MudButton
         Variant="Variant.Filled"
-        Color="@(SelectedFilter.ToLower() == "all" ? Color.Error : Color.Primary)"
-        OnClick="@(() => FilterPeople("All"))">
-        All
-    </MudButton>
-</MudTooltip>
-
-@foreach (var letter in Enumerable.Range('A', 26).Select(c => ((char)c).ToString()))
-{
-    <MudTooltip Text="@($"{GetPersonCountForInitial(letter)} {(GetPersonCountForInitial(letter) == 1 ? "person" : "people")} whose first name starts with {letter}")">
-        <MudButton Variant="Variant.Filled"
-            Color="@(SelectedFilter.ToLower() == letter.ToLower() ? Color.Error : Color.Primary)"
-            OnClick="@(() => FilterPeople(letter))"
-            Class="ma-1">
+        Color="@(SelectedFilter.ToLower() == letter.ToLower() ? Color.Error : Color.Primary)"
+        OnClick="(() => Navigate(letter))"
+        Class="ma-1">
             @letter
         </MudButton>
-    </MudTooltip>
 }
 
 <br />
 <br />
 
-@if (!FilteredPersonModels.Any())
+@if (!PersonModels.Any())
 {
-	<p>No People found with a first name beginning with '@SelectedFilter'.</p>
+	<p>No @(Role.ToLower() == RoleEnum.CastMembers.ToString().ToLower() ? "cast members" : "directors") found with a first name beginning with '@SelectedFilter'.</p>
 	return;
 }
 else
 {
-    <p>@FilteredPersonModels.Count() @(FilteredPersonModels.Count() == 1 ? "person" : "people") found when filtering for '@SelectedFilter'.</p>
+    <p>@PersonModels.Count() @(PersonModels.Count() == 1 ? "person" : "people") found when filtering for '@SelectedFilter'.</p>
 }
 
-<ListPeopleComponent PersonModels="FilteredPersonModels" />
+<ListPeopleComponent PersonModels="PersonModels" />
