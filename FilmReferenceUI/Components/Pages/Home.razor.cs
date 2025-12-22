@@ -1,4 +1,6 @@
-﻿namespace FilmReferenceUI.Components.Pages;
+﻿using System.Threading.Tasks;
+
+namespace FilmReferenceUI.Components.Pages;
 
 public partial class Home
 {
@@ -13,6 +15,8 @@ public partial class Home
     private List<StudioModel> StudiosFound = [];
 
     private bool SubmitClicked;
+
+    private MudTextField<string>? SearchTextBox;
 
     protected override void OnInitialized()
     {
@@ -48,5 +52,14 @@ public partial class Home
         SubmitClicked = false;
         SearchModel.SearchType = SharedValues.PleaseSelectValue;
         SearchModel.SearchText = string.Empty;
+    }
+
+    private async Task ClearSearchText()
+    {
+        SearchModel.SearchText = string.Empty;
+        if (SearchTextBox is not null)
+        {
+            await SearchTextBox.FocusAsync();
+        }
     }
 }

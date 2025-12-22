@@ -19,7 +19,7 @@
 		<MudItem sm="7">
 			<MudCard>
 				<MudCardContent>
-					<MudSelect Label="Search For" T="int" @bind-Value="SearchModel.SearchType">
+					<MudSelect Label="Search For" T="int" @bind-Value="SearchModel.SearchType" @bind-Value:after="ClearSearchText">
 						<MudSelectItem T="int" Value="SharedValues.PleaseSelectValue">
 							@SharedValues.PleaseSelectText
 						</MudSelectItem>
@@ -30,7 +30,7 @@
 							</MudSelectItem>
 						}
 					</MudSelect>
-					<MudTextField Label="Search For" @bind-Value="SearchModel.SearchText" />
+					<MudTextField @ref="SearchTextBox" Label="Search For" @bind-Value="SearchModel.SearchText" />
 				</MudCardContent>
 				<MudCardActions>
 					<button type="submit" class="btn btn-primary">Search</button>
