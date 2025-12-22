@@ -6,6 +6,6 @@ public partial class NavMenu
 
     private void DoPersonNavigation(RoleEnum peopleRequired)
     {
-        NavigationManager.NavigateTo($"people/listpeople/{peopleRequired}", forceLoad: true);
+        NavigationManager.NavigateTo($"people/listpeople/{peopleRequired.ToString().ToLower()}/a", forceLoad: true);
     }
 }

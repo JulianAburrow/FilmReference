@@ -96,17 +96,18 @@ public class PersonTests
     {
         using var context = DbContextHelper.GetInMemoryContext();
         context.People.AddRange(
-            new PersonModel { PersonId = 1, FirstName = "Charlie", LastName = "Zulu", IsCastMember = true, },
+            new PersonModel { PersonId = 1, FirstName = "Alice", LastName = "Zulu", IsCastMember = true, },
             new PersonModel { PersonId = 2, FirstName = "Alice", LastName = "Alpha", IsCastMember = true, }
         );
         context.SaveChanges();
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetCastMembersAsync();
+        var result = await handler.GetCastMembersAsync("A");
 
         result.Should().HaveCount(2);
         result.First().FirstName.Should().Be("Alice"); // ordered by FirstName then LastName
+        result.Last().LastName.Should().Be("Zulu");
     }
 
     [Fact]
@@ -114,17 +115,18 @@ public class PersonTests
     {
         using var context = DbContextHelper.GetInMemoryContext();
         context.People.AddRange(
-            new PersonModel { PersonId = 1, FirstName = "Charlie", LastName = "Zulu", IsDirector = true, },
+            new PersonModel { PersonId = 1, FirstName = "Alice", LastName = "Zulu", IsDirector = true, },
             new PersonModel { PersonId = 2, FirstName = "Alice", LastName = "Alpha", IsDirector = true, }
         );
         context.SaveChanges();
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetDirectorsAsync();
+        var result = await handler.GetDirectorsAsync("a");
 
         result.Should().HaveCount(2);
         result.First().FirstName.Should().Be("Alice"); // ordered by FirstName then LastName
+        result.Last().LastName.Should().Be("Zulu");
     }
 
     [Fact]
@@ -139,11 +141,10 @@ public class PersonTests
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetDirectorsAsync();
+        var result = await handler.GetDirectorsAsync("g");
 
-        result.Should().HaveCount(2);
+        result.Should().HaveCount(1);
         result.Should().Contain(p => p.FirstName == "Greta");
-        result.Should().Contain(p => p.FirstName == "Ridley");
     }
 
     [Fact]
@@ -152,17 +153,17 @@ public class PersonTests
         using var context = DbContextHelper.GetInMemoryContext();
         context.People.AddRange(
             new PersonModel { FirstName = "Greta", LastName = "Gerwig", IsDirector = true, IsCastMember = true },
-            new PersonModel { FirstName = "Ridley", LastName = "Scott", IsDirector = false, IsCastMember = true }
+            new PersonModel { FirstName = "Gordon", LastName = "Scott", IsDirector = false, IsCastMember = true }
         );
         context.SaveChanges();
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetCastMembersAsync();
+        var result = await handler.GetCastMembersAsync("G");
 
         result.Should().HaveCount(2);
         result.Should().Contain(p => p.FirstName == "Greta");
-        result.Should().Contain(p => p.FirstName == "Ridley");
+        result.Should().Contain(p => p.FirstName == "Gordon");
     }
 
     [Fact]
