@@ -7,7 +7,7 @@ public partial class ListStudios
     protected override async Task OnInitializedAsync()
     {
         StudioModels = await StudioHandler.GetStudiosAsync();
-        Snackbar.Add($"{StudioModels.Count} studio(s) found.", StudioModels.Count > 0 ? Severity.Info : Severity.Warning);
+        Snackbar.Add($"{StudioModels.Count} {(StudioModels.Count == 1 ? "studio" : "studios")} found.", StudioModels.Count > 0 ? Severity.Info : Severity.Warning);
         MainLayout.SetHeaderValue("Studios");
     }
 }
