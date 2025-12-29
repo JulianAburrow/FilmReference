@@ -111,7 +111,7 @@ public class FilmHandlerTests
         context.SaveChanges();
 
         var handler = new FilmHandler(context);
-        var result = await handler.GetAllFilmsForGenreAsync("Action");
+        var result = await handler.GetAllFilmsAsync();
 
         result.Select(f => f.Name).Should().ContainInOrder("Alpha", "Zeta");
     }

@@ -1,9 +1,9 @@
-﻿@page "/films/listfilms/{Genre}"
+﻿@page "/films/listfilms"
 @inherits FilmsBasePageClass
 
 <PageTitle>Films</PageTitle>
 
-@if(FilmModels is null || GenreModels is null)
+@if(AllFilmModels is null || FilteredFilmModels is null || GenreModels is null)
 {
     <LoadingComponent />
     return;
@@ -14,13 +14,20 @@
 </div>
 
 <br /><br />
+
+<MudButton Variant="Variant.Filled"
+           Color="@(Normalised(Genre) == "all" ? Color.Error : Color.Primary)"
+           OnClick="@(() => FilterFilms("All"))"
+           Class="ma-1">
+    All
+</MudButton>
+
 @foreach (var genreModel in GenreModels)
 {
-    <MudButton
-        Variant="Variant.Filled"
-        Color="@(Genre.ToLower().Replace(" ", "") == genreModel.Name.ToLower().Replace(" ", "") ? Color.Error : Color.Primary)"
-        OnClick="@(() => Navigate(genreModel.Name))"
-        Class="ma-1">
+    <MudButton Variant="Variant.Filled"
+               Color="@(Normalised(Genre) == Normalised(genreModel.Name) ? Color.Error : Color.Primary)"
+               OnClick="@(() => FilterFilms(genreModel.Name))"
+               Class="ma-1">
         @genreModel.Name
     </MudButton>
 }
@@ -28,14 +35,21 @@
 <br />
 <br />
 
-@if (!FilmModels.Any())
+@if (!FilteredFilmModels.Any())
 {
-    <p>No films found"for the genre @FilmModels[0].Genre.Name").</p>
+    <p>No films found.</p>
     return;
 }
 else
 {
-    <p>@FilmModels.Count() @(FilmModels.Count() == 1 ? "film" : "films") found the genre @FilmModels[0].Genre.Name</p>
+    <p>
+        @FilteredFilmModels.Count()
+        @(FilteredFilmModels.Count() == 1 ? "film" : "films")
+        found in
+        @(FilteredFilmModels.Count == AllFilmModels.Count
+            ? "all genres"
+            : $"genre {Genre}")
+    </p>
 }
 
-<ListFilmsComponent FilmModels="FilmModels" />
+<ListFilmsComponent FilmModels="FilteredFilmModels" />

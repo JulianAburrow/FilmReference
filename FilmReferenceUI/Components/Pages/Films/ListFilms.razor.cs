@@ -2,22 +2,43 @@
 
 public partial class ListFilms
 {
-    private List<FilmModel> FilmModels { get; set; } = null!;
+    private List<FilmModel> AllFilmModels { get; set; } = null!;
 
-    [Parameter] public string Genre { get; set;} = string.Empty;
+    private List<FilmModel> FilteredFilmModels { get; set; } = null!;
+
+    public string Genre { get; set;} = "All";
+    
+    private string Normalised(string value)
+    => value.ToLower().Replace(" ", "");
 
     protected override async Task OnInitializedAsync()
     {
-        FilmModels = await FilmHandler.GetAllFilmsForGenreAsync(Genre.ToLower().Replace(" ", ""));
+        AllFilmModels = await FilmHandler.GetAllFilmsAsync();
         GenreModels = await GenreHandler.GetGenresAsync();
         MainLayout.SetHeaderValue("Films");
-        Snackbar.Add(
-            $"{FilmModels.Count} {(FilmModels.Count == 1 ? "film" : "films")} found for filter '{FilmModels[0].Genre.Name}'",
-            FilmModels.Count > 0 ? Severity.Info : Severity.Warning);
+        FilterFilms(Genre);
     }
 
-    private void Navigate(string genreName)
+    private void FilterFilms(string genreName)
     {
-        NavigationManager.NavigateTo($"/films/listfilms/{genreName.ToLower()}", forceLoad: true);
+        Genre = genreName;
+
+        if (string.IsNullOrWhiteSpace(genreName) || genreName == "All")
+        {
+            FilteredFilmModels = AllFilmModels;
+        }
+        else
+        {
+            FilteredFilmModels = AllFilmModels
+                .Where(f => f.Genre.Name.Equals(genreName, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        var filmWord = FilteredFilmModels.Count == 1 ? "film" : "films";
+        var genreText = genreName == "All" ? "in all genres" : $"in genre {genreName}";
+
+        Snackbar.Add(
+            $"{FilteredFilmModels.Count} {filmWord} found {genreText}.",
+            FilteredFilmModels.Count > 0 ? Severity.Info : Severity.Warning);
     }
 }
