@@ -16,7 +16,7 @@ It leverages **MudBlazor** for modern components, **Entity Framework Core** for 
   - Dedicated pages for genres and studios
   - Inline film listings with responsive card layouts
 - **Responsive UI**
-  - Built with MudBlazor’s grid system
+  - Built with MudBlazor
   - Equal-height cards for consistent presentation
 - **Reusable Components**
   - `FilmComponent`, `StudioComponent`, `PersonComponent`
