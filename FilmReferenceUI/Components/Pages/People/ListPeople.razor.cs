@@ -2,8 +2,6 @@
 
 public partial class ListPeople
 {
-    [Parameter] public string Role { get; set; } = string.Empty;
-
     private string Initial { get; set; } = "All";
 
     private List<PersonModel> AllPersonModels { get; set; } = null!;
