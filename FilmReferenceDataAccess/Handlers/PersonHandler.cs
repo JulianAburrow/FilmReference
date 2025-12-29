@@ -34,16 +34,6 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
             .ThenBy(p => p.LastName)
             .AsNoTracking()
             .ToListAsync();
-
-
-    public async Task<List<PersonModel>> GetDirectorsAsync() =>
-        await _context.People
-            .Where(p => p.IsCastMember)
-            .Include(p => p.Films)
-            .OrderBy(p => p.FirstName)
-            .ThenBy(p => p.LastName)
-            .AsNoTracking()
-            .ToListAsync();
     
     public async Task<PersonModel> GetPersonAsync(int personId)
     {
