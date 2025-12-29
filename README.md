@@ -2,7 +2,7 @@
 
 # 🎬 FilmReference Application
 
-FilmReference is a Blazor WebAssembly application designed to manage and explore films, genres, studios, and people in a clean, responsive UI.  
+FilmReference is a Blazor Server application designed to manage and explore films, genres, studios, and people in a clean, responsive UI.  
 It leverages **MudBlazor** for modern components, **Entity Framework Core** for efficient data access, and follows best practices for scalability and maintainability.
 
 ---
