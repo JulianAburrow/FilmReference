@@ -6,7 +6,6 @@ public partial class DeletePerson
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         PreventDeleting = PersonModel.FilmPerson.Count != 0 || PersonModel.Films.Count != 0;
-        SetLinkForReturn();
         MainLayout.SetHeaderValue("Delete Person");
     }
 
@@ -16,7 +15,7 @@ public partial class DeletePerson
         {
             await PersonHandler.DeletePersonAsync(PersonId, true);
             Snackbar.Add($"Person {PersonModel.FirstName} successfully deleted.", Severity.Success);
-            NavigationManager.NavigateTo($"people/listpeople/{LinkForReturn}");
+            NavigationManager.NavigateTo("people/listpeople");
         }
         catch
         {

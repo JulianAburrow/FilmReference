@@ -103,7 +103,7 @@ public class PersonTests
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetCastMembersAsync("A");
+        var result = await handler.GetPeopleAsync();
 
         result.Should().HaveCount(2);
         result.First().FirstName.Should().Be("Alice"); // ordered by FirstName then LastName
@@ -122,7 +122,7 @@ public class PersonTests
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetDirectorsAsync("a");
+        var result = await handler.GetDirectorsAsync();
 
         result.Should().HaveCount(2);
         result.First().FirstName.Should().Be("Alice"); // ordered by FirstName then LastName
@@ -141,7 +141,7 @@ public class PersonTests
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetDirectorsAsync("g");
+        var result = await handler.GetDirectorsAsync();
 
         result.Should().HaveCount(1);
         result.Should().Contain(p => p.FirstName == "Greta");
@@ -159,7 +159,7 @@ public class PersonTests
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetCastMembersAsync("G");
+        var result = await handler.GetPeopleAsync();
 
         result.Should().HaveCount(2);
         result.Should().Contain(p => p.FirstName == "Greta");

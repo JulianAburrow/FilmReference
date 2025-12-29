@@ -4,56 +4,39 @@ public partial class ListPeople
 {
     [Parameter] public string Role { get; set; } = string.Empty;
 
-    [Parameter] public string SelectedFilter { get; set; } = "A";
+    private string Initial { get; set; } = "All";
 
-    protected List<PersonModel> PersonModels { get; set; } = null!;
+    private List<PersonModel> AllPersonModels { get; set; } = null!;
 
-    protected override async Task OnParametersSetAsync()
+    private List<PersonModel> FilteredPersonModels { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
     {
-        await FilterByInitial(SelectedFilter);
+        AllPersonModels = await PersonHandler.GetPeopleAsync();
+        MainLayout.SetHeaderValue("People");
+        FilterPeople(Initial);
     }
 
-    private bool _isLoading;
-
-    private async Task FilterByInitial(string initial)
+    private void FilterPeople(string initial)
     {
-        if (_isLoading)
+        Initial = initial;
+
+        if (string.IsNullOrWhiteSpace(initial) || initial == "All")
         {
-            return;
+            FilteredPersonModels = AllPersonModels;
+        }
+        else
+        {
+            FilteredPersonModels = AllPersonModels
+                .Where(p => p.FirstName.StartsWith(initial, StringComparison.OrdinalIgnoreCase))
+                .ToList();
         }
 
-        string header;
-
-        try
-        {
-            _isLoading = true;
-
-            switch (Enum.Parse<RoleEnum>(Role, true))
-            {
-                case RoleEnum.CastMembers:
-                    header = "Cast Members";
-                    PersonModels = await PersonHandler.GetCastMembersAsync(initial);
-                    break;
-
-                case RoleEnum.Directors:
-                    header = "Directors";
-                    PersonModels = await PersonHandler.GetDirectorsAsync(initial);
-                    break;
-
-                default:
-                    header = "Error - no role selected";
-                    PersonModels = [];
-                    break;
-            }
-
-            SelectedFilter = initial;
-            MainLayout.SetHeaderValue(header);
-            StateHasChanged();
-        }
-        finally
-        {
-            _isLoading = false;
-        }
+        var peopleWord = FilteredPersonModels.Count == 1 ? "person" : "people";
+        var initialText = initial == "All" ? "" : $"with initial {initial}";
+        Snackbar.Add(
+            $"{FilteredPersonModels.Count} {peopleWord} found {initialText}.",
+            FilteredPersonModels.Count > 0 ? Severity.Info : Severity.Warning);
     }
 }
 

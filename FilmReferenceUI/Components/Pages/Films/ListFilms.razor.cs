@@ -6,10 +6,7 @@ public partial class ListFilms
 
     private List<FilmModel> FilteredFilmModels { get; set; } = null!;
 
-    public string Genre { get; set;} = "All";
-    
-    private string Normalised(string value)
-    => value.ToLower().Replace(" ", "");
+    private string Genre { get; set;} = "All";
 
     protected override async Task OnInitializedAsync()
     {

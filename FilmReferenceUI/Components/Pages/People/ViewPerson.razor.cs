@@ -22,6 +22,5 @@ public partial class ViewPerson
         FilmsDirected = PersonModel.Films
             .OrderBy(f => f.Name)
             .ToList();
-        SetLinkForReturn();
     }
 }

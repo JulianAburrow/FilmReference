@@ -10,10 +10,10 @@ public static class ServiceExtensions
 
     public static void AddDependencies(this IServiceCollection services)
     {
-        services.AddScoped<IFilmHandler, FilmHandler>();
-        services.AddScoped<IGenreHandler, GenreHandler>();
-        services.AddScoped<IPersonHandler, PersonHandler>();
-        services.AddScoped<IStudioHandler, StudioHandler>();
-        services.AddScoped<ISearchHandler, SearchHandler>();
+        services.AddTransient<IFilmHandler, FilmHandler>();
+        services.AddTransient<IGenreHandler, GenreHandler>();
+        services.AddTransient<IPersonHandler, PersonHandler>();
+        services.AddTransient<IStudioHandler, StudioHandler>();
+        services.AddTransient<ISearchHandler, SearchHandler>();
     }
 }

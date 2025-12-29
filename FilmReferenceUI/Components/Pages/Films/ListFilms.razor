@@ -13,10 +13,11 @@
     <a href="/film/create" class="btn btn-primary">Create Film</a>
 </div>
 
-<br /><br />
+<br />
+<br />
 
 <MudButton Variant="Variant.Filled"
-           Color="@(Normalised(Genre) == "all" ? Color.Error : Color.Primary)"
+           Color="@(NormaliseHelper.Normalised(Genre) == "all" ? Color.Error : Color.Primary)"
            OnClick="@(() => FilterFilms("All"))"
            Class="ma-1">
     All
@@ -25,7 +26,7 @@
 @foreach (var genreModel in GenreModels)
 {
     <MudButton Variant="Variant.Filled"
-               Color="@(Normalised(Genre) == Normalised(genreModel.Name) ? Color.Error : Color.Primary)"
+               Color="@(NormaliseHelper.Normalised(Genre) == NormaliseHelper.Normalised(genreModel.Name) ? Color.Error : Color.Primary)"
                OnClick="@(() => FilterFilms(genreModel.Name))"
                Class="ma-1">
         @genreModel.Name
