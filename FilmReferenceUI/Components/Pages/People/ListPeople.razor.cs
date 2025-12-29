@@ -1,42 +1,42 @@
-﻿using static MudBlazor.Colors;
-
-namespace FilmReferenceUI.Components.Pages.People;
+﻿namespace FilmReferenceUI.Components.Pages.People;
 
 public partial class ListPeople
 {
     [Parameter] public string Role { get; set; } = string.Empty;
 
-    [Parameter] public string SelectedFilter { get; set; } = "A";
+    private string Initial { get; set; } = "All";
 
-    protected List<PersonModel> PersonModels { get; set; } = null!;
+    private List<PersonModel> AllPersonModels { get; set; } = null!;
 
-    private bool Loading;
+    private List<PersonModel> FilteredPersonModels { get; set; } = null!;
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
-        if (Loading)
-        {
-            return;
-        }
-
-        Loading = true;
-
-        _ = Enum.TryParse<RoleEnum>(Role, true, out var roleEnum);
-
-        var (header, people) = roleEnum switch
-        {
-            RoleEnum.CastMembers => ("Cast Members", await PersonHandler.GetCastMembersAsync(SelectedFilter)),
-            RoleEnum.Directors => ("Directors", await PersonHandler.GetDirectorsAsync(SelectedFilter)),
-            _ => ("Error - no role selected", []),
-        };
-
-        MainLayout.SetHeaderValue(header);
-        PersonModels = people;
+        AllPersonModels = await PersonHandler.GetPeopleAsync();
+        MainLayout.SetHeaderValue("People");
+        FilterPeople(Initial);
     }
 
-    private void Navigate(string letter)
+    private void FilterPeople(string initial)
     {
-        NavigationManager.NavigateTo($"people/listpeople/{Role.ToLower()}/{letter.ToLower()}",forceLoad: true);
+        Initial = initial;
+
+        if (string.IsNullOrWhiteSpace(initial) || initial == "All")
+        {
+            FilteredPersonModels = AllPersonModels;
+        }
+        else
+        {
+            FilteredPersonModels = AllPersonModels
+                .Where(p => p.FirstName.StartsWith(initial, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        var peopleWord = FilteredPersonModels.Count == 1 ? "person" : "people";
+        var initialText = initial == "All" ? "" : $"with initial {initial}";
+        Snackbar.Add(
+            $"{FilteredPersonModels.Count} {peopleWord} found {initialText}.",
+            FilteredPersonModels.Count > 0 ? Severity.Info : Severity.Warning);
     }
 }
 

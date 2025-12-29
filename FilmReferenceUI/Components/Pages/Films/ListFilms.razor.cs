@@ -2,44 +2,40 @@
 
 public partial class ListFilms
 {
-    private List<FilmModel> FilmModels { get; set; } = null!;
+    private List<FilmModel> AllFilmModels { get; set; } = null!;
 
     private List<FilmModel> FilteredFilmModels { get; set; } = null!;
 
-    private int SelectedGenreId = 0;
+    private string Genre { get; set;} = "All";
 
     protected override async Task OnInitializedAsync()
     {
-        FilmModels = await FilmHandler.GetAllFilmsAsync();
+        AllFilmModels = await FilmHandler.GetAllFilmsAsync();
         GenreModels = await GenreHandler.GetGenresAsync();
-        await FilterFilms(SelectedGenreId);
         MainLayout.SetHeaderValue("Films");
+        FilterFilms(Genre);
     }
 
-    private async Task FilterFilms(int genreId)
+    private void FilterFilms(string genreName)
     {
-        SelectedGenreId = genreId;
-        if (genreId == 0)
+        Genre = genreName;
+
+        if (string.IsNullOrWhiteSpace(genreName) || genreName == "All")
         {
-            FilteredFilmModels = FilmModels;
+            FilteredFilmModels = AllFilmModels;
         }
         else
         {
-            FilteredFilmModels = FilmModels
-                .Where(f =>
-                    f.GenreId == genreId)
+            FilteredFilmModels = AllFilmModels
+                .Where(f => f.Genre.Name.Equals(genreName, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
 
-        var genreName = GenreModels.FirstOrDefault(g => g.GenreId == genreId)?.Name ?? "All";
+        var filmWord = FilteredFilmModels.Count == 1 ? "film" : "films";
+        var genreText = genreName == "All" ? "in all genres" : $"in genre {genreName}";
 
         Snackbar.Add(
-            $"{FilteredFilmModels.Count} {(FilteredFilmModels.Count == 1 ? "film" : "films")} found for filter '{genreName}'",
+            $"{FilteredFilmModels.Count} {filmWord} found {genreText}.",
             FilteredFilmModels.Count > 0 ? Severity.Info : Severity.Warning);
-    }
-
-    private int GetFilmCountForGenre(int genreId)
-    {
-        return FilmModels.Count(f => f.GenreId == genreId);
     }
 }

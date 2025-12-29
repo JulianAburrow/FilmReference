@@ -12,8 +12,6 @@ public class BasePageClass : ComponentBase
 
     protected bool PreventDeleting;
 
-    //protected IBrowserFile? Image = null;
-
     protected string? ImageName = null;
 
     protected byte[]? ImageForDisplay = null;

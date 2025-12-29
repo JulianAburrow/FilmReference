@@ -1,7 +1,7 @@
-﻿@page "/people/listpeople/{role}/{selectedfilter}"
+﻿@page "/people/listpeople"
 @inherits PeopleBasePageClass
 
-@if (PersonModels is null)
+@if (AllPersonModels is null || FilteredPersonModels is null)
 {
     <LoadingComponent />
     return;
@@ -14,12 +14,19 @@
 <br />
 <br />
 
+<MudButton Variant="Variant.Filled"
+           Color="@(NormaliseHelper.Normalised(Initial) == "all" ? Color.Error : Color.Primary)"
+           OnClick="@(() => FilterPeople("All"))"
+           Class="ma-1">
+    All
+</MudButton>
+
 @foreach (var letter in Enumerable.Range('A', 26).Select(c => ((char)c).ToString()))
 {    
     <MudButton
         Variant="Variant.Filled"
-        Color="@(SelectedFilter.ToLower() == letter.ToLower() ? Color.Error : Color.Primary)"
-        OnClick="(() => Navigate(letter))"
+               Color="@(NormaliseHelper.Normalised(Initial).ToLower() == NormaliseHelper.Normalised(letter) ? Color.Error : Color.Primary)"
+        OnClick="(() => FilterPeople(letter))"
         Class="ma-1">
             @letter
         </MudButton>
@@ -28,14 +35,23 @@
 <br />
 <br />
 
-@if (!PersonModels.Any())
+@if (!FilteredPersonModels.Any())
 {
-	<p>No @(Role.ToLower() == RoleEnum.CastMembers.ToString().ToLower() ? "cast members" : "directors") found with a first name beginning with '@SelectedFilter'.</p>
+    <p>
+        No people found@(Initial == "All" ? "" : $" with initial {Initial}")
+    </p>
 	return;
 }
 else
 {
-    <p>@PersonModels.Count() @(PersonModels.Count() == 1 ? "person" : "people") found when filtering for '@SelectedFilter'.</p>
+    <p>
+        @FilteredPersonModels.Count()
+        @(FilteredPersonModels.Count() == 1 ? "person" : "people")
+        found
+        @(FilteredPersonModels.Count == AllPersonModels.Count
+            ? ""
+            : $"with initial {Initial}")
+    </p>
 }
 
-<ListPeopleComponent PersonModels="PersonModels" />
+<ListPeopleComponent PersonModels="FilteredPersonModels" />

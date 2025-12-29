@@ -16,7 +16,7 @@
             <div style="width: 80%; color: white; font-size: 24px">@HeaderText</div>
         </MudAppBar>
         <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
-            <NavMenu />
+            <NavMenu FirstGenre="@FirstGenre" />
         </MudDrawer>
         <MudMainContent>
             <MudBreadcrumbs Items="BreadCrumbs">

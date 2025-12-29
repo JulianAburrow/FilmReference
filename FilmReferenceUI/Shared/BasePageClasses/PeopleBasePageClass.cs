@@ -10,8 +10,6 @@ public class PeopleBasePageClass : BasePageClass
 
     protected PersonDisplayModel PersonDisplayModel { get; set; } = new();
 
-    protected string LinkForReturn { get; set; } = string.Empty;
-
     protected async Task CopyDisplayModelToModel()
     {
         PersonModel.FirstName = PersonDisplayModel.FirstName;
@@ -39,12 +37,5 @@ public class PeopleBasePageClass : BasePageClass
         PersonDisplayModel.IsDirector = PersonModel.IsDirector;
         PersonDisplayModel.Picture = PersonModel.Picture;
         PersonDisplayModel.Films = PersonModel.Films;
-    }
-
-    protected void SetLinkForReturn()
-    {
-        LinkForReturn = PersonModel.IsDirector
-            ? RoleEnum.Directors.ToString().ToLower()
-            : RoleEnum.CastMembers.ToString().ToLower();
     }
 }

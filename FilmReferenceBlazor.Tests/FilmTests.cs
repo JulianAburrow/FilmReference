@@ -100,8 +100,13 @@ public class FilmHandlerTests
     public async Task GetAllFilmsAsync_ShouldReturnFilmsOrderedByName()
     {
         using var context = DbContextHelper.GetInMemoryContext();
+
+        var genre = new GenreModel { GenreId = 1, Name = "Action" };
+        context.Genres.Add(genre);
+
         var filmA = new FilmModel { Name = "Zeta", GenreId = 1, StudioId = 1 };
         var filmB = new FilmModel { Name = "Alpha", GenreId = 1, StudioId = 1 };
+
         context.AddRange(filmA, filmB);
         context.SaveChanges();
 

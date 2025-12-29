@@ -12,7 +12,7 @@ public partial class CreatePerson
             await CopyDisplayModelToModel();
             await PersonHandler.CreatePersonAsync(PersonModel, true);
             Snackbar.Add($"Person {PersonModel.FirstName} successfully created.", Severity.Success);
-            NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? "castmembers" : "directors")}");
+            NavigationManager.NavigateTo("/people/listpeople");
         }
         catch
         {

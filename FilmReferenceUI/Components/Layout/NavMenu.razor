@@ -1,12 +1,11 @@
 ﻿<MudNavMenu>
     <MudNavLink Href="">Home / Search</MudNavLink>
     <MudNavGroup Title="Films" Expanded="true">
-        <MudNavLink Href="/films/listfilms">View Films</MudNavLink>
+        <MudNavLink Href="@($"/films/listfilms")">View Films</MudNavLink>
         <MudNavLink Href="/film/create">Create Film</MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="People" Expanded="true">
-        <MudNavLink OnClick="@(() => DoPersonNavigation(RoleEnum.CastMembers))">View Cast Members</MudNavLink>
-        <MudNavLink OnClick="@(() => DoPersonNavigation(RoleEnum.Directors))">View Directors</MudNavLink>
+        <MudNavLink Href="/people/listpeople">View People</MudNavLink>
         <MudNavLink Href="/person/create">Create Person</MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="Genres" Expanded="true">

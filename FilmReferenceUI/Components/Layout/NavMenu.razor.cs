@@ -2,10 +2,7 @@
 
 public partial class NavMenu
 {
-    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+    [Parameter] public string FirstGenre { get; set; } = string.Empty;
 
-    private void DoPersonNavigation(RoleEnum peopleRequired)
-    {
-        NavigationManager.NavigateTo($"people/listpeople/{peopleRequired.ToString().ToLower()}/a", forceLoad: true);
-    }
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 }
