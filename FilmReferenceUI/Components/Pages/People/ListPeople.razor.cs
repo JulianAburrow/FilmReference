@@ -1,6 +1,4 @@
-﻿using static MudBlazor.Colors;
-
-namespace FilmReferenceUI.Components.Pages.People;
+﻿namespace FilmReferenceUI.Components.Pages.People;
 
 public partial class ListPeople
 {
@@ -10,33 +8,52 @@ public partial class ListPeople
 
     protected List<PersonModel> PersonModels { get; set; } = null!;
 
-    private bool Loading;
-
     protected override async Task OnParametersSetAsync()
     {
-        if (Loading)
+        await FilterByInitial(SelectedFilter);
+    }
+
+    private bool _isLoading;
+
+    private async Task FilterByInitial(string initial)
+    {
+        if (_isLoading)
         {
             return;
         }
 
-        Loading = true;
+        string header;
 
-        _ = Enum.TryParse<RoleEnum>(Role, true, out var roleEnum);
-
-        var (header, people) = roleEnum switch
+        try
         {
-            RoleEnum.CastMembers => ("Cast Members", await PersonHandler.GetCastMembersAsync(SelectedFilter)),
-            RoleEnum.Directors => ("Directors", await PersonHandler.GetDirectorsAsync(SelectedFilter)),
-            _ => ("Error - no role selected", []),
-        };
+            _isLoading = true;
 
-        MainLayout.SetHeaderValue(header);
-        PersonModels = people;
-    }
+            switch (Enum.Parse<RoleEnum>(Role, true))
+            {
+                case RoleEnum.CastMembers:
+                    header = "Cast Members";
+                    PersonModels = await PersonHandler.GetCastMembersAsync(initial);
+                    break;
 
-    private void Navigate(string letter)
-    {
-        NavigationManager.NavigateTo($"people/listpeople/{Role.ToLower()}/{letter.ToLower()}",forceLoad: true);
+                case RoleEnum.Directors:
+                    header = "Directors";
+                    PersonModels = await PersonHandler.GetDirectorsAsync(initial);
+                    break;
+
+                default:
+                    header = "Error - no role selected";
+                    PersonModels = [];
+                    break;
+            }
+
+            SelectedFilter = initial;
+            MainLayout.SetHeaderValue(header);
+            StateHasChanged();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 }
 

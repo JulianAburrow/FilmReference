@@ -4,42 +4,20 @@ public partial class ListFilms
 {
     private List<FilmModel> FilmModels { get; set; } = null!;
 
-    private List<FilmModel> FilteredFilmModels { get; set; } = null!;
-
-    private int SelectedGenreId = 0;
+    [Parameter] public string Genre { get; set;} = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        FilmModels = await FilmHandler.GetAllFilmsAsync();
+        FilmModels = await FilmHandler.GetAllFilmsForGenreAsync(Genre.ToLower().Replace(" ", ""));
         GenreModels = await GenreHandler.GetGenresAsync();
-        await FilterFilms(SelectedGenreId);
         MainLayout.SetHeaderValue("Films");
-    }
-
-    private async Task FilterFilms(int genreId)
-    {
-        SelectedGenreId = genreId;
-        if (genreId == 0)
-        {
-            FilteredFilmModels = FilmModels;
-        }
-        else
-        {
-            FilteredFilmModels = FilmModels
-                .Where(f =>
-                    f.GenreId == genreId)
-                .ToList();
-        }
-
-        var genreName = GenreModels.FirstOrDefault(g => g.GenreId == genreId)?.Name ?? "All";
-
         Snackbar.Add(
-            $"{FilteredFilmModels.Count} {(FilteredFilmModels.Count == 1 ? "film" : "films")} found for filter '{genreName}'",
-            FilteredFilmModels.Count > 0 ? Severity.Info : Severity.Warning);
+            $"{FilmModels.Count} {(FilmModels.Count == 1 ? "film" : "films")} found for filter '{FilmModels[0].Genre.Name}'",
+            FilmModels.Count > 0 ? Severity.Info : Severity.Warning);
     }
 
-    private int GetFilmCountForGenre(int genreId)
+    private void Navigate(string genreName)
     {
-        return FilmModels.Count(f => f.GenreId == genreId);
+        NavigationManager.NavigateTo($"/films/listfilms/{genreName.ToLower()}", forceLoad: true);
     }
 }

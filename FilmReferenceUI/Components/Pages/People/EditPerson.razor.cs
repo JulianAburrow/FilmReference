@@ -17,7 +17,7 @@ public partial class EditPerson
             await CopyDisplayModelToModel();
             await PersonHandler.UpdatePersonAsync(PersonModel, true);
             Snackbar.Add($"Person {PersonModel.FirstName} successfully updated.", Severity.Success);
-            NavigationManager.NavigateTo($"/people/listpeople/{LinkForReturn}");
+            NavigationManager.NavigateTo($"/people/listpeople/{LinkForReturn}/{PersonModel.FirstName[..1]}");
         }
         catch
         {

@@ -28,33 +28,16 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         }
     }
 
-    public async Task<List<PersonModel>> GetCastMembersAsync(string? initial)
+    public async Task<List<PersonModel>> GetCastMembersAsync(string initial)
     {
-        var castMembers = _context.People
-            .AsNoTracking()
-            .Where(p => p.IsCastMember);
-
-        if (!string.IsNullOrWhiteSpace(initial))
-        {
-            castMembers = castMembers.Where(p => p.FirstName.ToLower().StartsWith(initial.ToLower()));
-        }
-
-        return await castMembers
+        return await _context.People
+            .Where(p => p.IsCastMember &&
+                        p.FirstName.StartsWith(initial))
+            .Include(p => p.FilmPerson)
+                .ThenInclude(fp => fp.Film)
             .OrderBy(p => p.FirstName)
             .ThenBy(p => p.LastName)
-            .Select(p => new PersonModel
-            {
-                PersonId = p.PersonId,
-                FirstName = p.FirstName,
-                LastName = p.LastName,
-                Description = p.Description,
-                IsCastMember = p.IsCastMember,
-                IsDirector = p.IsDirector,
-                Picture = p.Picture,
-                Films = p.Films
-                    .Select(f => new FilmModel { FilmId = f.FilmId, Name = f.Name })
-                    .ToList()
-            })
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -62,6 +45,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
     public async Task<List<PersonModel>> GetDirectorsAsync(string? initial)
     {
         var directors = _context.People
+            .Include(p => p.Films)
             .AsNoTracking()
             .Where(p => p.IsDirector);
 

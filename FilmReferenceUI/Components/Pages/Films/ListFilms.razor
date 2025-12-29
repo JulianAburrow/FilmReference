@@ -1,4 +1,4 @@
-﻿@page "/films/listfilms"
+﻿@page "/films/listfilms/{Genre}"
 @inherits FilmsBasePageClass
 
 <PageTitle>Films</PageTitle>
@@ -14,49 +14,28 @@
 </div>
 
 <br /><br />
-
-<MudTooltip Text="@($"{FilmModels.Count} {(FilmModels.Count == 1 ? "film" : "films")} in total")">
-    <MudButton Variant="Variant.Filled"
-               Color="@(SelectedGenreId == 0 ? Color.Error : Color.Primary)"
-               OnClick="@(() => FilterFilms(0))">
-        All Films
-    </MudButton>
-</MudTooltip>
-
 @foreach (var genreModel in GenreModels)
 {
-    <MudTooltip Text="@($"{GetFilmCountForGenre(genreModel.GenreId)} {(GetFilmCountForGenre(genreModel.GenreId) == 1 ? "film" : "films")} in this category")">
-        <MudButton Variant="Variant.Filled"
-                   Color="@(SelectedGenreId == genreModel.GenreId ? Color.Error : Color.Primary)"
-                   OnClick="@(() => FilterFilms(genreModel.GenreId))"
-                   Class="ma-1">
-            @genreModel.Name
-        </MudButton>
-    </MudTooltip>
+    <MudButton
+        Variant="Variant.Filled"
+        Color="@(Genre.ToLower().Replace(" ", "") == genreModel.Name.ToLower().Replace(" ", "") ? Color.Error : Color.Primary)"
+        OnClick="@(() => Navigate(genreModel.Name))"
+        Class="ma-1">
+        @genreModel.Name
+    </MudButton>
 }
 
 <br />
 <br />
-
-@{
-    var SelectedGenreName = SelectedGenreId == 0 ? "All Genres" : GenreModels.FirstOrDefault(g => g.GenreId == SelectedGenreId)?.Name;
-}
 
 @if (!FilmModels.Any())
 {
-    <p>No Films found @(SelectedGenreId == 0 ? "in any genre" : "for the genre @SelectedGenreName").</p>
+    <p>No films found"for the genre @FilmModels[0].Genre.Name").</p>
     return;
 }
 else
 {
-
-    var count = FilteredFilmModels.Count();
-    var label = count == 1 ? "film" : "films";
-    var genreText = SelectedGenreName == "All Genres"
-        ? "in all genres"
-        : $"for the genre {SelectedGenreName}";
-
-    <p>@count @label found @genreText</p>
+    <p>@FilmModels.Count() @(FilmModels.Count() == 1 ? "film" : "films") found the genre @FilmModels[0].Genre.Name</p>
 }
 
-<ListFilmsComponent FilmModels="FilteredFilmModels" />
+<ListFilmsComponent FilmModels="FilmModels" />

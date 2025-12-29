@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace FilmReferenceUI.Components.Pages;
+﻿namespace FilmReferenceUI.Components.Pages;
 
 public partial class Home
 {
@@ -18,7 +16,7 @@ public partial class Home
 
     private MudTextField<string>? SearchTextBox;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         SearchModel.SearchType = SharedValues.PleaseSelectValue;
         MainLayout.SetHeaderValue("Home / Search");

@@ -19,7 +19,7 @@
     <MudButton
         Variant="Variant.Filled"
         Color="@(SelectedFilter.ToLower() == letter.ToLower() ? Color.Error : Color.Primary)"
-        OnClick="(() => Navigate(letter))"
+        OnClick="(() => FilterByInitial(letter))"
         Class="ma-1">
             @letter
         </MudButton>
