@@ -8,6 +8,6 @@ public partial class ListGenres
     {
         GenreModels = await GenreHandler.GetGenresAsync();
         Snackbar.Add($"{GenreModels.Count} {(GenreModels.Count == 1 ? "genre" : "genres")} found.", GenreModels.Count > 0 ? Severity.Info : Severity.Warning);
-        MainLayout.SetHeaderValue("Genres");
+        MainLayout.SetHeaderValue("View Genres");
     }
 }

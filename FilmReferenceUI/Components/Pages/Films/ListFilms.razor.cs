@@ -12,7 +12,7 @@ public partial class ListFilms
     {
         AllFilmModels = await FilmHandler.GetAllFilmsAsync();
         GenreModels = await GenreHandler.GetGenresAsync();
-        MainLayout.SetHeaderValue("Films");
+        MainLayout.SetHeaderValue("View Films");
         FilterFilms(Genre);
     }
 

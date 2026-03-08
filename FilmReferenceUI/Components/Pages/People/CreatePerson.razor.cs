@@ -2,7 +2,7 @@
 
 public partial class CreatePerson
 {
-    protected override void OnInitialized() =>
+    protected override async Task OnInitializedAsync() =>
         MainLayout.SetHeaderValue("Create Person");
 
     private async Task CreatePersonAsync()

@@ -11,7 +11,7 @@ public partial class ListPeople
     protected override async Task OnInitializedAsync()
     {
         AllPersonModels = await PersonHandler.GetPeopleAsync();
-        MainLayout.SetHeaderValue("People");
+        MainLayout.SetHeaderValue("View People");
         FilterPeople(Initial);
     }
 
