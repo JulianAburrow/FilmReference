@@ -17,4 +17,12 @@
     <ProjectReference Include="..\FilmReferenceDataAccess\FilmReferenceDataAccess.csproj" />
   </ItemGroup>
 
+	<Target Name="PrePublishScript" BeforeTargets="BeforePublish">
+		<Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)Scripts\PrePublish.ps1&quot;" />
+	</Target>
+
+	<Target Name="PostPublishScript" AfterTargets="AfterPublish">
+		<Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)Scripts\PostPublish.ps1&quot;" />
+	</Target>
+
 </Project>
