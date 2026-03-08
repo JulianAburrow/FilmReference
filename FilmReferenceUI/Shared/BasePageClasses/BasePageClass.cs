@@ -18,11 +18,6 @@ public class BasePageClass : ComponentBase
 
     protected long MaxFileSize = 1024 * 1024 * 3;
 
-    protected override void OnInitialized()
-    {
-        MainLayout.SetHeaderValue(string.Empty);
-    }   
-
     protected async Task GlobalUploadImage(IBrowserFile? file)
     {
         if (file is null)
