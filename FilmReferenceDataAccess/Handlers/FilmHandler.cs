@@ -97,6 +97,7 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
                 Description = f.Description,
                 BoxCover = f.BoxCover,
                 GenreId = f.GenreId,
+                StudioId = f.StudioId,
                 Studio = new StudioModel { StudioId = f.StudioId, Name = f.Studio.Name },
                 Genre = new GenreModel { GenreId = f.GenreId, Name = f.Genre.Name }
             })
