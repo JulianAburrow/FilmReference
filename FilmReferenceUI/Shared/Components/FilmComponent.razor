@@ -4,7 +4,7 @@
     </MudCardHeader>
     <MudCardContent>
         <MudText><b>Studio</b>: <MudLink Href=@($"/studio/view/{Film.StudioId}")>@Film.Studio?.Name</MudLink></MudText>
-        <MudText><b>Genre</b>: @Film.Genre?.Name</MudText>
+        <MudText><b>Genre</b>: <MudLink Href=@($"/genre/view/{Film.GenreId}")>@Film.Genre?.Name</MudLink></MudText>
         <MudText><b>Description</b>: @Film.Description</MudText>
         <br />
         <ViewImageComponent ImageData="@Film.BoxCover" ImageTitle="@($"{Film.Name} Box Cover")" />
