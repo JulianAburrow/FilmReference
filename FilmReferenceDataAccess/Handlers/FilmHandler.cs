@@ -1,7 +1,4 @@
-﻿
-using System.Transactions;
-
-namespace FilmReferenceDataAccess.Handlers;
+﻿namespace FilmReferenceDataAccess.Handlers;
 
 public class FilmHandler(FilmReferenceContext context) : IFilmHandler
 {
