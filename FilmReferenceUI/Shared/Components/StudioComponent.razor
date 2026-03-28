@@ -15,5 +15,14 @@
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/studio/view/{Studio.StudioId}")>
             View
         </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/studio/edit/{Studio.StudioId}")>
+            Edit
+        </MudButton>
+        @if (Studio.Films.Count == 0)
+        {            
+            <MudButton Variant="Variant.Filled" Color="Color.Error" Href=@($"/studio/delete/{Studio.StudioId}")>
+                Delete
+            </MudButton>
+        }
     </MudCardActions>
 </MudCard>
