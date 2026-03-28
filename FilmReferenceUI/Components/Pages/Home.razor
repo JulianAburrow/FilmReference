@@ -54,6 +54,8 @@
 	@if(FilmsFound.Count == 0)
 	{
 		<LoadingComponent DisplayValue="No films found" />
+		<br />
+		<a href="/film/create" class="btn btn-primary">Create Film</a>
 		return;
 	}
 
@@ -67,6 +69,8 @@
 	@if (GenresFound.Count == 0)
 	{
 		<LoadingComponent DisplayValue="No genres found" />
+		<br />
+		<a href="/genre/create" class="btn btn-primary">Create Genre</a>
 		return;
 	}
 
@@ -80,6 +84,8 @@
 	@if(PeopleFound.Count == 0)
 	{
 		<LoadingComponent DisplayValue="No people found" />
+		<br />
+		<a href="/person/create" class="btn btn-primary">Create Person</a>
 		return;
 	}
 
@@ -93,6 +99,8 @@
 	@if(StudiosFound.Count == 0)
 	{
 		<LoadingComponent DisplayValue="No studios found." />
+		<br />
+		<a href="/studio/create" class="btn btn-primary">Create Studio</a>
 		return;
 	}
 

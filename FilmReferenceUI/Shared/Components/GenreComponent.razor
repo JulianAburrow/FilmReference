@@ -13,5 +13,14 @@
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/genre/view/{Genre.GenreId}")>
             View
         </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/genre/edit/{Genre.GenreId}")>
+            Edit
+        </MudButton>
+        @if (Genre.Films.Count == 0)
+        {            
+            <MudButton Variant="Variant.Filled" Color="Color.Error" Href=@($"/genre/delete/{Genre.GenreId}")>
+                Delete
+            </MudButton>
+        }
     </MudCardActions>
 </MudCard>

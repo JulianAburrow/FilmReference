@@ -30,6 +30,8 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
 
     public async Task<List<PersonModel>> GetPeopleAsync() =>
         await _context.People
+            .Include(p =>p.Films)
+            .Include(p => p.FilmPerson)
             .OrderBy(p => p.FirstName)
             .ThenBy(p => p.LastName)
             .AsNoTracking()

@@ -13,5 +13,11 @@
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/film/view/{Film.FilmId}")>
             View
         </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/film/edit/{Film.FilmId}")>
+            Edit
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" Href=@($"/film/delete/{Film.FilmId}")>
+            Delete
+        </MudButton>
     </MudCardActions>
 </MudCard>
