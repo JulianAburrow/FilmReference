@@ -26,7 +26,7 @@
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/person/edit/{Person.PersonId}")>
             Edit
         </MudButton>
-        @if (Person.Films.Count == 0 && Person.FilmPerson.Count == 0)
+        @if (Person.Films?.Count == 0 && Person.FilmPerson.Count == 0)
         {            
             <MudButton Variant="Variant.Filled" Color="Color.Error" Href=@($"/person/delete/{Person.PersonId}")>
                 Delete
