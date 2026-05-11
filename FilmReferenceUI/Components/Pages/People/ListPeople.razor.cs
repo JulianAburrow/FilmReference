@@ -8,11 +8,26 @@ public partial class ListPeople
 
     private List<PersonModel> FilteredPersonModels { get; set; } = null!;
 
+    private Dictionary<string, int> LetterCounts { get; set; } = new();
+
     protected override async Task OnInitializedAsync()
     {
         AllPersonModels = await PersonHandler.GetPeopleAsync();
         MainLayout.SetHeaderValue("View People");
         FilterPeople(Initial);
+        BuildLetterCounts();
+    }
+
+    private void BuildLetterCounts()
+    {
+        LetterCounts = Enumerable.Range('A', 26)
+            .Select(c => ((char)c).ToString())
+            .ToDictionary(
+                letter => letter,
+                letter => AllPersonModels.Count(p =>
+                    p.FirstName.StartsWith(letter, StringComparison.OrdinalIgnoreCase)
+                )
+            );
     }
 
     private void FilterPeople(string initial)

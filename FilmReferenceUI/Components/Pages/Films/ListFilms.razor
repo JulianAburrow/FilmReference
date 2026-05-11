@@ -20,7 +20,7 @@
            Color="@(NormaliseHelper.Normalised(Genre) == "all" ? Color.Error : Color.Primary)"
            OnClick="@(() => FilterFilms("All"))"
            Class="ma-1">
-    All
+    All (@AllFilmModels.Count)
 </MudButton>
 
 @foreach (var genreModel in GenreModels)
@@ -29,7 +29,7 @@
                Color="@(NormaliseHelper.Normalised(Genre) == NormaliseHelper.Normalised(genreModel.Name) ? Color.Error : Color.Primary)"
                OnClick="@(() => FilterFilms(genreModel.Name))"
                Class="ma-1">
-        @genreModel.Name
+        @genreModel.Name (@genreModel.Films.Count)
     </MudButton>
 }
 

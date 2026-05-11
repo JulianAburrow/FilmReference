@@ -18,7 +18,7 @@
            Color="@(NormaliseHelper.Normalised(Initial) == "all" ? Color.Error : Color.Primary)"
            OnClick="@(() => FilterPeople("All"))"
            Class="ma-1">
-    All
+    All (@AllPersonModels.Count)
 </MudButton>
 
 @foreach (var letter in Enumerable.Range('A', 26).Select(c => ((char)c).ToString()))
@@ -28,8 +28,8 @@
                Color="@(NormaliseHelper.Normalised(Initial).ToLower() == NormaliseHelper.Normalised(letter) ? Color.Error : Color.Primary)"
         OnClick="(() => FilterPeople(letter))"
         Class="ma-1">
-            @letter
-        </MudButton>
+            @letter (@LetterCounts[letter])
+    </MudButton>
 }
 
 <br />
