@@ -1,6 +1,6 @@
 ﻿CREATE TABLE Person (
 	PersonId INT NOT NULL IDENTITY (1, 1),
-	FirstName NVARCHAR(50) NULL,
+	FirstName NVARCHAR(50) NOT NULL,
 	LastName NVARCHAR(50) NULL,
 	Description NVARCHAR(500) NULL,
 	IsCastMember BIT NOT NULL,
