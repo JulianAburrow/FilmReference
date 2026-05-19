@@ -1,4 +1,4 @@
-﻿namespace FilmReferenceBlazor.Tests.Helpers;
+﻿namespace FilmReferenceTests.Helpers;
 
 public static class TestDataFactory
 {

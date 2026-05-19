@@ -1,4 +1,4 @@
-﻿namespace FilmReferenceBlazor.Tests;
+﻿namespace FilmReferenceTests;
 
 public class GenreTests
 {

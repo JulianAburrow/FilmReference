@@ -28,7 +28,7 @@ jobs:
         run: |
           dotnet build FilmReferenceUI/FilmReferenceUI.csproj --no-restore --configuration Release
           dotnet build FilmReferenceDataAccess/FilmReferenceDataAccess.csproj --no-restore --configuration Release
-          dotnet build FilmReferenceBlazor.Tests/FilmReferenceBlazor.Tests.csproj --no-restore --configuration Release
+          dotnet build FilmReferenceTests/FilmReferenceTests.csproj --no-restore --configuration Release
 
       - name: Run tests
-        run: dotnet test FilmReferenceBlazor.Tests/FilmReferenceBlazor.Tests.csproj --no-build --configuration Release --verbosity normal
+        run: dotnet test FilmReferenceTests/FilmReferenceTests.csproj --no-build --configuration Release --verbosity normal
