@@ -28,7 +28,7 @@ It leverages **MudBlazor** for modern components, **Entity Framework Core** for 
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** Blazor WebAssembly
+- **Frontend:** Blazor Server
 - **UI Framework:** [MudBlazor](https://mudblazor.com/)
 - **Backend/Data:** Entity Framework Core
 - **Language:** C# / .NET
