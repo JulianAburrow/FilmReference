@@ -47,8 +47,13 @@ public partial class ListPeople
 
         var peopleWord = FilteredPersonModels.Count == 1 ? "person" : "people";
         var initialText = initial == "All" ? "" : $"with initial {initial}";
+
+        var message = string.IsNullOrWhiteSpace(initialText)
+            ? $"{FilteredPersonModels.Count} {peopleWord} found."
+            : $"{FilteredPersonModels.Count} {peopleWord} found {initialText}.";
+
         Snackbar.Add(
-            $"{FilteredPersonModels.Count} {peopleWord} found {initialText}.",
+            message,
             FilteredPersonModels.Count > 0 ? Severity.Info : Severity.Warning);
     }
 }
