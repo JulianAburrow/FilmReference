@@ -15,7 +15,7 @@
         <h4>This Studio cannot be deleted as it is in use.</h4>
     </MudAlert>
     <br />
-    <a href="/studios/liststudios" class="btn btn-primary">Back to list</a>
+    <a href="/studio/view/@StudioId" class="btn btn-primary">Cancel</a>
     return;
 }
 else
@@ -34,7 +34,7 @@ else
             <MudCardActions>
                 <button class="btn btn-danger" @onclick="DeleteStudioAsync">Delete</button>
                 &nbsp;
-                <a class="btn btn-primary" href="/studios/liststudios">Cancel</a>
+                <a class="btn btn-primary" href="/studio/view/@StudioId">Cancel</a>
             </MudCardActions>
         </MudCard>
     </MudItem>

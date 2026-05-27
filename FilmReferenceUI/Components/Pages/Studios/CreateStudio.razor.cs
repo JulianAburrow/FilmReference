@@ -2,7 +2,7 @@
 
 public partial class CreateStudio
 {
-    protected override void OnInitialized() =>
+    protected override async Task OnInitializedAsync() =>
         MainLayout.SetHeaderValue("Create Studio");
 
     private async Task CreateStudioAsync()

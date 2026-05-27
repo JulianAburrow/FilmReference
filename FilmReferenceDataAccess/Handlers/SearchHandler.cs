@@ -10,8 +10,7 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
             .Include(f => f.Genre)
             .Include(f => f.Studio)
             .Where(f =>
-                f.Name.Contains(searchText) ||
-                f.Description.Contains(searchText))
+                f.Name.Contains(searchText))
             .OrderBy(f => f.Name)
             .AsNoTracking()
             .ToListAsync();
@@ -20,8 +19,7 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
         await _context.Genres
             .Include(g => g.Films)
             .Where(g =>
-                g.Name.Contains(searchText) ||
-                (g.Description != null && g.Description.Contains(searchText)))
+                g.Name.Contains(searchText))
             .OrderBy(g => g.Name)
             .AsNoTracking()
             .ToListAsync();
@@ -44,8 +42,7 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
 
             query = query.Where(person =>
                 EF.Functions.Like(person.FirstName, $"%{p}%") ||
-                EF.Functions.Like(person.LastName, $"%{p}%") ||
-                EF.Functions.Like(person.Description, $"%{p}%")
+                EF.Functions.Like(person.LastName, $"%{p}%")
             );
         }
 
@@ -60,8 +57,7 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
         await _context.Studios
             .Include(s => s.Films)
             .Where(s =>
-                s.Name.Contains(searchText) ||
-                (s.Description != null && s.Description.Contains(searchText)))
+                s.Name.Contains(searchText))
             .OrderBy(s => s.Name)
             .AsNoTracking()
             .ToListAsync();

@@ -1,5 +1,4 @@
-﻿
-namespace FilmReferenceDataAccess.Handlers;
+﻿namespace FilmReferenceDataAccess.Handlers;
 
 public class FilmHandler(FilmReferenceContext context) : IFilmHandler
 {
@@ -7,6 +6,8 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
 
     public async Task CreateFilmAsync(FilmModel film, IEnumerable<int> selectedCastMemberIds, bool saveChanges)
     {
+        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        
         var filmToAdd = new FilmModel
         {
             Name = film.Name,
@@ -40,10 +41,14 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
                 await SaveChangesAsync();
             }
         }
+
+        scope.Complete();        
     }
 
     public async Task DeleteFilmAsync(int filmId, bool saveChanges)
     {
+        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
         var filmToDelete = _context.Films
             .Include(f => f.FilmPerson)
             .FirstOrDefault(f => f.FilmId == filmId);
@@ -63,6 +68,8 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
         {
             await SaveChangesAsync();
         }
+
+        scope.Complete();
     }
 
     public async Task<FilmModel> GetFilmAsync(int filmId)
@@ -97,6 +104,7 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
                 Description = f.Description,
                 BoxCover = f.BoxCover,
                 GenreId = f.GenreId,
+                StudioId = f.StudioId,
                 Studio = new StudioModel { StudioId = f.StudioId, Name = f.Studio.Name },
                 Genre = new GenreModel { GenreId = f.GenreId, Name = f.Genre.Name }
             })
@@ -107,6 +115,8 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
 
     public async Task UpdateFilmAsync(FilmModel film, IEnumerable<int> selectedCastMemberIds, bool saveChanges)
     {
+        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
         var filmToUpdate = _context.Films
             .FirstOrDefault(f => f.FilmId == film.FilmId);
         if (filmToUpdate is null)
@@ -141,5 +151,7 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
                 await SaveChangesAsync();
             }
         }
+
+        scope.Complete();
     }
 }

@@ -51,6 +51,11 @@
 
 @if (SearchModel.SearchType == (int)SearchTypeEnum.Film)
 {
+    <a href="/film/create" class="btn btn-primary">Create Film</a>
+
+	<br />
+	<br />
+
 	@if(FilmsFound.Count == 0)
 	{
 		<LoadingComponent DisplayValue="No films found" />
@@ -64,9 +69,14 @@
 
 @if (SearchModel.SearchType == (int)SearchTypeEnum.Genre)
 {
+	<a href="/genre/create" class="btn btn-primary">Create Genre</a>
+
+	<br />
+	<br />
+
 	@if (GenresFound.Count == 0)
 	{
-		<LoadingComponent DisplayValue="No genres found" />
+		<LoadingComponent DisplayValue="No genres found" />		
 		return;
 	}
 
@@ -77,6 +87,11 @@
 
 @if (SearchModel.SearchType == (int)SearchTypeEnum.Person)
 {
+	<a href="/person/create" class="btn btn-primary">Create Person</a>
+
+	<br />
+	<br />
+
 	@if(PeopleFound.Count == 0)
 	{
 		<LoadingComponent DisplayValue="No people found" />
@@ -90,9 +105,14 @@
 
 @if (SearchModel.SearchType == (int)SearchTypeEnum.Studio)
 {
+	<a href="/studio/create" class="btn btn-primary">Create Studio</a>
+
+	<br />
+	<br />
+
 	@if(StudiosFound.Count == 0)
 	{
-		<LoadingComponent DisplayValue="No studios found." />
+		<LoadingComponent DisplayValue="No studios found." />		
 		return;
 	}
 

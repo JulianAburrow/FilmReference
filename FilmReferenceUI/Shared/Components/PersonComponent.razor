@@ -16,12 +16,23 @@
         <MudText>@textToShow</MudText>
         <MudText>@Person.Description</MudText>
         <br />
-        <ViewImageComponent ImageData="@Person.Picture" ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
+        <a href="/person/view/@Person.PersonId">
+            <ViewImageComponent ImageData="@Person.Picture" ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
+        </a>
     </MudCardContent>
 
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/person/view/{Person.PersonId}")>
             View
         </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/person/edit/{Person.PersonId}")>
+            Edit
+        </MudButton>
+        @if (Person.Films?.Count == 0 && Person.FilmPerson.Count == 0)
+        {            
+            <MudButton Variant="Variant.Filled" Color="Color.Error" Href=@($"/person/delete/{Person.PersonId}")>
+                Delete
+            </MudButton>
+        }
     </MudCardActions>
 </MudCard>

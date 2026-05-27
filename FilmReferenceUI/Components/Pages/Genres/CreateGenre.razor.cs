@@ -2,7 +2,7 @@
 
 public partial class CreateGenre
 {
-    protected override void OnInitialized() =>
+    protected override async Task OnInitializedAsync() =>
         MainLayout.SetHeaderValue("Create Genre");
 
     private async Task CreateGenreAsync()
