@@ -15,7 +15,7 @@
         <h4>This Genre cannot be deleted as it is in use.</h4>
     </MudAlert>
     <br />
-    <a href = "/genres/listgenres" class="btn btn-primary">Back to list</a>
+    <a href = "/genre/view/@GenreId" class="btn btn-primary">Cancel</a>
     return;
 }
 else
@@ -34,7 +34,7 @@ else
             <MudCardActions>
                 <button class="btn btn-danger" @onclick="DeleteGenreAsync">Delete</button>
                 &nbsp;
-                <a class="btn btn-primary" href="/genres/listgenres">Cancel</a>
+                <a class="btn btn-primary" href="/genre/view/@GenreId">Cancel</a>
             </MudCardActions>
         </MudCard>
     </MudItem>
