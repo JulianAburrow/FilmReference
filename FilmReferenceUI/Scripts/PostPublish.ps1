@@ -37,7 +37,7 @@ try {
 # Run xUnit tests
 try {
     Log "Running xUnit tests..."
-    dotnet test "C:\JuliansWork\WebApplications\FilmReferenceBlazor\FilmReferenceBlazor.Tests\FilmReferenceBlazor.Tests.csproj"
+    dotnet test "C:\JuliansWork\WebApplications\FilmReference\FilmReferenceTests\FilmReferenceTests.csproj"
     if ($LASTEXITCODE -ne 0) {
         Log "xUnit tests failed with exit code $LASTEXITCODE"
         $ScriptFailed = $true
