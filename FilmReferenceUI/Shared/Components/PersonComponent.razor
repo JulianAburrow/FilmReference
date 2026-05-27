@@ -16,7 +16,9 @@
         <MudText>@textToShow</MudText>
         <MudText>@Person.Description</MudText>
         <br />
-        <ViewImageComponent ImageData="@Person.Picture" ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
+        <a href="/person/view/@Person.PersonId">
+            <ViewImageComponent ImageData="@Person.Picture" ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
+        </a>
     </MudCardContent>
 
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">

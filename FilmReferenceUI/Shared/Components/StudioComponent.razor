@@ -8,7 +8,9 @@
         <br />
         <MudText>@Studio.Films.Count @(Studio.Films.Count == 1 ? "film" : "films") for this studio</MudText>
         <br />
-        <ViewImageComponent ImageData="@Studio.Logo" ImageTitle="@($"{Studio.Name} Logo")" />
+        <a href="/studio/view/@Studio.StudioId">
+            <ViewImageComponent ImageData="@Studio.Logo" ImageTitle="@($"{Studio.Name} Logo")" />
+        </a>
     </MudCardContent>
 
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
