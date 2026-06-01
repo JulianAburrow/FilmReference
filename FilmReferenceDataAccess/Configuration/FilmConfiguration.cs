@@ -5,7 +5,7 @@ public class FilmConfiguration : IEntityTypeConfiguration<FilmModel>
     public void Configure(EntityTypeBuilder<FilmModel> builder)
     {
         builder.ToTable("Film");
-        builder.HasKey(nameof(FilmModel.FilmId));
+        builder.HasKey(f => f.FilmId);
         builder.HasOne(e => e.Genre)
             .WithMany(e => e.Films)
             .HasForeignKey(e => e.GenreId)

@@ -67,5 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FilmReferenceDatabase.publish.xml" />
+    <Build Include="Tables\Favourite.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="FilmReferenceDatabase.refactorlog" />
   </ItemGroup>
 </Project>

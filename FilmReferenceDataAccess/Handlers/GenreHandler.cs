@@ -28,13 +28,6 @@ public class GenreHandler(FilmReferenceContext context) : IGenreHandler
         }
     }
 
-    public async Task<string> GetFirstGenreAsync() =>
-        await _context.Genres
-            .OrderBy(g => g.Name)
-            .AsNoTracking()
-            .Select(g => g.Name)
-            .FirstOrDefaultAsync() ?? string.Empty;
-
     public async Task<GenreModel> GetGenreAsync(int genreId)
     {
         var genre = await _context.Genres

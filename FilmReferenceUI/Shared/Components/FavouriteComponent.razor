@@ -1,0 +1,17 @@
+﻿<MudCard Class="ma-2 pa-2" Style="width: 100%; max-width: 350px;">
+    <MudCardHeader>
+        <MudText Typo="Typo.h6">@Favourite.EntityName</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <a href="@($"/{Favourite.EntityTypeName}/View/{Favourite.EntityId}")">
+            <ViewImageComponent ImageData="@Favourite.EntityImage"
+                                ImageTitle="@($"{Favourite.EntityName} Picture")" />
+        </a>
+    </MudCardContent>
+    <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/{Favourite.EntityTypeName}/view/{Favourite.EntityId}")>
+            View
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="RemoveFavourite">Unfavourite</MudButton>
+    </MudCardActions>
+</MudCard>

@@ -1,4 +1,6 @@
-﻿namespace FilmReferenceUI.Components.Pages.Genres;
+﻿using FilmReferenceDataAccess.Enums;
+
+namespace FilmReferenceUI.Components.Pages.Genres;
 
 public partial class ViewGenre
 {
@@ -7,5 +9,7 @@ public partial class ViewGenre
         GenreModel = await GenreHandler.GetGenreAsync(GenreId);
         PreventDeleting = GenreModel.Films.Any();
         MainLayout.SetHeaderValue("View Genre");
+        var isFavourite = await FavouriteHandler.IsFavouriteAsync((int)FavouriteEntityEnum.Genre, GenreId);
+        MainLayout.ConfigureFavouriteButton(FavouriteEntityEnum.Genre, GenreId, isFavourite);
     }
 }

@@ -5,7 +5,7 @@ public class StudioConfiguration : IEntityTypeConfiguration<StudioModel>
     public void Configure(EntityTypeBuilder<StudioModel> builder)
     {
         builder.ToTable("Studio");
-        builder.HasKey(nameof(StudioModel.StudioId));
+        builder.HasKey(f => f.StudioId);
         builder.HasMany(e => e.Films)
             .WithOne(e => e.Studio)
             .HasForeignKey(e => e.StudioId)
