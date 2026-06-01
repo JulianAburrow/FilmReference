@@ -2,6 +2,7 @@
 
 public class FilmReferenceContext(DbContextOptions<FilmReferenceContext> options) : DbContext(options)
 {
+    public DbSet<FavouriteModel> Favourites { get; set; }
     public DbSet<FilmModel> Films { get; set; }
     public DbSet<FilmPersonModel> FilmPeople { get; set; }
     public DbSet<GenreModel> Genres { get; set; }
@@ -17,6 +18,7 @@ public class FilmReferenceContext(DbContextOptions<FilmReferenceContext> options
             property.SetIsUnicode(false);
         }
 
+        builder.ApplyConfiguration(new FavouriteConfiguration());
         builder.ApplyConfiguration(new FilmConfiguration());
         builder.ApplyConfiguration(new FilmPersonConfiguration());
         builder.ApplyConfiguration(new GenreConfiguration());

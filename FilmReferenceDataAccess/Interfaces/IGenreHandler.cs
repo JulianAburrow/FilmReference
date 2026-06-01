@@ -2,8 +2,6 @@
 
 public interface IGenreHandler
 {
-    Task<string> GetFirstGenreAsync();
-
     Task<List<GenreModel>> GetGenresAsync();
 
     Task<GenreModel> GetGenreAsync(int genreId);

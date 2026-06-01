@@ -8,6 +8,8 @@ public class BasePageClass : ComponentBase
 
     [Inject] protected ISnackbar Snackbar { get; set; } = null!;
 
+    [Inject] protected IFavouriteHandler FavouriteHandler { get; set; } = null!;
+
     [CascadingParameter] public MainLayout MainLayout { get; set; } = new();
 
     protected bool PreventDeleting;

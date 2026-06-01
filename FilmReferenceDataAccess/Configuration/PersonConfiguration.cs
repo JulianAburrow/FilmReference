@@ -5,7 +5,7 @@ public class PersonConfiguration : IEntityTypeConfiguration<PersonModel>
     public void Configure(EntityTypeBuilder<PersonModel> builder)
     {
         builder.ToTable("Person");
-        builder.HasKey(nameof(PersonModel.PersonId));
+        builder.HasKey(f => f.PersonId);
         builder.HasMany(e => e.Films)
             .WithOne(e => e.Director)
             .HasForeignKey(e => e.DirectorId)

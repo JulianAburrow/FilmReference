@@ -1,4 +1,6 @@
-﻿namespace FilmReferenceUI.Components.Pages.Films;
+﻿using FilmReferenceDataAccess.Enums;
+
+namespace FilmReferenceUI.Components.Pages.Films;
 
 public partial class ViewFilm
 {
@@ -8,6 +10,8 @@ public partial class ViewFilm
     {
         FilmModel = await FilmHandler.GetFilmAsync(FilmId);
         MainLayout.SetHeaderValue("View Film");
+        var isFavourite = await FavouriteHandler.IsFavouriteAsync((int)FavouriteEntityEnum.Film, FilmId);
+        MainLayout.ConfigureFavouriteButton(FavouriteEntityEnum.Film, FilmId, isFavourite);
         if (FilmModel.FilmPerson is null)
         {
             return;

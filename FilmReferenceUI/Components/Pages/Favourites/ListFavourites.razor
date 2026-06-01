@@ -1,0 +1,19 @@
+﻿@page "/favourites/listfavourites"
+@inherits FavouritesBasePageClass
+
+<PageTitle>Favourites</PageTitle>
+
+@if (FavouriteDisplayModels is null)
+{
+    <LoadingComponent />
+    return;
+}
+
+@if (!FavouriteDisplayModels.Any())
+{
+    <p>No favourites found.</p>
+    return;
+}
+
+<ListFavouritesComponent FavouriteDisplayModels="FavouriteDisplayModels" OnRemoved="HandleRemoved" />
+
