@@ -51,6 +51,8 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
         }
 
         return await query
+            .Include(p => p.Films)
+            .Include(p => p.FilmPerson)
             .OrderBy(p => p.FirstName)
             .ThenBy(p => p.LastName)
             .AsNoTracking()
