@@ -5,7 +5,7 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
 {
     private readonly FilmReferenceContext _context = context;
 
-    private string collation = "SQL_Latin1_General_CP1_CI_AI";
+    private const string collation = "SQL_Latin1_General_CP1_CI_AI";
 
     public async Task<List<FilmModel>> SearchFilmsAsync(string searchText) =>
         await _context.Films
@@ -43,9 +43,9 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
             var p = part; // avoid modified closure
 
             query = query.Where(person =>
-                EF.Functions.Collate(person.FirstName, "SQL_Latin1_General_CP1_CI_AI").Contains(p) ||
+                EF.Functions.Collate(person.FirstName, collation).Contains(p) ||
                 (person.LastName != null &&
-                    EF.Functions.Collate(person.LastName, "SQL_Latin1_General_CP1_CI_AI").Contains(p))
+                    EF.Functions.Collate(person.LastName, collation).Contains(p))
 
             );
         }
