@@ -5,12 +5,14 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
 {
     private readonly FilmReferenceContext _context = context;
 
+    private string collation = "SQL_Latin1_General_CP1_CI_AI";
+
     public async Task<List<FilmModel>> SearchFilmsAsync(string searchText) =>
         await _context.Films
             .Include(f => f.Genre)
             .Include(f => f.Studio)
-            .Where(f =>
-                f.Name.Contains(searchText))
+            .Where(f => EF.Functions.Collate(f.Name, collation)
+                .Contains(searchText))
             .OrderBy(f => f.Name)
             .AsNoTracking()
             .ToListAsync();
@@ -18,8 +20,8 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
     public async Task<List<GenreModel>> SearchGenresAsync(string searchText) =>
         await _context.Genres
             .Include(g => g.Films)
-            .Where(g =>
-                g.Name.Contains(searchText))
+            .Where(g => EF.Functions.Collate(g.Name, collation)
+                .Contains(searchText))
             .OrderBy(g => g.Name)
             .AsNoTracking()
             .ToListAsync();
@@ -41,8 +43,10 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
             var p = part; // avoid modified closure
 
             query = query.Where(person =>
-                EF.Functions.Like(person.FirstName, $"%{p}%") ||
-                EF.Functions.Like(person.LastName, $"%{p}%")
+                EF.Functions.Collate(person.FirstName, "SQL_Latin1_General_CP1_CI_AI").Contains(p) ||
+                (person.LastName != null &&
+                    EF.Functions.Collate(person.LastName, "SQL_Latin1_General_CP1_CI_AI").Contains(p))
+
             );
         }
 
@@ -56,8 +60,8 @@ public class SearchHandler(FilmReferenceContext context) : ISearchHandler
     public async Task<List<StudioModel>> SearchStudiosAsync(string searchText) =>
         await _context.Studios
             .Include(s => s.Films)
-            .Where(s =>
-                s.Name.Contains(searchText))
+            .Where(s => EF.Functions.Collate(s.Name, collation)
+                .Contains(searchText))
             .OrderBy(s => s.Name)
             .AsNoTracking()
             .ToListAsync();
