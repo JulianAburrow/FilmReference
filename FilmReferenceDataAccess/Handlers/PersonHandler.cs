@@ -28,6 +28,35 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         }
     }
 
+    public async Task<RandomPersonModel?> GetRandomPersonAsync()
+    {
+        var castQuery = _context.People
+            .Where(p => p.IsCastMember && p.Picture != null);
+
+        var castCount = await castQuery.CountAsync();
+
+        if (castCount == 0)
+            return null;
+
+        var random = new Random();
+        var randomIndex = random.Next(castCount);
+
+        var person = await castQuery
+            .Skip(randomIndex)
+            .FirstOrDefaultAsync();
+
+        if (person is null)
+            return null;
+
+        return new RandomPersonModel
+        {
+            PersonId = person.PersonId,
+            FirstName = person.FirstName,
+            LastName = person.LastName,
+            Picture = person.Picture
+        };
+    }
+
     public async Task<List<PersonModel>> GetPeopleAsync() =>
         await _context.People
             .Include(p =>p.Films)

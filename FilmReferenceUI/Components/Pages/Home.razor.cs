@@ -1,4 +1,6 @@
-﻿namespace FilmReferenceUI.Components.Pages;
+﻿using System.Timers;
+
+namespace FilmReferenceUI.Components.Pages;
 
 public partial class Home
 {
@@ -10,6 +12,8 @@ public partial class Home
 
     private List<PersonModel> PeopleFound = [];
 
+    private RandomPersonModel? RandomPerson = null!;
+
     private List<StudioModel> StudiosFound = [];
 
     private bool SubmitClicked;
@@ -19,7 +23,8 @@ public partial class Home
     protected override async Task OnInitializedAsync()
     {
         SearchModel.SearchType = SharedValues.PleaseSelectValue;
-        MainLayout.SetHeaderValue("Home / Search");
+        MainLayout.SetHeaderValue("Home / Search");        
+        RandomPerson = await PersonHandler.GetRandomPersonAsync();
     }
 
     private async Task DoSearch()
