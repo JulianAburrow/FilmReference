@@ -3,11 +3,33 @@
 
 <PageTitle>Film Reference</PageTitle>
 
+@if (RandomPerson is null)
+{
+    <LoadingComponent DisplayValue="Loading..." />
+    return;
+}
+
 <h1>Film Reference</h1>
 
-<p>Welcome to your film reference application!</p>
+<h6>Welcome to your film reference application! Use this application to manage all your favoutite films.</h6>
 
-<p>Use this application to manage all your favoutite films...</p>
+<MudCard Class="ma-2 pa-2" Style="width: 100%; max-width: 350px;">
+	<MudCardHeader>
+		<MudText Typo="Typo.h6">@RandomPerson.FirstName @RandomPerson.LastName</MudText>
+	</MudCardHeader>
+	<MudCardContent>
+		<a href="/person/view/@RandomPerson.PersonId">
+			<ViewImageComponent ImageData="@RandomPerson.Picture"
+								ImageTitle="@($"{RandomPerson.FirstName} {RandomPerson.LastName} Photo")" />
+		</a>
+	</MudCardContent>
+
+	<MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
+		<MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/person/view/{RandomPerson.PersonId}")>
+			View
+		</MudButton>
+	</MudCardActions>
+</MudCard>
 
 <h2>Search</h2>
 
