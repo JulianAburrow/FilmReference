@@ -20,8 +20,9 @@
 	<MudCardContent>
 		<a href="/person/view/@RandomPerson.PersonId">
 			<ViewImageComponent ImageData="@RandomPerson.Picture"
-								ImageTitle="@($"{RandomPerson.FirstName} {RandomPerson.LastName} Photo")" />
-		</a>
+                                ImageTitle="@($"{RandomPerson.FirstName} {RandomPerson.LastName} Photo")" />
+        </a>
+        <MudText Typo="Typo.subtitle2">@RandomPerson.FilmCount @(RandomPerson.FilmCount == 1 ? "film" : "films")</MudText>
 	</MudCardContent>
 
 	<MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
