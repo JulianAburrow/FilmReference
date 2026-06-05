@@ -31,6 +31,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
     public async Task<RandomPersonModel?> GetRandomPersonAsync()
     {
         var castQuery = _context.People
+            .Include(p => p.FilmPerson)
             .Where(p => p.IsCastMember && p.Picture != null);
 
         var castCount = await castQuery.CountAsync();
@@ -53,6 +54,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
             PersonId = person.PersonId,
             FirstName = person.FirstName,
             LastName = person.LastName,
+            FilmCount = person.FilmPerson.Count,
             Picture = person.Picture
         };
     }

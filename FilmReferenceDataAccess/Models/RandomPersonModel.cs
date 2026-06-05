@@ -8,5 +8,7 @@ public class RandomPersonModel
 
     public string? LastName { get; set; } = null!;
 
+    public int FilmCount { get; set; }
+
     public byte[]? Picture { get; set; }
 }
