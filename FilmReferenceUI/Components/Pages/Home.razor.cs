@@ -23,8 +23,18 @@ public partial class Home
     protected override async Task OnInitializedAsync()
     {
         SearchModel.SearchType = SharedValues.PleaseSelectValue;
-        MainLayout.SetHeaderValue("Home / Search");        
+        MainLayout.SetHeaderValue("Home / Search");  
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
         RandomPerson = await PersonHandler.GetRandomPersonAsync();
+        StateHasChanged();
     }
 
     private async Task DoSearch()
