@@ -4,6 +4,8 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
 {
     private readonly FilmReferenceContext _context = context;
 
+    private static readonly Random _random = new();
+
     public async Task CreatePersonAsync(PersonModel person, bool saveChanges)
     {
         _context.People.Add(person);
@@ -39,8 +41,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         if (castCount == 0)
             return null;
 
-        var random = new Random();
-        var randomIndex = random.Next(castCount);
+        var randomIndex = _random.Next(castCount);
 
         var person = await castQuery
             .Skip(randomIndex)
@@ -59,15 +60,26 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         };
     }
 
-    public async Task<List<PersonModel>> GetPeopleAsync() =>
+    public async Task<List<PersonModel>> GetCastMembersAsync() =>
         await _context.People
             .Include(p =>p.Films)
             .Include(p => p.FilmPerson)
+            .Where(p => p.IsCastMember)
             .OrderBy(p => p.FirstName)
             .ThenBy(p => p.LastName)
             .AsNoTracking()
             .ToListAsync();
-    
+
+    public async Task<List<PersonModel>> GetDirectorsAsync() =>
+        await _context.People
+            .Include(p => p.Films)
+            .Include(p => p.FilmPerson)
+            .Where(p => p.IsDirector)
+            .OrderBy(p => p.FirstName)
+            .ThenBy(p => p.LastName)
+            .AsNoTracking()
+            .ToListAsync();
+
     public async Task<PersonModel> GetPersonAsync(int personId)
     {
         var person = await _context.People

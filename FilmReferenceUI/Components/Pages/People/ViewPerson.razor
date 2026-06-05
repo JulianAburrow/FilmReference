@@ -19,7 +19,7 @@
                     <a href="/person/delete/@PersonModel.PersonId" class="btn btn-danger">Delete</a>
                 }
                 &nbsp;
-                <a class="btn btn-primary" href="/people/listpeople")">All People</a>
+                <a class="btn btn-primary" href="@($"/people/listpeople/{(PersonModel.IsCastMember ? "castmembers" : "directors")}")">All @(PersonModel.IsCastMember ? "Cast Members" : "Directors")</a>
             </MudCardActions>
         </MudCard>
     </MudItem>

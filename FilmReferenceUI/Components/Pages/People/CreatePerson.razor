@@ -1,6 +1,13 @@
 ﻿@page "/person/create"
 @inherits PeopleBasePageClass
 
+<PageTitle>Create Person</PageTitle>
+
+@if (ShowRoleError)
+{
+    <p style="color: red">Person must be either a cast member or a director or both.</p>
+}
+
 <EditForm Model="@PersonDisplayModel" OnValidSubmit="CreatePersonAsync">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -12,7 +19,7 @@
                 <MudCardActions>
                     <button type="submit" class="btn btn-primary">Create</button>
                     &nbsp;
-                    <a href="/people/listpeople" class="btn btn-primary">Cancel</a>
+                    <a href="/people/listpeople/castmembers" class="btn btn-primary">Cancel</a>
                 </MudCardActions>
             </MudCard>
         </MudItem>

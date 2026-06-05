@@ -2,6 +2,8 @@
 
 public partial class EditPerson
 {
+    private bool ShowRoleError { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
@@ -14,9 +16,14 @@ public partial class EditPerson
         try
         {
             await CopyDisplayModelToModel();
+            if (!PersonModel.IsDirector && !PersonModel.IsCastMember)
+            {
+                ShowRoleError = true;
+                return;
+            }
             await PersonHandler.UpdatePersonAsync(PersonModel, true);
             Snackbar.Add($"Person {PersonModel.FirstName} successfully updated.", Severity.Success);
-            NavigationManager.NavigateTo("/people/listpeople");
+            NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? "castmembers" : "directors")}");
         }
         catch
         {

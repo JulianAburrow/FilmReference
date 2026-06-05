@@ -2,6 +2,8 @@
 
 public partial class ListPeople
 {
+    [Parameter] public string PersonRole { get; set; } = string.Empty;
+
     private string Initial { get; set; } = "All";
 
     private List<PersonModel> AllPersonModels { get; set; } = null!;
@@ -10,10 +12,30 @@ public partial class ListPeople
 
     private Dictionary<string, int> LetterCounts { get; set; } = new();
 
-    protected override async Task OnInitializedAsync()
+    private RoleEnum? _lastRole;
+
+    protected override async Task OnParametersSetAsync()
     {
-        AllPersonModels = await PersonHandler.GetPeopleAsync();
-        MainLayout.SetHeaderValue("View People");
+        Enum.TryParse<RoleEnum>(PersonRole, true, out var role);
+
+        if(_lastRole == role)
+        {
+            return;
+        }
+
+        _lastRole = role;
+
+        if (role == RoleEnum.CastMembers)
+        {
+            MainLayout.SetHeaderValue("View Cast Members");
+            AllPersonModels = await PersonHandler.GetCastMembersAsync();
+        }
+        if (role == RoleEnum.Directors)
+        {
+            MainLayout.SetHeaderValue("View Directors");
+            AllPersonModels = await PersonHandler.GetDirectorsAsync();
+        }
+
         FilterPeople(Initial);
         BuildLetterCounts();
     }

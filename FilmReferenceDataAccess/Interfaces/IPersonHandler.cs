@@ -2,7 +2,9 @@
 
 public interface IPersonHandler
 {
-    Task<List<PersonModel>> GetPeopleAsync();
+    Task<List<PersonModel>> GetCastMembersAsync();
+
+    Task<List<PersonModel>> GetDirectorsAsync();
 
     Task<PersonModel> GetPersonAsync(int personId);
 
