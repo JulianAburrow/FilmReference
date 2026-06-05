@@ -103,7 +103,7 @@ public class PersonTests
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetPeopleAsync();
+        var result = await handler.GetCastMembersAsync();
 
         result.Should().HaveCount(2);
         result.First().FirstName.Should().Be("Alice"); // ordered by FirstName then LastName
@@ -122,7 +122,7 @@ public class PersonTests
 
         var handler = new PersonHandler(context);
 
-        var result = await handler.GetPeopleAsync();
+        var result = await handler.GetCastMembersAsync();
 
         result.Should().HaveCount(2);
         result.Should().Contain(p => p.FirstName == "Greta");
@@ -130,7 +130,7 @@ public class PersonTests
     }
 
     [Fact]
-    public async Task GetPersonAsync_ShouldReturnPersonWithFilms_WhenExists()
+    public async Task GetCastMemberAsync_ShouldReturnPersonWithFilms_WhenExists()
     {
         using var context = DbContextHelper.GetInMemoryContext();
 
@@ -161,7 +161,7 @@ public class PersonTests
     }
 
     [Fact]
-    public async Task GetPersonAsync_ShouldReturnPersonWithMultipleFilms_OrderedByName()
+    public async Task GetCastMemberAsync_ShouldReturnPersonWithMultipleFilms_OrderedByName()
     {
         using var context = DbContextHelper.GetInMemoryContext();
 
@@ -205,7 +205,7 @@ public class PersonTests
     }
 
     [Fact]
-    public async Task GetPersonAsync_ShouldReturnEmptyPerson_WhenNotFound()
+    public async Task GetCastMemberAsync_ShouldReturnEmptyPerson_WhenNotFound()
     {
         using var context = DbContextHelper.GetInMemoryContext();
         var handler = new PersonHandler(context);
@@ -214,5 +214,262 @@ public class PersonTests
 
         result.Should().NotBeNull();
         result.PersonId.Should().Be(0); // default new PersonModel
+    }
+
+    [Fact]
+    public async Task GetDirectorAsync_ShouldReturnPersonWithFilms_WhenExists()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        var genre = new GenreModel { Name = "Drama" };
+        var studio = new StudioModel { Name = "A24" };
+        var film = new FilmModel { Name = "Test Film", Genre = genre, Studio = studio };
+        var person = new PersonModel { FirstName = "David", LastName = "Jones", IsDirector = true };
+
+        var fp = new FilmPersonModel { Film = film, Person = person };
+
+        context.AddRange(genre, studio, film, person, fp);
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetPersonAsync(person.PersonId);
+
+        result.Should().NotBeNull();
+        result.PersonId.Should().Be(person.PersonId);
+        result.FirstName.Should().Be("David");
+        result.LastName.Should().Be("Jones");
+
+        result.FilmPerson.Should().NotBeNull();
+        result.FilmPerson.Should().HaveCount(1);
+        result.FilmPerson.Single().Film.Name.Should().Be("Test Film");
+        result.FilmPerson.Single().Film.Genre.Name.Should().Be("Drama");
+        result.FilmPerson.Single().Film.Studio.Name.Should().Be("A24");
+    }
+
+    [Fact]
+    public async Task GetDirectorAsync_ShouldReturnPersonWithMultipleFilms_OrderedByName()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        var genre1 = new GenreModel { Name = "Drama" };
+        var genre2 = new GenreModel { Name = "Comedy" };
+        var studio1 = new StudioModel { Name = "A24" };
+        var studio2 = new StudioModel { Name = "Universal" };
+
+        var filmA = new FilmModel { Name = "Alpha Film", Genre = genre1, Studio = studio1 };
+        var filmB = new FilmModel { Name = "Beta Film", Genre = genre2, Studio = studio2 };
+
+        var person = new PersonModel { FirstName = "David", LastName = "Jones", IsDirector = true };
+
+        var fp1 = new FilmPersonModel { Film = filmA, Person = person };
+        var fp2 = new FilmPersonModel { Film = filmB, Person = person };
+
+        context.AddRange(genre1, genre2, studio1, studio2, filmA, filmB, person, fp1, fp2);
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetPersonAsync(person.PersonId);
+
+        result.Should().NotBeNull();
+        result.PersonId.Should().Be(person.PersonId);
+        result.FirstName.Should().Be("David");
+        result.LastName.Should().Be("Jones");
+
+        result.FilmPerson.Should().NotBeNull();
+        result.FilmPerson.Should().HaveCount(2);
+
+        var orderedFilms = result.FilmPerson.Select(fp => fp.Film.Name).ToList();
+        orderedFilms.Should().ContainInOrder("Alpha Film", "Beta Film");
+
+        result.FilmPerson.First().Film.Genre.Name.Should().Be("Drama");
+        result.FilmPerson.First().Film.Studio.Name.Should().Be("A24");
+        result.FilmPerson.Last().Film.Genre.Name.Should().Be("Comedy");
+        result.FilmPerson.Last().Film.Studio.Name.Should().Be("Universal");
+    }
+
+    [Fact]
+    public async Task GetDirectorAsync_ShouldReturnEmptyPerson_WhenNotFound()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetPersonAsync(99);
+
+        result.Should().NotBeNull();
+        result.PersonId.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task GetDirectorsAsync_ShouldReturnOrderedList()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        context.People.AddRange(
+            new PersonModel { PersonId = 1, FirstName = "Alice", LastName = "Zulu", IsDirector = true },
+            new PersonModel { PersonId = 2, FirstName = "Alice", LastName = "Alpha", IsDirector = true }
+        );
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetDirectorsAsync();
+
+        result.Should().HaveCount(2);
+        result.First().LastName.Should().Be("Alpha");
+        result.Last().LastName.Should().Be("Zulu");
+    }
+
+    [Fact]
+    public async Task GetDirectorsAsync_ShouldIncludePeopleWhoAreBothDirectorAndCastMember()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        context.People.AddRange(
+            new PersonModel { FirstName = "Greta", LastName = "Gerwig", IsDirector = true, IsCastMember = true },
+            new PersonModel { FirstName = "Gordon", LastName = "Scott", IsDirector = true, IsCastMember = false }
+        );
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetDirectorsAsync();
+
+        result.Should().HaveCount(2);
+        result.Should().Contain(p => p.FirstName == "Greta");
+        result.Should().Contain(p => p.FirstName == "Gordon");
+    }
+
+    [Fact]
+    public async Task GetDirectorsAsync_ShouldReturnEmptyList_WhenNoDirectorsExist()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        context.People.AddRange(
+            new PersonModel { FirstName = "Alice", LastName = "Smith", IsCastMember = true },
+            new PersonModel { FirstName = "Bob", LastName = "Jones", IsCastMember = true }
+        );
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetDirectorsAsync();
+
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetDirectorsAsync_ShouldExcludeNonDirectors()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        context.People.AddRange(
+            new PersonModel { FirstName = "Director", LastName = "One", IsDirector = true },
+            new PersonModel { FirstName = "Actor", LastName = "Two", IsDirector = false }
+        );
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetDirectorsAsync();
+
+        result.Should().HaveCount(1);
+        result.Single().FirstName.Should().Be("Director");
+    }
+
+    [Fact]
+    public async Task GetCastMembersAsync_ShouldExcludeDirectors()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        context.People.AddRange(
+            new PersonModel { FirstName = "Cast", LastName = "Only", IsCastMember = true, IsDirector = false },
+            new PersonModel { FirstName = "Director", LastName = "Only", IsCastMember = false, IsDirector = true }
+        );
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetCastMembersAsync();
+
+        result.Should().HaveCount(1);
+        result.Single().FirstName.Should().Be("Cast");
+    }
+
+    [Fact]
+    public async Task GetRandomPersonAsync_ShouldReturnNull_WhenNoCastMembersExist()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetRandomPersonAsync();
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetRandomPersonAsync_ShouldReturnNull_WhenCastMembersHaveNoPictures()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        context.People.Add(new PersonModel
+        {
+            FirstName = "NoPic",
+            LastName = "Person",
+            IsCastMember = true,
+            Picture = null
+        });
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetRandomPersonAsync();
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetRandomPersonAsync_ShouldReturnCastMemberWithPicture()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        var pic = new byte[] { 1, 2, 3 };
+
+        context.People.AddRange(
+            new PersonModel { PersonId = 1, FirstName = "A", LastName = "One", IsCastMember = true, Picture = pic },
+            new PersonModel { PersonId = 2, FirstName = "B", LastName = "Two", IsCastMember = true, Picture = pic }
+        );
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetRandomPersonAsync();
+
+        result.Should().NotBeNull();
+        result.Picture.Should().NotBeNull();
+        result.PersonId.Should().BeOneOf(1, 2);
+    }
+
+    [Fact]
+    public async Task GetRandomPersonAsync_ShouldExcludeNonCastMembersAndPicturelessPeople()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        var pic = new byte[] { 9, 9, 9 };
+
+        context.People.AddRange(
+            new PersonModel { PersonId = 1, FirstName = "Cast", LastName = "WithPic", IsCastMember = true, Picture = pic },
+            new PersonModel { PersonId = 2, FirstName = "Director", LastName = "Only", IsDirector = true, Picture = pic },
+            new PersonModel { PersonId = 3, FirstName = "Cast", LastName = "NoPic", IsCastMember = true, Picture = null }
+        );
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetRandomPersonAsync();
+
+        result.Should().NotBeNull();
+        result.PersonId.Should().Be(1); // the ONLY valid candidate
     }
 }

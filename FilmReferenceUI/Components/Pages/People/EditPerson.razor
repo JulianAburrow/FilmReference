@@ -9,6 +9,11 @@
     return;
 }
 
+@if (ShowRoleError)
+{
+    <p style="color: red">Person must be either a cast member or a director or both.</p>
+}
+
 <EditForm Model="@PersonDisplayModel" OnValidSubmit="Update">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -20,7 +25,7 @@
                 <MudCardActions>
                     <button type="submit" class="btn btn-primary">Update</button>
                     &nbsp;
-                    <a class="btn btn-primary" href="/people/listpeople">Cancel</a>
+                    <a class="btn btn-primary" href="@($"/people/listpeople/{(PersonModel.IsCastMember ? "castmembers" : "directors")}")">Cancel</a>
                 </MudCardActions>
             </MudCard>
         </MudItem>

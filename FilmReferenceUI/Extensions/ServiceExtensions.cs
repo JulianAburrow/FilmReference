@@ -3,7 +3,7 @@
 public static class ServiceExtensions
 {
     public static void ConfigureSqlConnections(this IServiceCollection services, IConfiguration configuration) =>
-        services.AddDbContext<FilmReferenceContext>(
+        services.AddDbContextFactory<FilmReferenceContext>(
             options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("FilmReferenceConnectionString")));

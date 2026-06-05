@@ -2,6 +2,8 @@
 
 public partial class CreatePerson
 {
+    private bool ShowRoleError { get; set; }
+
     protected override async Task OnInitializedAsync() =>
         MainLayout.SetHeaderValue("Create Person");
 
@@ -10,9 +12,14 @@ public partial class CreatePerson
         try
         {
             await CopyDisplayModelToModel();
+            if (!PersonModel.IsDirector && !PersonModel.IsCastMember)
+            {
+                ShowRoleError = true;
+                return;
+            }
             await PersonHandler.CreatePersonAsync(PersonModel, true);
             Snackbar.Add($"Person {PersonModel.FirstName} successfully created.", Severity.Success);
-            NavigationManager.NavigateTo("/people/listpeople");
+            NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? "castmembers" : "directors")}");
         }
         catch
         {
