@@ -4,16 +4,6 @@
     </MudCardHeader>
 
     <MudCardContent>
-        @{
-            var textToShow = (Person.IsCastMember, Person.IsDirector) switch
-            {
-                (true, true)   => "Directs as well as acts",
-                (false, true)  => "Director",
-                (true, false)  => "Cast Member",
-                _              => string.Empty
-            };
-        }  
-        <MudText>@textToShow</MudText>
         <MudText>@Person.Description</MudText>
         <br />
         <a href="/person/view/@Person.PersonId">
