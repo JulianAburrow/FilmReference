@@ -7,9 +7,8 @@ public partial class EditFilm
         FilmModel = await FilmHandler.GetFilmAsync(FilmId);
         GenreModels = await GenreHandler.GetGenresAsync();
         StudioModels = await StudioHandler.GetStudiosAsync();
-        var AllPeopleModels = await PersonHandler.GetCastMembersAsync();
-        CastMemberModels = AllPeopleModels.Where(p => p.IsCastMember).ToList();
-        DirectorModels = AllPeopleModels.Where(p => p.IsDirector).ToList();
+        CastMemberModels = await PersonHandler.GetCastMembersAsync();
+        DirectorModels = await PersonHandler.GetDirectorsAsync();
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue("Edit Film");
     }

@@ -16,9 +16,8 @@ public partial class CreateFilm
             StudioId = SharedValues.PleaseSelectValue,
             Name = SharedValues.PleaseSelectText,
         });
-        PersonModels = await PersonHandler.GetCastMembersAsync();
-        CastMemberModels = PersonModels.Where(p => p.IsCastMember).ToList();
-        DirectorModels = PersonModels.Where(p => p.IsDirector).ToList();
+        CastMemberModels = await PersonHandler.GetCastMembersAsync();
+        DirectorModels = await PersonHandler.GetDirectorsAsync();
         DirectorModels.Insert(0, new PersonModel
         {
             PersonId = SharedValues.PleaseSelectValue,
