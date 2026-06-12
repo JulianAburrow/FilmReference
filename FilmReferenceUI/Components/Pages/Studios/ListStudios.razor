@@ -21,5 +21,13 @@
     <p>No Studios found.</p>
     return;
 }
+else
+{
+    <h4>
+        @StudioModels.Count()
+        @(StudioModels.Count() == 1 ? "studio" : "studios")
+        found
+    </h4>
+}
 
 <ListStudiosComponent StudioModels="StudioModels" />

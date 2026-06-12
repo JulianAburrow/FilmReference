@@ -21,5 +21,13 @@
     <p>No Genres found.</p>
     return;
 }
+else
+{
+    <h4>
+        @GenreModels.Count()
+        @(GenreModels.Count() == 1 ? "genre" : "genres")
+        found
+    </h4>
+}
 
 <ListGenresComponent GenreModels="GenreModels" />
