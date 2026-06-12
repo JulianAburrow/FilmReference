@@ -1,9 +1,20 @@
 ﻿<MudCardContent>
-    <MudField Label="First Name">@PersonModel.FirstName</MudField>
-    <MudField Label="Last Name">@PersonModel.LastName</MudField>
+    <MudField Label="Name">@PersonModel.FirstName @PersonModel.LastName</MudField>
     <MudField Label="Description">@PersonModel.Description</MudField>
     <MudField Label="Actor">@(PersonModel.IsCastMember ? "Yes" : "No")</MudField>
     <MudField Label="Director">@(PersonModel.IsDirector ? "Yes" : "No")</MudField>
+    @if (PersonModel.DateOfBirth is not null)
+    {
+        <MudField Label="Date of Birth">@PersonModel.DateOfBirth?.ToString("dd/MM/yyyy")</MudField>
+    }    
+    @if (PersonModel.DateOfDeath is not null)
+    {
+        <MudField Label="Date of Death">@PersonModel.DateOfDeath?.ToString("dd/MM/yyyy")</MudField>
+    }
+    @if (PersonModel.Age is not null)
+    {
+        <MudField Label="@(PersonModel.DateOfDeath is not null ? "Aged" : "Age")">@PersonModel.Age</MudField>
+    }
     <br />
 	<ViewImageComponent ImageData="PersonModel.Picture" ImageTitle=@($"{@PersonModel.FirstName} {@PersonModel.LastName} Photo") />
 </MudCardContent>

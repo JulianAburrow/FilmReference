@@ -6,6 +6,8 @@
     <MudTextField Label="Description" @bind-Value="PersonDisplayModel.Description" Lines="3" />
     <MudCheckBox Label="Cast Member" @bind-Value="PersonDisplayModel.IsCastMember" />
     <MudCheckBox Label="Director" @bind-Value="PersonDisplayModel.IsDirector" />
+    <MudTextField Label="Date Of Birth" @bind-Value="PersonDisplayModel.DateOfBirth" Format="dd/MM/yyyy" />
+    <MudTextField Label="Date Of Death" @bind-Value="PersonDisplayModel.DateOfDeath" Format="dd/MM/yyyy" />
     <br />
     <ViewImageComponent ImageData="PersonDisplayModel.Picture" ImageTitle=@($"{PersonDisplayModel.FirstName} {PersonDisplayModel.LastName} Photo") />
     <br />

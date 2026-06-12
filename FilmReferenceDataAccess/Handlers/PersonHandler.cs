@@ -117,6 +117,8 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         personToUpdate.Description = person.Description;
         personToUpdate.IsCastMember = person.IsCastMember;
         personToUpdate.IsDirector = person.IsDirector;
+        personToUpdate.DateOfBirth = person.DateOfBirth;
+        personToUpdate.DateOfDeath = person.DateOfDeath;
         personToUpdate.Picture = person.Picture;
 
         if (saveChanges)

@@ -16,5 +16,9 @@ public class PersonConfiguration : IEntityTypeConfiguration<PersonModel>
             .HasForeignKey(e => e.PersonId)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.NoAction);
+        builder.Property(e => e.DateOfBirth)
+            .HasColumnType("DATETIME2");
+        builder.Property(e => e.DateOfDeath)
+            .HasColumnType("DATETIME2");
     }
 }

@@ -5,6 +5,8 @@
 	Description NVARCHAR(500) NULL,
 	IsCastMember BIT NOT NULL,
 	IsDirector BIT NOT NULL,
+	DateOfBirth DATETIME2 NULL,
+	DateOfDeath DATETIME2 NULL,
 	Picture VARBINARY(MAX) NULL,
 	CONSTRAINT PK_Person PRIMARY KEY (PersonId)
 )
