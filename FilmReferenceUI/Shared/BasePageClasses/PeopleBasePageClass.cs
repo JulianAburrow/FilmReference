@@ -17,6 +17,8 @@ public class PeopleBasePageClass : BasePageClass
         PersonModel.Description = PersonDisplayModel.Description;
         PersonModel.IsCastMember = PersonDisplayModel.IsCastMember;
         PersonModel.IsDirector = PersonDisplayModel.IsDirector;
+        PersonModel.DateOfBirth = PersonDisplayModel.DateOfBirth;
+        PersonModel.DateOfDeath = PersonDisplayModel.DateOfDeath;
 
         if (ImageForDisplay is not null)
         {
@@ -35,6 +37,9 @@ public class PeopleBasePageClass : BasePageClass
         PersonDisplayModel.Description = PersonModel.Description;
         PersonDisplayModel.IsCastMember = PersonModel.IsCastMember;
         PersonDisplayModel.IsDirector = PersonModel.IsDirector;
+        PersonDisplayModel.DateOfBirth = PersonModel.DateOfBirth;
+        PersonDisplayModel.DateOfDeath = PersonModel.DateOfDeath;
+        PersonDisplayModel.Age = PersonModel.Age;
         PersonDisplayModel.Picture = PersonModel.Picture;
         PersonDisplayModel.Films = PersonModel.Films;
     }

@@ -472,4 +472,129 @@ public class PersonTests
         result.Should().NotBeNull();
         result.PersonId.Should().Be(1); // the ONLY valid candidate
     }
+
+    [Fact]
+    public void Age_ShouldCalculateCorrectly_ForLivingPerson()
+    {
+        var person = new PersonModel
+        {
+            DateOfBirth = new DateTime(1980, 1, 1),
+            DateOfDeath = null
+        };
+
+        var expected = DateTime.Now.Year - 1980;
+
+        person.Age.Should().Be(expected);
+    }
+
+    [Fact]
+    public void Age_ShouldCalculateCorrectly_ForDeceasedPerson()
+    {
+        var person = new PersonModel
+        {
+            DateOfBirth = new DateTime(1950, 1, 1),
+            DateOfDeath = new DateTime(2000, 1, 1)
+        };
+
+        person.Age.Should().Be(50);
+    }
+
+    [Fact]
+    public void Age_ShouldBeNull_WhenDateOfBirthIsNull()
+    {
+        var person = new PersonModel
+        {
+            DateOfBirth = null,
+            DateOfDeath = null
+        };
+
+        person.Age.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task CreatePersonAsync_ShouldPersistDobAndDod()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+        var handler = new PersonHandler(context);
+
+        var person = new PersonModel
+        {
+            PersonId = 1,
+            FirstName = "Test",
+            LastName = "Person",
+            DateOfBirth = new DateTime(1975, 5, 20),
+            DateOfDeath = new DateTime(2020, 1, 1)
+        };
+
+        await handler.CreatePersonAsync(person, saveChanges: true);
+
+        var result = await context.People.FindAsync(1);
+
+        result.Should().NotBeNull();
+        result.DateOfBirth.Should().Be(new DateTime(1975, 5, 20));
+        result.DateOfDeath.Should().Be(new DateTime(2020, 1, 1));
+    }
+
+    [Fact]
+    public async Task UpdatePersonAsync_ShouldUpdateDobAndDod()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        var person = new PersonModel
+        {
+            PersonId = 1,
+            FirstName = "Old",
+            LastName = "Name",
+            DateOfBirth = new DateTime(1970, 1, 1),
+            DateOfDeath = null
+        };
+
+        context.People.Add(person);
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var updated = new PersonModel
+        {
+            PersonId = 1,
+            FirstName = "Old",
+            LastName = "Name",
+            DateOfBirth = new DateTime(1980, 2, 2),
+            DateOfDeath = new DateTime(2020, 3, 3)
+        };
+
+        await handler.UpdatePersonAsync(updated, saveChanges: true);
+
+        var result = await context.People.FindAsync(1);
+
+        result.Should().NotBeNull();
+        result.DateOfBirth.Should().Be(new DateTime(1980, 2, 2));
+        result.DateOfDeath.Should().Be(new DateTime(2020, 3, 3));
+    }
+
+    [Fact]
+    public async Task GetPersonAsync_ShouldReturnDobAndDod()
+    {
+        using var context = DbContextHelper.GetInMemoryContext();
+
+        var person = new PersonModel
+        {
+            FirstName = "Test",
+            LastName = "Person",
+            DateOfBirth = new DateTime(1990, 10, 10),
+            DateOfDeath = new DateTime(2020, 10, 10)
+        };
+
+        context.People.Add(person);
+        context.SaveChanges();
+
+        var handler = new PersonHandler(context);
+
+        var result = await handler.GetPersonAsync(person.PersonId);
+
+        result.DateOfBirth.Should().Be(new DateTime(1990, 10, 10));
+        result.DateOfDeath.Should().Be(new DateTime(2020, 10, 10));
+    }
+
+
 }
