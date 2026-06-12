@@ -43,14 +43,14 @@
 }
 else
 {
-    <p>
+    <h4>
         @FilteredFilmModels.Count()
         @(FilteredFilmModels.Count() == 1 ? "film" : "films")
         found in
         @(FilteredFilmModels.Count == AllFilmModels.Count
             ? "all genres"
             : $"genre {Genre}")
-    </p>
+    </h4>
 }
 
 <ListFilmsComponent FilmModels="FilteredFilmModels" />

@@ -14,6 +14,14 @@
     <p>No favourites found.</p>
     return;
 }
+else
+{
+    <h4>
+        @FavouriteDisplayModels.Count()
+        @(FavouriteDisplayModels.Count() == 1 ? "favourite" : "favourites")
+        found
+    </h4>
+}
 
 <ListFavouritesComponent FavouriteDisplayModels="FavouriteDisplayModels" OnRemoved="HandleRemoved" />
 
