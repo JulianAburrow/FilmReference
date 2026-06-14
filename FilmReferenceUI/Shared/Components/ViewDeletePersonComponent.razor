@@ -1,51 +1,20 @@
 ﻿<MudCardContent>
-
-    <MudGrid>
-
-        <!-- LEFT COLUMN: Textual details -->
-        <MudItem xs="12" md="8">
-
-            <!-- Description -->
-            @if (!string.IsNullOrWhiteSpace(PersonModel.Description))
-            {
-                <MudText Typo="Typo.body1" Class="mb-3">
-                    @PersonModel.Description
-                </MudText>
-            }
-
-            <!-- Metadata rows (Actor, Director, DOB, DOD, Age) -->
-            <MudStack Spacing="1">
-
-                <MudText><b>Actor:</b> @(PersonModel.IsCastMember ? "Yes" : "No")</MudText>
-                <MudText><b>Director:</b> @(PersonModel.IsDirector ? "Yes" : "No")</MudText>
-
-                @if (PersonModel.DateOfBirth is not null)
-                {
-                    <MudText><b>Date of Birth:</b> @PersonModel.DateOfBirth?.ToString("dd/MM/yyyy")</MudText>
-                }
-
-                @if (PersonModel.DateOfDeath is not null)
-                {
-                    <MudText><b>Date of Death:</b> @PersonModel.DateOfDeath?.ToString("dd/MM/yyyy")</MudText>
-                }
-
-                @if (PersonModel.Age is not null)
-                {
-                    <MudText>
-                        <b>@(PersonModel.DateOfDeath is not null ? "Aged" : "Age now"):</b> @PersonModel.Age
-                    </MudText>
-                }
-
-            </MudStack>
-
-        </MudItem>
-
-        <!-- RIGHT COLUMN: Image -->
-        <MudItem xs="12" md="4" Class="d-flex justify-center align-center">
-            <ViewImageComponent ImageData="PersonModel.Picture"
-                                ImageTitle="@($"{PersonModel.FirstName} {PersonModel.LastName} Photo")" />
-        </MudItem>
-
-    </MudGrid>
-
+    <MudField Label="Name">@PersonModel.FirstName @PersonModel.LastName</MudField>
+    <MudField Label="Description">@PersonModel.Description</MudField>
+    <MudField Label="Actor">@(PersonModel.IsCastMember ? "Yes" : "No")</MudField>
+    <MudField Label="Director">@(PersonModel.IsDirector ? "Yes" : "No")</MudField>
+    @if (PersonModel.DateOfBirth is not null)
+    {
+        <MudField Label="Date of Birth">@PersonModel.DateOfBirth?.ToString("dd/MM/yyyy")</MudField>
+    }    
+    @if (PersonModel.DateOfDeath is not null)
+    {
+        <MudField Label="Date of Death">@PersonModel.DateOfDeath?.ToString("dd/MM/yyyy")</MudField>
+    }
+    @if (PersonModel.Age is not null)
+    {
+        <MudField Label="@(PersonModel.DateOfDeath is not null ? "Aged" : "Age")">@PersonModel.Age</MudField>
+    }
+    <br />
+	<ViewImageComponent ImageData="PersonModel.Picture" ImageTitle=@($"{@PersonModel.FirstName} {@PersonModel.LastName} Photo") />
 </MudCardContent>
