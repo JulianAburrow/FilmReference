@@ -1,4 +1,32 @@
 ﻿<MudCardContent>
-    <MudTextField Label="Name" @bind-Value="GenreDisplayModel.Name" AutoFocus OnlyValidateIfDirty="true" />
-    <MudTextField Label="Description" @bind-Value="GenreDisplayModel.Description" />
+
+    <MudGrid>
+
+        <!-- LEFT COLUMN: Genre fields -->
+        <MudItem xs="12" md="8">
+
+            <MudTextField Label="Name"
+                          @bind-Value="GenreDisplayModel.Name"
+                          AutoFocus
+                          OnlyValidateIfDirty="true" />
+
+            <MudTextField Label="Description"
+                          @bind-Value="GenreDisplayModel.Description" />
+
+        </MudItem>
+
+        <!-- RIGHT COLUMN: Genre image (future support) -->
+        @* <MudItem xs="12" md="4"
+                 Class="d-flex justify-center align-center">
+
+            @if (GenreDisplayModel.Picture is not null)
+            {
+                <ViewImageComponent ImageData="GenreDisplayModel.Picture"
+                                    ImageTitle="@($"{GenreDisplayModel.Name} Image")" />
+            }
+
+        </MudItem> *@
+
+    </MudGrid>
+
 </MudCardContent>

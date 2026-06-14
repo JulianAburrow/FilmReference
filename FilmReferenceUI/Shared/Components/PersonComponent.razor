@@ -4,11 +4,14 @@
     </MudCardHeader>
 
     <MudCardContent>
-        <MudText>@Person.Description</MudText>
         <br />
-        <a href="/person/view/@Person.PersonId">
-            <ViewImageComponent ImageData="@Person.Picture" ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
-        </a>
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Primary"
+                   Href="@($"/person/view/{Person.PersonId}")"
+                   Class="p-0">
+            <ViewImageComponent ImageData="@Person.Picture"
+                                ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
+        </MudButton>
     </MudCardContent>
 
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">

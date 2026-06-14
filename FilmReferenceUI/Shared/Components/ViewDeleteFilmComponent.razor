@@ -1,9 +1,51 @@
 ﻿<MudCardContent>
-    <MudField Label="Name">@FilmModel.Name</MudField>
-    <MudField Label="Description">@FilmModel.Description</MudField>
-    <MudField Label="Genre">@FilmModel.Genre?.Name</MudField>
-    <MudField Label="Studio">@FilmModel.Studio?.Name</MudField>
-    <MudField Label="Director">@FilmModel.Director?.FirstName @FilmModel.Director?.LastName</MudField>
-    <br />
-    <ViewImageComponent ImageData="FilmModel.BoxCover" ImageTitle=@($"{FilmModel.Name} Box Cover") />
+
+    <MudGrid>
+
+        <!-- LEFT COLUMN: Film details -->
+        <MudItem xs="12" md="8">
+
+            <MudStack Spacing="2">
+
+                @if (!string.IsNullOrWhiteSpace(FilmModel.Description))
+                {
+                    <MudText Typo="Typo.body1" Class="mb-3">
+                        @FilmModel.Description
+                    </MudText>
+                }
+
+                <MudText>
+                    <b>Genre:</b>
+                    <MudLink Href="@($"/genre/view/{FilmModel.GenreId}")">
+                        @FilmModel.Genre?.Name
+                    </MudLink>
+                </MudText>
+
+                <MudText>
+                    <b>Studio:</b>
+                    <MudLink Href="@($"/studio/view/{FilmModel.StudioId}")">
+                        @FilmModel.Studio?.Name
+                    </MudLink>
+                </MudText>
+
+                <MudText>
+                    <b>Director:</b>
+                    <MudLink Href="@($"/person/view/{FilmModel.Director.PersonId}")">
+                        @FilmModel.Director.FirstName @FilmModel.Director.LastName
+                    </MudLink>
+                </MudText>
+
+            </MudStack>
+
+        </MudItem>
+
+        <!-- RIGHT COLUMN: Box cover -->
+        <MudItem xs="12" md="4"
+                 Class="d-flex justify-center align-center">
+            <ViewImageComponent ImageData="FilmModel.BoxCover"
+                                ImageTitle="@($"{FilmModel.Name} Box Cover")" />
+        </MudItem>
+
+    </MudGrid>
+
 </MudCardContent>

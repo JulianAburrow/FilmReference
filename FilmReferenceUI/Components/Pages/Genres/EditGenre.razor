@@ -14,13 +14,24 @@
     <ValidationSummary />
 
     <MudGrid>
-        <MudItem sm="7">
+        <MudItem xs="12">
             <MudCard>
                 <CreateUpdateGenreComponent GenreDisplayModel="@GenreDisplayModel" />
                 <MudCardActions>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               ButtonType="ButtonType.Submit">
+                        Update
+                    </MudButton>
+
                     &nbsp;
-                    <a class="btn btn-primary" href="/genres/listgenres">Cancel</a>
+
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Href="/genres/listgenres">
+                        Cancel
+                    </MudButton>
+
                 </MudCardActions>
             </MudCard>
         </MudItem>

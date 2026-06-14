@@ -1,72 +1,104 @@
 ﻿@inherits BasePageClass
 
 <MudCardContent>
-    <MudTextField Label="Name" @bind-Value="FilmDisplayModel.Name" AutoFocus OnlyValidateIfDirty="true" />
-    <MudTextField Label="Description" @bind-Value="FilmDisplayModel.Description" Lines="3" />
-    <MudSelect T="int" Label="Genre" @bind-Value="@FilmDisplayModel.GenreId">
-        @foreach (var genreModel in GenreModels)
-        {
-            <MudSelectItem T="int" Value="@genreModel.GenreId">
-                @genreModel.Name
-            </MudSelectItem>
-        }
-    </MudSelect>
-    <MudSelect T="int" Label="Studio" @bind-Value="@FilmDisplayModel.StudioId">
-        @foreach (var studioModel in StudioModels)
-        {
-            <MudSelectItem T="int" Value="@studioModel.StudioId">
-                @studioModel.Name
-            </MudSelectItem>
-        }
-    </MudSelect>
-    <MudSelect T="int" Label="Director" @bind-Value="@FilmDisplayModel.DirectorId">
-        @foreach (var directorModel in DirectorModels)
-        {
-            <MudSelectItem T="int" Value="@directorModel.PersonId">
-                @directorModel.FirstName @directorModel.LastName
-            </MudSelectItem>
-        }
-    </MudSelect>
-    <br />
-    <ViewImageComponent ImageData="FilmDisplayModel.BoxCover" ImageTitle=@($"{FilmDisplayModel.Name} Box Cover") />
-    <br />
-    <MudFileUpload T="IBrowserFile" FilesChanged="LocalUploadImage" Accept="image/*">
-        <ActivatorContent>
-            <MudButton HtmlTag="label"
-                       Variant="Variant.Filled"
-                       Color="Color.Primary"
-                       StartIcon="@Icons.Material.Filled.FileUpload">
-                Upload File
-            </MudButton>
-        </ActivatorContent>
-    </MudFileUpload>
-    @if (FilmDisplayModel.BoxCover is not null)
-    {
-        <br />
-        @ImageName
-        <br />
-        <MudButton HtmlTag="label"
-                   OnClick="LocalRemoveImage"
-                   Variant="Variant.Filled"
-                   Color="Color.Error">
-            Remove Image
-        </MudButton>
-    }
-    <br />
-    <br />
-    <MudSelect T="int"
-               @key="ActorModels"
-               Label="Actors"
-               @bind-SelectedValues="@FilmDisplayModel.SelectedCastMemberIds"
-               Immediate="true"
-               MultiSelection="true"
-               MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
-        @foreach (var actorModel in ActorModels)
-        {
-            <MudSelectItem T="int" Value="@actorModel.PersonId">
-                @actorModel.FirstName @actorModel.LastName
-            </MudSelectItem>
-        }
-    </MudSelect>
+
+    <MudGrid>
+
+        <!-- LEFT COLUMN: Film fields -->
+        <MudItem xs="12" md="8">
+
+            <MudTextField Label="Name"
+                          @bind-Value="FilmDisplayModel.Name"
+                          AutoFocus
+                          OnlyValidateIfDirty="true" />
+
+            <MudTextField Label="Description"
+                          @bind-Value="FilmDisplayModel.Description"
+                          Lines="3" />
+
+            <MudSelect T="int"
+                       Label="Genre"
+                       @bind-Value="FilmDisplayModel.GenreId">
+                @foreach (var genreModel in GenreModels)
+                {
+                    <MudSelectItem T="int" Value="@genreModel.GenreId">
+                        @genreModel.Name
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudSelect T="int"
+                       Label="Studio"
+                       @bind-Value="FilmDisplayModel.StudioId">
+                @foreach (var studioModel in StudioModels)
+                {
+                    <MudSelectItem T="int" Value="@studioModel.StudioId">
+                        @studioModel.Name
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudSelect T="int"
+                       Label="Director"
+                       @bind-Value="FilmDisplayModel.DirectorId">
+                @foreach (var directorModel in DirectorModels)
+                {
+                    <MudSelectItem T="int" Value="@directorModel.PersonId">
+                        @directorModel.FirstName @directorModel.LastName
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudSelect T="int"
+                       @key="ActorModels"
+                       Label="Actors"
+                       @bind-SelectedValues="FilmDisplayModel.SelectedCastMemberIds"
+                       Immediate="true"
+                       MultiSelection="true"
+                       MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))">
+                @foreach (var actorModel in ActorModels)
+                {
+                    <MudSelectItem T="int" Value="@actorModel.PersonId">
+                        @actorModel.FirstName @actorModel.LastName
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
+            <br />
+
+            <MudFileUpload T="IBrowserFile"
+                           FilesChanged="LocalUploadImage"
+                           Accept="image/*">
+                <ActivatorContent>
+                    <MudButton HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.FileUpload">
+                        Upload File
+                    </MudButton>
+                </ActivatorContent>
+            </MudFileUpload>
+
+            @if (FilmDisplayModel.BoxCover is not null)
+            {
+                <MudText Class="mt-2 mb-1">@ImageName</MudText>
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Error"
+                           OnClick="LocalRemoveImage">
+                    Remove Image
+                </MudButton>
+            }
+
+        </MudItem>
+
+        <!-- RIGHT COLUMN: Box cover -->
+        <MudItem xs="12" md="4"
+                 Class="d-flex justify-center align-center">
+            <ViewImageComponent ImageData="FilmDisplayModel.BoxCover"
+                                ImageTitle="@($"{FilmDisplayModel.Name} Box Cover")" />
+        </MudItem>
+
+    </MudGrid>
+
 </MudCardContent>
-@* @bind-Value="Value" *@

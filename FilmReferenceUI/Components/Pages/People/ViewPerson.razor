@@ -8,18 +8,44 @@
 }
 
 <MudGrid>
-    <MudItem sm="7">
+    <MudItem xs="12">
         <MudCard>
             <ViewDeletePersonComponent PersonModel="PersonModel" />
             <MudCardActions>
-                <a href="/person/edit/@PersonModel.PersonId" class="btn btn-primary">Edit</a>
+
+                <MudButton Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            Href="@($"/person/edit/{PersonModel.PersonId}")">
+                    Edit
+                </MudButton>
+
                 @if (!PreventDeleting)
                 {
                     @:&nbsp;
-                    <a href="/person/delete/@PersonModel.PersonId" class="btn btn-danger">Delete</a>
+                    <MudButton Variant="Variant.Filled"
+                                Color="Color.Error"
+                                Href="@($"/person/delete/{PersonModel.PersonId}")">
+                        Delete
+                    </MudButton>
                 }
                 &nbsp;
-                <a class="btn btn-primary" href="@($"/people/listpeople/{(PersonModel.IsCastMember ? "castmembers" : "directors")}")">All @(PersonModel.IsCastMember ? "Cast Members" : "Directors")</a>
+                @if (PersonModel.IsCastMember)
+                {
+                    <MudButton Variant="Variant.Filled"
+                                Color="Color.Primary"
+                                Href="/people/listpeople/castmembers">
+                        All Cast Members
+                    </MudButton>
+                    @:&nbsp;
+                }
+                @if (PersonModel.IsDirector)
+                {
+                    <MudButton Variant="Variant.Filled"
+                                Color="Color.Primary"
+                                Href="/people/listpeople/directors">
+                        All Directors
+                    </MudButton>
+                }
             </MudCardActions>
         </MudCard>
     </MudItem>
@@ -47,4 +73,3 @@
 
     <ListFilmsComponent FilmModels="@FilmsDirected" />
 }
-

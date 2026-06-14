@@ -4,13 +4,15 @@
     </MudCardHeader>
 
     <MudCardContent>
-        <MudText>@Studio.Description</MudText>
+        <MudText>@Studio.Films.Count @(Studio.Films.Count == 1 ? "film" : "films")</MudText>
         <br />
-        <MudText>@Studio.Films.Count @(Studio.Films.Count == 1 ? "film" : "films") for this studio</MudText>
-        <br />
-        <a href="/studio/view/@Studio.StudioId">
-            <ViewImageComponent ImageData="@Studio.Logo" ImageTitle="@($"{Studio.Name} Logo")" />
-        </a>
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Primary"
+                   Href="@($"/studio/view/{Studio.StudioId}")"
+                   Class="p-0">
+            <ViewImageComponent ImageData="@Studio.Logo"
+                                ImageTitle="@($"{Studio.Name} Logo")" />
+        </MudButton>
     </MudCardContent>
 
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">

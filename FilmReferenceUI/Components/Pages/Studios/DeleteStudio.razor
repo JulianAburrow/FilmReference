@@ -15,7 +15,11 @@
         <h4>This Studio cannot be deleted as it is in use.</h4>
     </MudAlert>
     <br />
-    <a href="/studio/view/@StudioId" class="btn btn-primary">Cancel</a>
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               Href="@($"/studio/view/{StudioId}")">
+        Cancel
+    </MudButton>
     return;
 }
 else
@@ -28,13 +32,21 @@ else
 <br />
 
 <MudGrid>
-    <MudItem sm="7">
+    <MudItem xs="12">
         <MudCard>
             <ViewDeleteStudioComponent StudioModel="StudioModel" />
             <MudCardActions>
-                <button class="btn btn-danger" @onclick="DeleteStudioAsync">Delete</button>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Error"
+                           OnClick="DeleteStudioAsync">
+                    Delete
+                </MudButton>
                 &nbsp;
-                <a class="btn btn-primary" href="/studio/view/@StudioId">Cancel</a>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Href="@($"/studio/view/{StudioId}")">
+                    Cancel
+                </MudButton>
             </MudCardActions>
         </MudCard>
     </MudItem>

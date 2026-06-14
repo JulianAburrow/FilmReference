@@ -1,4 +1,36 @@
 ﻿<MudCardContent>
-    <MudField Label="Name">@GenreModel.Name</MudField>
-    <MudField Label="Description">@GenreModel.Description</MudField>
- </MudCardContent>
+
+    <MudGrid>
+
+        <!-- LEFT COLUMN: Genre details -->
+        <MudItem xs="12" md="8">
+
+            <MudStack Spacing="2">
+
+                @if (!string.IsNullOrWhiteSpace(GenreModel.Description))
+                {
+                    <MudText Typo="Typo.body1">
+                        @GenreModel.Description
+                    </MudText>
+                }
+
+            </MudStack>
+
+        </MudItem>
+
+        <!-- RIGHT COLUMN: Genre image (future‑proofed) -->
+        @* <MudItem xs="12" md="4"
+                 Class="d-flex justify-center align-center">
+
+            
+            @if (GenreModel.Picture is not null)
+            {
+                <ViewImageComponent ImageData="GenreModel.Picture"
+                                    ImageTitle="@($"{GenreModel.Name} Image")" />
+            }
+
+        </MudItem> *@
+
+    </MudGrid>
+
+</MudCardContent>

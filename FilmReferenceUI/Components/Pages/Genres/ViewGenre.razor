@@ -8,19 +8,36 @@
 }
 
 <MudGrid>
-    <MudItem sm="7">
+    <MudItem xs="12">
         <MudCard>
             <ViewDeleteGenreComponent GenreModel="GenreModel" />
             <MudCardActions>
-                <a href="/genre/edit/@GenreModel.GenreId" class="btn btn-primary">Edit</a>
+
+                <MudButton Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            Href="@($"/genre/edit/{GenreModel.GenreId}")">
+                    Edit
+                </MudButton>
+
                 @if (!PreventDeleting)
                 {
                     @:&nbsp;
-                    <a href="/genre/delete/@GenreModel.GenreId" class="btn btn-danger">Delete</a>                
+                    <MudButton Variant="Variant.Filled"
+                                Color="Color.Error"
+                                Href="@($"/genre/delete/{GenreModel.GenreId}")">
+                        Delete
+                    </MudButton>
                 }
+
                 &nbsp;
-                <a href="/genres/listgenres" class="btn btn-primary">All Genres</a>
+                <MudButton Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            Href="/genres/listgenres">
+                    All Genres
+                </MudButton>
+
             </MudCardActions>
+
         </MudCard>
     </MudItem>
 </MudGrid>

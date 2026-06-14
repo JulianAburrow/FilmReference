@@ -8,7 +8,7 @@ public partial class ViewGenre
     {
         GenreModel = await GenreHandler.GetGenreAsync(GenreId);
         PreventDeleting = GenreModel.Films.Any();
-        MainLayout.SetHeaderValue("View Genre");
+        MainLayout.SetHeaderValue(GenreModel.Name);
         var isFavourite = await FavouriteHandler.IsFavouriteAsync((int)FavouriteEntityEnum.Genre, GenreId);
         MainLayout.ConfigureFavouriteButton(FavouriteEntityEnum.Genre, GenreId, isFavourite);
     }

@@ -12,7 +12,7 @@ public partial class ViewPerson
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         PreventDeleting = PersonModel.FilmPerson.Count != 0 || PersonModel.Films.Count != 0;
-        MainLayout.SetHeaderValue("View Person");
+        MainLayout.SetHeaderValue($"{PersonModel.FirstName} {PersonModel.LastName}");
         var isFavourite = await FavouriteHandler.IsFavouriteAsync((int)FavouriteEntityEnum.Person, PersonId);
         MainLayout.ConfigureFavouriteButton(FavouriteEntityEnum.Person, PersonId, isFavourite);
         if (PersonModel.FilmPerson is null)
