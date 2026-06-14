@@ -8,13 +8,24 @@
     <ValidationSummary />
 
     <MudGrid>
-        <MudItem sm="7">
+        <MudItem xs="12">
             <MudCard>
                 <CreateUpdateGenreComponent GenreDisplayModel="@GenreDisplayModel" />
                 <MudCardActions>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               ButtonType="ButtonType.Submit">
+                        Create
+                    </MudButton>
+
                     &nbsp;
-                    <a href="/genres/listgenres" class="btn btn-primary">Cancel</a>
+
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Href="/genres/listgenres">
+                        Cancel
+                    </MudButton>
+
                 </MudCardActions>
             </MudCard>
         </MudItem>

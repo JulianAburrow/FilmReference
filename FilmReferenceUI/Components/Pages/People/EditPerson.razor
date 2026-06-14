@@ -19,13 +19,24 @@
     <ValidationSummary />
 
     <MudGrid>
-        <MudItem sm="7">
+        <MudItem xs="12">
             <MudCard>
                 <CreateUpdatePersonComponent PersonDisplayModel="PersonDisplayModel" />
                 <MudCardActions>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               ButtonType="ButtonType.Submit">
+                        Update
+                    </MudButton>
+
                     &nbsp;
-                    <a class="btn btn-primary" href="@($"/people/listpeople/{(PersonModel.IsCastMember ? "castmembers" : "directors")}")">Cancel</a>
+
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Href="@($"/people/listpeople/{(PersonModel.IsCastMember ? "castmembers" : "directors")}")">
+                        Cancel
+                    </MudButton>
+
                 </MudCardActions>
             </MudCard>
         </MudItem>

@@ -27,12 +27,12 @@ public partial class ListPeople
 
         if (role == RoleEnum.CastMembers)
         {
-            MainLayout.SetHeaderValue("View Cast Members");
+            MainLayout.SetHeaderValue("Cast Members");
             AllPersonModels = await PersonHandler.GetCastMembersAsync();
         }
         if (role == RoleEnum.Directors)
         {
-            MainLayout.SetHeaderValue("View Directors");
+            MainLayout.SetHeaderValue("Directors");
             AllPersonModels = await PersonHandler.GetDirectorsAsync();
         }
 

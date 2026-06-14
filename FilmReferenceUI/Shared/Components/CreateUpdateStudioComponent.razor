@@ -1,31 +1,61 @@
 ﻿@inherits StudiosBasePageClass
 
 <MudCardContent>
-    <MudTextField Label="Name" @bind-Value="StudioDisplayModel.Name" AutoFocus OnlyValidateIfDirty="true" />
-    <MudTextField Label="Description" @bind-Value="StudioDisplayModel.Description" />
-    <br />
-    <ViewImageComponent ImageData="StudioDisplayModel.Logo" ImageTitle=@($"{StudioDisplayModel.Name} Box Cover") />
-    <br />
-    <MudFileUpload T="IBrowserFile" FilesChanged="LocalUploadImage" Accept="image/*">
-        <ActivatorContent>
-            <MudButton HtmlTag="label"
-                Variant="Variant.Filled"
-                Color="Color.Primary"
-                StartIcon="@Icons.Material.Filled.FileUpload">
-                Upload File
-            </MudButton>
-        </ActivatorContent>
-    </MudFileUpload>
-    @if (StudioDisplayModel.Logo is not null)
-    {
-        <br />
-        @ImageName
-        <br />
-        <MudButton HtmlTag="label"
-            OnClick="LocalRemoveImage"
-            Variant="Variant.Filled"
-            Color="Color.Error">
-            Remove Image
-        </MudButton>        
-    }
+
+    <MudGrid>
+
+        <!-- LEFT COLUMN: Studio fields -->
+        <MudItem xs="12" md="8">
+
+            <MudTextField Label="Name"
+                          @bind-Value="StudioDisplayModel.Name"
+                          AutoFocus
+                          OnlyValidateIfDirty="true" />
+
+            <MudTextField Label="Description"
+                          @bind-Value="StudioDisplayModel.Description" />
+
+            <br />
+
+            <MudFileUpload T="IBrowserFile"
+                           FilesChanged="LocalUploadImage"
+                           Accept="image/*">
+                <ActivatorContent>
+                    <MudButton HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.FileUpload">
+                        Upload File
+                    </MudButton>
+                </ActivatorContent>
+            </MudFileUpload>
+
+            @if (StudioDisplayModel.Logo is not null)
+            {
+                <MudText Class="mt-2 mb-1">@ImageName</MudText>
+
+                <MudButton HtmlTag="label"
+                           OnClick="LocalRemoveImage"
+                           Variant="Variant.Filled"
+                           Color="Color.Error">
+                    Remove Image
+                </MudButton>
+            }
+
+        </MudItem>
+
+        <!-- RIGHT COLUMN: Studio logo -->
+        <MudItem xs="12" md="4"
+                 Class="d-flex justify-center align-center">
+
+            @if (StudioDisplayModel.Logo is not null)
+            {
+                <ViewImageComponent ImageData="StudioDisplayModel.Logo"
+                                    ImageTitle="@($"{StudioDisplayModel.Name} Logo")" />
+            }
+
+        </MudItem>
+
+    </MudGrid>
+
 </MudCardContent>

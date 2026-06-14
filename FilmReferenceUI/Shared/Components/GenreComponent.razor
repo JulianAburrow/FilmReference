@@ -4,9 +4,8 @@
     </MudCardHeader>
 
     <MudCardContent>
-        <MudText>@Genre.Description</MudText>
+        <MudText>@Genre.Films.Count @(Genre.Films.Count == 1 ? "film" : "films")</MudText>
         <br />
-        <MudText>@Genre.Films.Count @(Genre.Films.Count == 1 ? "film" : "films") in this genre</MudText>
     </MudCardContent>
 
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">

@@ -15,13 +15,24 @@
 <br />
 
 <MudGrid>
-    <MudItem sm="7">
+    <MudItem xs="12">
         <MudCard>
             <ViewDeleteFilmComponent FilmModel="FilmModel" />
             <MudCardActions>
-                <button class="btn btn-danger" @onclick="DeleteFilmAsync">Delete</button>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Error"
+                           OnClick="DeleteFilmAsync">
+                    Delete
+                </MudButton>
+
                 &nbsp;
-                <a class="btn btn-primary" href="/film/view/@FilmId">Cancel</a>
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Href="@($"/film/view/{FilmId}")">
+                    Cancel
+                </MudButton>
+
             </MudCardActions>
         </MudCard>
     </MudItem>

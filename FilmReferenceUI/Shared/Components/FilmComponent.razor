@@ -5,11 +5,14 @@
     <MudCardContent>
         <MudText><b>Studio</b>: <MudLink Href=@($"/studio/view/{Film.StudioId}")>@Film.Studio?.Name</MudLink></MudText>
         <MudText><b>Genre</b>: <MudLink Href=@($"/genre/view/{Film.GenreId}")>@Film.Genre?.Name</MudLink></MudText>
-        <MudText><b>Description</b>: @Film.Description</MudText>
         <br />
-        <a href="/film/view/@Film.FilmId">
-            <ViewImageComponent ImageData="@Film.BoxCover" ImageTitle="@($"{Film.Name} Box Cover")" />
-        </a>
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Primary"
+                   Href="@($"/film/view/{Film.FilmId}")"
+                   Class="p-0">
+            <ViewImageComponent ImageData="@Film.BoxCover"
+                                ImageTitle="@($"{Film.Name} Box Cover")" />
+        </MudButton>
     </MudCardContent>
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/film/view/{Film.FilmId}")>

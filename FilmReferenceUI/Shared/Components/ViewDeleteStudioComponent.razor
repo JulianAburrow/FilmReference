@@ -1,7 +1,35 @@
 ﻿<MudCardContent>
-    <MudField Label="Name">@StudioModel.Name</MudField>
-    <MudField Label="Description">@StudioModel.Description</MudField>
-    <br />
-    <ViewImageComponent ImageData="StudioModel.Logo" ImageTitle=@($"{@StudioModel.Name} Logo") />
-    <br />
+
+    <MudGrid>
+
+        <!-- LEFT COLUMN: Studio details -->
+        <MudItem xs="12" md="8">
+
+            <MudStack Spacing="2">
+
+                @if (!string.IsNullOrWhiteSpace(StudioModel.Description))
+                {
+                    <MudText Typo="Typo.body1">
+                        @StudioModel.Description
+                    </MudText>
+                }
+
+            </MudStack>
+
+        </MudItem>
+
+        <!-- RIGHT COLUMN: Studio logo -->
+        <MudItem xs="12" md="4"
+                 Class="d-flex justify-center align-center">
+
+            @if (StudioModel.Logo is not null)
+            {
+                <ViewImageComponent ImageData="StudioModel.Logo"
+                                    ImageTitle="@($"{StudioModel.Name} Logo")" />
+            }
+
+        </MudItem>
+
+    </MudGrid>
+
 </MudCardContent>

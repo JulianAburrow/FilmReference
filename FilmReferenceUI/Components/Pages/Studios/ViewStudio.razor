@@ -8,19 +8,36 @@
 }
 
 <MudGrid>
-    <MudItem sm="7">
+    <MudItem xs="12">
         <MudCard>
             <ViewDeleteStudioComponent StudioModel="StudioModel" />
             <MudCardActions>
-                <a href="/studio/edit/@StudioModel.StudioId" class="btn btn-primary">Edit</a>
+
+                <MudButton Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            Href="@($"/studio/edit/{StudioModel.StudioId}")">
+                    Edit
+                </MudButton>
+
                 @if (!PreventDeleting)
                 {
                     @:&nbsp;
-                    <a href="/studio/delete/@StudioModel.StudioId" class="btn btn-danger">Delete</a>
+                    <MudButton Variant="Variant.Filled"
+                                Color="Color.Error"
+                                Href="@($"/studio/delete/{StudioModel.StudioId}")">
+                        Delete
+                    </MudButton>
                 }
+
                 &nbsp;
-                <a href="/studios/liststudios" class="btn btn-primary">All Studios</a>
+                <MudButton Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            Href="/studios/liststudios">
+                    All Studios
+                </MudButton>
+
             </MudCardActions>
+
         </MudCard>
     </MudItem>
 </MudGrid>

@@ -14,13 +14,21 @@
     <ValidationSummary />
 
     <MudGrid>
-        <MudItem sm="7">
+        <MudItem xs="12">
             <MudCard>
                 <CreateUpdateStudioComponent StudioDisplayModel="StudioDisplayModel" />
                 <MudCardActions>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               ButtonType="ButtonType.Submit">
+                        Update
+                    </MudButton>
                     &nbsp;
-                    <a class="btn btn-primary" href="/studios/liststudios">Cancel</a>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Href="/studios/liststudios">
+                        Cancel
+                    </MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>

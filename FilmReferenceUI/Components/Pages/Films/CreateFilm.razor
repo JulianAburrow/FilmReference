@@ -14,7 +14,7 @@
     <ValidationSummary />
 
     <MudGrid>
-        <MudItem sm="7">
+        <MudItem xs="12">
             <MudCard>
                 <CreateUpdateFilmComponent FilmDisplayModel="FilmDisplayModel"
                                            GenreModels="GenreModels"
@@ -22,10 +22,23 @@
                                            ActorModels="CastMemberModels"
                                            DirectorModels="DirectorModels" />
                 <MudCardActions>
-                    <button type="submit" class="btn btn-primary">Create</button>
+
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               ButtonType="ButtonType.Submit">
+                        Create
+                    </MudButton>
+
                     &nbsp;
-                    <a href="/films/listfilms" class="btn btn-primary">Cancel</a>
+
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Href="/films/listfilms">
+                        Cancel
+                    </MudButton>
+
                 </MudCardActions>
+
             </MudCard>
         </MudItem>
     </MudGrid>

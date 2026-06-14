@@ -15,7 +15,12 @@
         <h4>This Genre cannot be deleted as it is in use.</h4>
     </MudAlert>
     <br />
-    <a href = "/genre/view/@GenreId" class="btn btn-primary">Cancel</a>
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               Href="@($"/genre/view/{GenreId}")">
+        Cancel
+    </MudButton>
+
     return;
 }
 else
@@ -28,13 +33,24 @@ else
 <br />
 
 <MudGrid>
-    <MudItem sm="7">
+    <MudItem xs="12">
         <MudCard>
             <ViewDeleteGenreComponent GenreModel="GenreModel" />
             <MudCardActions>
-                <button class="btn btn-danger" @onclick="DeleteGenreAsync">Delete</button>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Error"
+                           OnClick="DeleteGenreAsync">
+                    Delete
+                </MudButton>
+
                 &nbsp;
-                <a class="btn btn-primary" href="/genre/view/@GenreId">Cancel</a>
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Href="@($"/genre/view/{GenreId}")">
+                    Cancel
+                </MudButton>
+
             </MudCardActions>
         </MudCard>
     </MudItem>

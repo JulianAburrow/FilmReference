@@ -90,6 +90,9 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
                 .ThenInclude(fp => fp.Film)
                     .ThenInclude(f => f.Studio)
             .Include(p => p.Films)
+                .ThenInclude(f => f.Studio)
+            .Include(p => p.Films)
+                .ThenInclude(f => f.Genre)
             .AsNoTracking()
             .SingleOrDefaultAsync(p => p.PersonId == personId);
 

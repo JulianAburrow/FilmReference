@@ -15,7 +15,11 @@
         <h4>This Person cannot be deleted as they have films associated with them.</h4>
     </MudAlert>
     <br />
-    <a class="btn btn-primary" href="/person/view/@PersonId">Cancel</a>
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               Href="@($"/person/view/{PersonId}")">
+        Cancel
+    </MudButton>
     return;
 }
 else
@@ -28,16 +32,24 @@ else
 <br />
 
 <MudGrid>
-    <MudItem sm="7">
+    <MudItem xs="12">
         <MudCard>
             <ViewDeletePersonComponent PersonModel="PersonModel" />
             <MudCardActions>
                 @if (!PreventDeleting)
                 {
-                    <button class="btn btn-danger" @onclick="DeletePersonAsync">Delete</button>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Error"
+                               OnClick="DeletePersonAsync">
+                        Delete
+                    </MudButton>
                     @:&nbsp;
                 }                
-                <a class="btn btn-primary" href="/person/view/@PersonId">Cancel</a>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Href="@($"/person/view/{PersonId}")">
+                    Cancel
+                </MudButton>
             </MudCardActions>
         </MudCard>
     </MudItem>
