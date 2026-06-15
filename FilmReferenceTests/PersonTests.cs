@@ -398,18 +398,19 @@ public class PersonTests
     }
 
     [Fact]
-    public async Task GetRandomPersonAsync_ShouldReturnNull_WhenNoCastMembersExist()
+    public async Task GetRandomPersonAsync_ShouldReturnNewPersonModel_WhenNoCastMembersExist()
     {
         using var context = DbContextHelper.GetInMemoryContext();
         var handler = new PersonHandler(context);
 
         var result = await handler.GetRandomPersonAsync();
 
-        result.Should().BeNull();
+        result.Should().NotBeNull();
+        result.PersonId.Should().Be(0);
     }
 
     [Fact]
-    public async Task GetRandomPersonAsync_ShouldReturnNull_WhenCastMembersHaveNoPictures()
+    public async Task GetRandomPersonAsync_ShouldReturnNewPersonModel_WhenCastMembersHaveNoPictures()
     {
         using var context = DbContextHelper.GetInMemoryContext();
 
@@ -426,7 +427,8 @@ public class PersonTests
 
         var result = await handler.GetRandomPersonAsync();
 
-        result.Should().BeNull();
+        result.Should().NotBeNull();
+        result.PersonId.Should().Be(0);
     }
 
     [Fact]
