@@ -33,7 +33,7 @@
                 {
                     <MudButton Variant="Variant.Filled"
                                 Color="Color.Primary"
-                                Href="/people/listpeople/castmembers">
+                                OnClick="@(() => DoNavigation(RoleEnum.CastMembers))">
                         All Cast Members
                     </MudButton>
                     @:&nbsp;
@@ -42,7 +42,7 @@
                 {
                     <MudButton Variant="Variant.Filled"
                                 Color="Color.Primary"
-                                Href="/people/listpeople/directors">
+                                OnClick="@(() => DoNavigation(RoleEnum.Directors))">
                         All Directors
                     </MudButton>
                 }

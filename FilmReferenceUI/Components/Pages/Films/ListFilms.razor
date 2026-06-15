@@ -42,19 +42,19 @@
 
 @if (!FilteredFilmModels.Any())
 {
-    <p>No films found.</p>
+    <h4>No films found in genre @Genre.</h4>
     return;
 }
 else
 {
-    <h4>
-        @FilteredFilmModels.Count()
-        @(FilteredFilmModels.Count() == 1 ? "film" : "films")
-        found in
-        @(FilteredFilmModels.Count == AllFilmModels.Count
-            ? "all genres"
-            : $"genre {Genre}")
-    </h4>
+    var count = FilteredFilmModels.Count;
+    var filmWord = count == 1 ? "film" : "films";
+    var genreText = Genre == "All"
+        ? "all genres"
+        : $"genre {Genre}";
+
+    <h4>@count @filmWord found in @genreText</h4>
 }
+
 
 <ListFilmsComponent FilmModels="FilteredFilmModels" />

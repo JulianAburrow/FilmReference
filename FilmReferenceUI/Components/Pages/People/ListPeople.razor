@@ -41,9 +41,9 @@
 
 @if (!FilteredPersonModels.Any())
 {
-    <p>
+    <h4>
         No people found@(Initial == "All" ? "" : $" with initial {Initial}")
-    </p>
+    </h4>
 	return;
 }
 else
@@ -58,4 +58,4 @@ else
     </h4>
 }
 
-<ListPeopleComponent PersonModels="FilteredPersonModels" />
+<ListPeopleComponent PersonModels="FilteredPersonModels" PersonRole="@PersonRole" />

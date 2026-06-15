@@ -5,7 +5,7 @@ public partial class DeleteFilm
     protected override async Task OnInitializedAsync()
     {
         FilmModel = await FilmHandler.GetFilmAsync(FilmId);
-        MainLayout.SetHeaderValue("Delete Film");
+        MainLayout.SetHeaderValue($"Delete Film {FilmModel.Name}");
     }
 
     private async Task DeleteFilmAsync()

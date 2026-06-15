@@ -10,7 +10,7 @@ public partial class EditFilm
         CastMemberModels = await PersonHandler.GetCastMembersAsync();
         DirectorModels = await PersonHandler.GetDirectorsAsync();
         CopyModelToDisplayModel();
-        MainLayout.SetHeaderValue("Edit Film");
+        MainLayout.SetHeaderValue($"Edit Film {FilmModel.Name}");
     }
 
     private async Task UpdateFilmAsync()

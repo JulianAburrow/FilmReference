@@ -18,18 +18,18 @@
 
         </MudItem>
 
-        <!-- RIGHT COLUMN: Genre image (future‑proofed) -->
-        @* <MudItem xs="12" md="4"
+        <!-- RIGHT COLUMN: Genre logo -->
+        <MudItem xs="12" md="4"
                  Class="d-flex justify-center align-center">
 
             
-            @if (GenreModel.Picture is not null)
+            @if (GenreModel.Logo is not null)
             {
-                <ViewImageComponent ImageData="GenreModel.Picture"
-                                    ImageTitle="@($"{GenreModel.Name} Image")" />
+                <ViewImageComponent ImageData="GenreModel.Logo"
+                                    ImageTitle="@($"{GenreModel.Name} Logo")" />
             }
 
-        </MudItem> *@
+        </MudItem>
 
     </MudGrid>
 

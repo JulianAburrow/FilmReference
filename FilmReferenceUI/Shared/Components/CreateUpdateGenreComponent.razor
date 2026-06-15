@@ -1,4 +1,6 @@
-﻿<MudCardContent>
+﻿@inherits GenresBasePageClass
+
+<MudCardContent>
 
     <MudGrid>
 
@@ -13,19 +15,46 @@
             <MudTextField Label="Description"
                           @bind-Value="GenreDisplayModel.Description" />
 
-        </MudItem>
+            <br />
 
-        <!-- RIGHT COLUMN: Genre image (future support) -->
-        @* <MudItem xs="12" md="4"
-                 Class="d-flex justify-center align-center">
+            <MudFileUpload T="IBrowserFile"
+                           FilesChanged="LocalUploadImage"
+                           Accept="image/*">
+                <ActivatorContent>
+                    <MudButton HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.FileUpload">
+                        Upload File
+                    </MudButton>
+                </ActivatorContent>
+            </MudFileUpload>
 
-            @if (GenreDisplayModel.Picture is not null)
+            @if (GenreDisplayModel.Logo is not null)
             {
-                <ViewImageComponent ImageData="GenreDisplayModel.Picture"
-                                    ImageTitle="@($"{GenreDisplayModel.Name} Image")" />
+                <MudText Class="mt-2 mb-1">@ImageName</MudText>
+
+                <MudButton HtmlTag="label"
+                           OnClick="LocalRemoveImage"
+                           Variant="Variant.Filled"
+                           Color="Color.Error">
+                    Remove Image
+                </MudButton>
             }
 
-        </MudItem> *@
+        </MudItem>
+
+        <!-- RIGHT COLUMN: Genre logo -->
+        <MudItem xs="12" md="4"
+                 Class="d-flex justify-center align-center">
+
+            @if (GenreDisplayModel.Logo is not null)
+            {
+                <ViewImageComponent ImageData="GenreDisplayModel.Logo"
+                                    ImageTitle="@($"{GenreDisplayModel.Name} Logo")" />
+            }
+
+        </MudItem>
 
     </MudGrid>
 

@@ -63,7 +63,8 @@ public class GenreHandler(FilmReferenceContext context) : IGenreHandler
         }
         genreToUpdate.Name = genre.Name;
         genreToUpdate.Description = genre.Description;
-        
+        genreToUpdate.Logo = genre.Logo;
+
         if (saveChanges)
         {
             await SaveChangesAsync();

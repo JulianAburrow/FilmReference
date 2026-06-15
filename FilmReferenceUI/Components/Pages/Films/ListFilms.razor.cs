@@ -37,5 +37,7 @@ public partial class ListFilms
         Snackbar.Add(
             $"{FilteredFilmModels.Count} {filmWord} found {genreText}.",
             FilteredFilmModels.Count > 0 ? Severity.Info : Severity.Warning);
+
+        StateHasChanged();
     }
 }

@@ -8,7 +8,7 @@ public partial class EditPerson
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         CopyModelToDisplayModel();
-        MainLayout.SetHeaderValue("Edit Person");
+        MainLayout.SetHeaderValue($"Edit Person {PersonModel.FirstName} {PersonModel.LastName}");
     }
 
     private async void Update()
@@ -23,7 +23,7 @@ public partial class EditPerson
             }
             await PersonHandler.UpdatePersonAsync(PersonModel, true);
             Snackbar.Add($"Person {PersonModel.FirstName} successfully updated.", Severity.Success);
-            NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? "castmembers" : "directors")}");
+            NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? RoleEnum.CastMembers : RoleEnum.Directors)}");
         }
         catch
         {

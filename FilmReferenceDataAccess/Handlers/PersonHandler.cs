@@ -30,7 +30,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         }
     }
 
-    public async Task<RandomPersonModel?> GetRandomPersonAsync()
+    public async Task<RandomPersonModel> GetRandomPersonAsync()
     {
         var castQuery = _context.People
             .Include(p => p.FilmPerson)
@@ -39,7 +39,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         var castCount = await castQuery.CountAsync();
 
         if (castCount == 0)
-            return null;
+            return new RandomPersonModel();
 
         var randomIndex = _random.Next(castCount);
 
@@ -48,7 +48,7 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
             .FirstOrDefaultAsync();
 
         if (person is null)
-            return null;
+            return new RandomPersonModel();
 
         return new RandomPersonModel
         {

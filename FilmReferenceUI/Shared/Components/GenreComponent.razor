@@ -6,6 +6,13 @@
     <MudCardContent>
         <MudText>@Genre.Films.Count @(Genre.Films.Count == 1 ? "film" : "films")</MudText>
         <br />
+        <MudButton Variant="Variant.Text"
+            Color="Color.Primary"
+            Href="@($"/genre/view/{Genre.GenreId}")"
+            Class="p-0">
+            <ViewImageComponent ImageData="@Genre.Logo"
+                                ImageTitle="@($"{Genre.Name} Logo")" />
+        </MudButton>
     </MudCardContent>
 
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
