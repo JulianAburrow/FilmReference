@@ -6,7 +6,7 @@ public partial class EditStudio
     {
         StudioModel = await StudioHandler.GetStudioAsync(StudioId);
         CopyModelToDisplayModel();
-        MainLayout.SetHeaderValue("Edit Studio");
+        MainLayout.SetHeaderValue($"Edit Studio {StudioModel.Name}");
     }
 
     private async void UpdateStudioAsync()

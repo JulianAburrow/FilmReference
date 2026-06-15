@@ -6,7 +6,7 @@ public partial class DeleteStudio
     {
         StudioModel = await StudioHandler.GetStudioAsync(StudioId);
         PreventDeleting = StudioModel.Films.Count != 0;
-        MainLayout.SetHeaderValue("Delete Studio");
+        MainLayout.SetHeaderValue($"Delete Studio {StudioModel.Name}");
     }
 
     private async Task DeleteStudioAsync()

@@ -8,5 +8,7 @@ public partial class GenreModel
 
     public string? Description { get; set; }
 
+    public byte[]? Logo { get; set; }
+
     public ICollection<FilmModel> Films { get; set; } = null!;
 }

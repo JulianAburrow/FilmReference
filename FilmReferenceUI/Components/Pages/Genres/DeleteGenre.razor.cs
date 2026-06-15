@@ -6,7 +6,7 @@ public partial class DeleteGenre
     {
         GenreModel = await GenreHandler.GetGenreAsync(GenreId);
         PreventDeleting = GenreModel.Films.Any();
-        MainLayout.SetHeaderValue("Delete Genre");
+        MainLayout.SetHeaderValue($"Delete Genre {GenreModel.Name}");
     }
 
     private async Task DeleteGenreAsync()

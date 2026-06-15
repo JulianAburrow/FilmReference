@@ -14,7 +14,7 @@ public interface IPersonHandler
 
     Task DeletePersonAsync(int personId, bool saveChanges);
 
-    Task<RandomPersonModel?> GetRandomPersonAsync();
+    Task<RandomPersonModel> GetRandomPersonAsync();
 
     Task SaveChangesAsync();
 }

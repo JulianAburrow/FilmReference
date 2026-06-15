@@ -11,6 +11,8 @@
         [StringLength(500, ErrorMessage = "{0} cannot be more than {1} characters")]
         public string? Description { get; set; } = string.Empty;
 
+        public byte[]? Logo { get; set; }
+
         public ICollection<FilmModel> Film { get; set; } = null!;
     }
 }

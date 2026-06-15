@@ -8,13 +8,14 @@ public class GenreTests
         using var context = DbContextHelper.GetInMemoryContext();
         var handler = new GenreHandler(context);
 
-        var genre = new GenreModel { GenreId = 1, Name = "Action" };
+        var genre = new GenreModel { GenreId = 1, Name = "Action", Logo = [1,2,3] };
 
         await handler.CreateGenreAsync(genre, saveChanges: true);
 
         var result = await context.Genres.FindAsync(1);
         result.Should().NotBeNull();
         result.Name.Should().Be("Action");
+        result.Logo.Should().Equal([1,2,3]);
     }
 
     [Fact]
@@ -106,16 +107,17 @@ public class GenreTests
         using var context = DbContextHelper.GetInMemoryContext();
         var handler = new GenreHandler(context);
 
-        var genre = new GenreModel { GenreId = 20, Name = "Old Name", Description = "Old Desc" };
+        var genre = new GenreModel { GenreId = 20, Name = "Old Name", Description = "Old Desc", Logo = [1,2,3] };
         context.Genres.Add(genre);
         await context.SaveChangesAsync();
 
-        var updated = new GenreModel { GenreId = 20, Name = "New Name", Description = "New Desc" };
+        var updated = new GenreModel { GenreId = 20, Name = "New Name", Description = "New Desc", Logo = [3,2,1] };
         await handler.UpdateGenreAsync(updated, saveChanges: true);
 
         var result = await context.Genres.FindAsync(20);
         result!.Name.Should().Be("New Name");
         result.Description.Should().Be("New Desc");
+        result.Logo.Should().Equal([3, 2, 1]);
     }
 
     [Fact]

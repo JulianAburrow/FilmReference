@@ -27,4 +27,16 @@ public partial class ViewPerson
             .OrderBy(f => f.Name)
             .ToList();
     }
+
+    private void DoNavigation(RoleEnum role)
+    {
+        if (role == RoleEnum.CastMembers)
+        {
+            NavigationManager.NavigateTo($"/people/listpeople/{RoleEnum.CastMembers}");
+        }
+        if (role == RoleEnum.Directors)
+        {
+            NavigationManager.NavigateTo($"/people/listpeople/{RoleEnum.Directors}");
+        }
+    }
 }

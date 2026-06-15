@@ -11,27 +11,10 @@
 
 <h6>Welcome to your film reference application! Use this application to manage all your favoutite films.</h6>
 
-<MudCard Class="ma-2 pa-2" Style="width: 100%; max-width: 350px;">
-	<MudCardHeader>
-		<MudText Typo="Typo.h6">@RandomPerson.FirstName @RandomPerson.LastName</MudText>
-	</MudCardHeader>
-	<MudCardContent>
-		<MudButton Variant="Variant.Text"
-				   Color="Color.Primary"
-				   Href="@($"/person/view/{RandomPerson.PersonId}")"
-				   Class="p-0">
-			<ViewImageComponent ImageData="@RandomPerson.Picture"
-								ImageTitle="@($"{RandomPerson.FirstName} {RandomPerson.LastName} Photo")" />
-		</MudButton>
-        <MudText Typo="Typo.subtitle2">@RandomPerson.FilmCount @(RandomPerson.FilmCount == 1 ? "film" : "films")</MudText>
-	</MudCardContent>
-
-	<MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
-		<MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/person/view/{RandomPerson.PersonId}")>
-			View
-		</MudButton>
-	</MudCardActions>
-</MudCard>
+@if (RandomPerson.PersonId != 0)
+{
+	<ViewRandomPersonComponent RandomPerson="RandomPerson" />
+}
 
 <h2>Search</h2>
 

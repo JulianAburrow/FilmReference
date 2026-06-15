@@ -4,6 +4,16 @@
     </MudCardHeader>
 
     <MudCardContent>
+        <MudText>
+            @if (PersonRole == RoleEnum.CastMembers.ToString())
+            {
+                @Person.FilmPerson.Count @(Person.FilmPerson.Count == 1 ? " film" : " films")
+            }
+            @if (PersonRole == RoleEnum.Directors.ToString())
+            {
+                @Person.Films.Count @(Person.Films.Count == 1 ? " film" : " films")
+            }
+        </MudText>
         <br />
         <MudButton Variant="Variant.Text"
                    Color="Color.Primary"

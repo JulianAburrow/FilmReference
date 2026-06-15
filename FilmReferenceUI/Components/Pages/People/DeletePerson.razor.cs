@@ -6,7 +6,7 @@ public partial class DeletePerson
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         PreventDeleting = PersonModel.FilmPerson.Count != 0 || PersonModel.Films.Count != 0;
-        MainLayout.SetHeaderValue("Delete Person");
+        MainLayout.SetHeaderValue($"Delete Person {PersonModel.FirstName} {PersonModel.LastName}");
     }
 
     private async Task DeletePersonAsync()
@@ -15,7 +15,7 @@ public partial class DeletePerson
         {
             await PersonHandler.DeletePersonAsync(PersonId, true);
             Snackbar.Add($"Person {PersonModel.FirstName} successfully deleted.", Severity.Success);
-            NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? "castmembers" : "directors")}");
+            NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? RoleEnum.CastMembers : RoleEnum.Directors)}");
         }
         catch
         {

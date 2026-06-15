@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
-using System.Threading.Tasks;
-
-namespace FilmReferenceUI.Shared.BasePageClasses;
+﻿namespace FilmReferenceUI.Shared.BasePageClasses;
 
 public class StudiosBasePageClass : BasePageClass
 {
