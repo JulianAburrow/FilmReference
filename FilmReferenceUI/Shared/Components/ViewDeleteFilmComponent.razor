@@ -5,35 +5,62 @@
         <!-- LEFT COLUMN: Film details -->
         <MudItem xs="12" md="8">
 
-            <MudStack Spacing="2">
+            <!-- Description -->
+            @if (!string.IsNullOrWhiteSpace(FilmModel.Description))
+            {
+                <MudText Typo="Typo.body1" Class="mb-3">
+                    @FilmModel.Description
+                </MudText>
+            }
 
-                @if (!string.IsNullOrWhiteSpace(FilmModel.Description))
-                {
-                    <MudText Typo="Typo.body1" Class="mb-3">
-                        @FilmModel.Description
+            <MudStack Spacing="4">
+
+                <!-- GENRE -->
+                <MudStack Spacing="1">
+                    <MudLink Href="@($"/genre/view/{FilmModel.GenreId}")"
+                             Class="no-underline">
+                        <ViewImageThumbnailComponent
+                            ImageData="FilmModel.Genre.Logo"
+                            ImageTitle="@FilmModel.Genre.Name" />
+                    </MudLink>
+
+                    <MudText>
+                        <b>Genre:</b>
+                        <MudLink Href="@($"/genre/view/{FilmModel.GenreId}")"
+                                 Class="no-underline">
+                            @FilmModel.Genre.Name
+                        </MudLink>
                     </MudText>
-                }
+                </MudStack>
 
-                <MudText>
-                    <b>Genre:</b>
-                    <MudLink Href="@($"/genre/view/{FilmModel.GenreId}")">
-                        @FilmModel.Genre?.Name
+                <!-- STUDIO -->
+                <MudStack Spacing="1">
+                    <MudLink Href="@($"/studio/view/{FilmModel.StudioId}")"
+                             Class="no-underline">
+                        <ViewImageThumbnailComponent
+                            ImageData="FilmModel.Studio.Logo"
+                            ImageTitle="@FilmModel.Studio.Name" />
                     </MudLink>
-                </MudText>
 
-                <MudText>
-                    <b>Studio:</b>
-                    <MudLink Href="@($"/studio/view/{FilmModel.StudioId}")">
-                        @FilmModel.Studio?.Name
-                    </MudLink>
-                </MudText>
+                    <MudText>
+                        <b>Studio:</b>
+                        <MudLink Href="@($"/studio/view/{FilmModel.StudioId}")"
+                                 Class="no-underline">
+                            @FilmModel.Studio.Name
+                        </MudLink>
+                    </MudText>
+                </MudStack>
 
-                <MudText>
-                    <b>Director:</b>
-                    <MudLink Href="@($"/person/view/{FilmModel.Director.PersonId}")">
-                        @FilmModel.Director.FirstName @FilmModel.Director.LastName
-                    </MudLink>
-                </MudText>
+                <!-- DIRECTOR (text only, no image) -->
+                <MudStack Spacing="1">
+                    <MudText>
+                        <b>Director:</b>
+                        <MudLink Href="@($"/person/view/{FilmModel.Director.PersonId}")"
+                                 Class="no-underline">
+                            @FilmModel.Director.FirstName @FilmModel.Director.LastName
+                        </MudLink>
+                    </MudText>
+                </MudStack>
 
             </MudStack>
 
@@ -43,7 +70,7 @@
         <MudItem xs="12" md="4"
                  Class="d-flex justify-center align-center">
             <ViewImageComponent ImageData="FilmModel.BoxCover"
-                                ImageTitle="@($"{FilmModel.Name} Box Cover")" />
+                                ImageTitle="@FilmModel.Name" />
         </MudItem>
 
     </MudGrid>

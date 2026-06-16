@@ -6,12 +6,17 @@
     <MudCardContent>
         <MudText>@Studio.Films.Count @(Studio.Films.Count == 1 ? "film" : "films")</MudText>
         <br />
+        @{
+            var ImageTitle = string.IsNullOrWhiteSpace(Studio.Description)
+                        ? Studio.Name
+                        : $"{Studio.Name} - {Studio.Description}";
+        }
         <MudButton Variant="Variant.Text"
                    Color="Color.Primary"
                    Href="@($"/studio/view/{Studio.StudioId}")"
                    Class="p-0">
-            <ViewImageComponent ImageData="@Studio.Logo"
-                                ImageTitle="@($"{Studio.Name} Logo")" />
+            <ViewImageComponent ImageData="Studio.Logo"
+                                ImageTitle="@ImageTitle" />
         </MudButton>
     </MudCardContent>
 
