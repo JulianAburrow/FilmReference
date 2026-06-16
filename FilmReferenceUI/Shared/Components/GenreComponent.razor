@@ -6,12 +6,17 @@
     <MudCardContent>
         <MudText>@Genre.Films.Count @(Genre.Films.Count == 1 ? "film" : "films")</MudText>
         <br />
+        @{
+            var ImageTitle = string.IsNullOrWhiteSpace(Genre.Description)
+                    ? Genre.Name
+                    : $"{Genre.Name} - {Genre.Description}";
+        }
         <MudButton Variant="Variant.Text"
             Color="Color.Primary"
             Href="@($"/genre/view/{Genre.GenreId}")"
             Class="p-0">
-            <ViewImageComponent ImageData="@Genre.Logo"
-                                ImageTitle="@($"{Genre.Name} Logo")" />
+            <ViewImageComponent ImageData="Genre.Logo"
+                                ImageTitle="@ImageTitle" />
         </MudButton>
     </MudCardContent>
 

@@ -7,8 +7,8 @@
                    Color="Color.Primary"
                    Href="@($"/{Favourite.EntityTypeName}/View/{Favourite.EntityId}")"
                    Class="p-0">
-            <ViewImageComponent ImageData="@Favourite.EntityImage"
-                                ImageTitle="@($"{Favourite.EntityName} Picture")" />
+            <ViewImageComponent ImageData="Favourite.EntityImage"
+                                ImageTitle="Favourite.EntityName" />
         </MudButton>
     </MudCardContent>
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">

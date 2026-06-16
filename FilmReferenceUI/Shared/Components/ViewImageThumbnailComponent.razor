@@ -1,0 +1,8 @@
+﻿@if (ImageData is not null)
+
+{
+    <MudImage src="@(ImageHelper.ImageSource(ImageData))"
+              title="@ImageTitle"
+              Class="rounded"
+              Style="width:150px; height:auto; object-fit:contain;" />
+}

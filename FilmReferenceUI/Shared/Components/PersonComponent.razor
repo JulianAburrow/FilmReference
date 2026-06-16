@@ -15,12 +15,20 @@
             }
         </MudText>
         <br />
+        @{
+            var ImageTitle = Person.LastName is null
+                ? Person.FirstName
+                : $"{Person.FirstName} {Person.LastName}";
+
+            if (!string.IsNullOrWhiteSpace(Person.Description))
+                ImageTitle += $" - {Person.Description}";
+        }
         <MudButton Variant="Variant.Text"
                    Color="Color.Primary"
                    Href="@($"/person/view/{Person.PersonId}")"
                    Class="p-0">
             <ViewImageComponent ImageData="@Person.Picture"
-                                ImageTitle="@($"{Person.FirstName} {Person.LastName} Photo")" />
+                                ImageTitle="@ImageTitle" />
         </MudButton>
     </MudCardContent>
 
