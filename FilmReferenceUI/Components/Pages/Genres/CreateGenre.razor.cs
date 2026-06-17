@@ -11,7 +11,7 @@ public partial class CreateGenre
         {
             CopyDisplayModelToModel();
             await GenreHandler.CreateGenreAsync(GenreModel, true);
-            Snackbar.Add($"Genre {GenreModel.Name} successfully created.", Severity.Success);
+            Snackbar.Add($"{GenreModel.Name} successfully created.", Severity.Success);
             NavigationManager.NavigateTo("/genres/listgenres");
         }
         catch

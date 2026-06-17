@@ -8,7 +8,7 @@
                    Href="@($"/{Favourite.EntityTypeName}/View/{Favourite.EntityId}")"
                    Class="p-0">
             <ViewImageComponent ImageData="Favourite.EntityImage"
-                                ImageTitle="Favourite.EntityName" />
+                                ImageTitle="@Favourite.EntityName" />
         </MudButton>
     </MudCardContent>
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">

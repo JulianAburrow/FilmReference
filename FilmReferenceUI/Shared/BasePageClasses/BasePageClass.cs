@@ -38,19 +38,19 @@ public class BasePageClass : ComponentBase
             ImageName = file.Name;
             var imageMemoryStream = await ImageHelper.ToMemoryStream(file.OpenReadStream(MaxFileSize));
             ImageForDisplay = imageMemoryStream.ToArray();
-            Snackbar.Add($"File {ImageName} successfully uploaded", Severity.Success);
+            Snackbar.Add($"{ImageName} successfully uploaded.", Severity.Success);
         }
         catch
         {
-            Snackbar.Add($"An error occurred uploading the {ImageName}. Please try again.", Severity.Error);
+            Snackbar.Add($"An error occurred uploading {ImageName}. Please try again.", Severity.Error);
         }
     }
 
     protected void GlobalRemoveImage()
     {
+        Snackbar.Add($"{ImageName} successfully removed.", Severity.Success);
         ImageForDisplay = null;
         ImageName = null;
-        Snackbar.Add("Image successfully removed.", Severity.Success);
         StateHasChanged();
     }
 

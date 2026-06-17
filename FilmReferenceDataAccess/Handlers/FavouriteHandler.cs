@@ -71,7 +71,7 @@ public class FavouriteHandler(FilmReferenceContext context) : IFavouriteHandler
                         .Where(g => entityIds.Contains(g.GenreId))
                         .ToDictionaryAsync(
                             g => g.GenreId,
-                            g => (Name: g.Name, Image: (byte[]?)null)
+                            g => (Name: g.Name, Image: g.Logo)
                         );
                     break;
 
