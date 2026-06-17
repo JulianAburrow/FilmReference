@@ -11,15 +11,19 @@ public partial class DeletePerson
 
     private async Task DeletePersonAsync()
     {
+        var personName = PersonModel.LastName is not null
+            ? $"{PersonModel.FirstName} {PersonModel.LastName}"
+            : PersonModel.FirstName;
+
         try
         {
             await PersonHandler.DeletePersonAsync(PersonId, true);
-            Snackbar.Add($"Person {PersonModel.FirstName} successfully deleted.", Severity.Success);
+            Snackbar.Add($"{personName} successfully deleted.", Severity.Success);
             NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? RoleEnum.CastMembers : RoleEnum.Directors)}");
         }
         catch
         {
-            Snackbar.Add($"An error occurred deleting person {PersonModel.FirstName}. Please try again.", Severity.Error);
+            Snackbar.Add($"An error occurred deleting {personName}. Please try again.", Severity.Error);
         }
     }
 }

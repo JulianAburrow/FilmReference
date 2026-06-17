@@ -15,12 +15,12 @@ public partial class EditStudio
         {
             await CopyDisplayModelToModel();
             await StudioHandler.UpdateStudioAsync(StudioModel, true);
-            Snackbar.Add($"Studio {StudioModel.Name} successfully updated.", Severity.Success);
+            Snackbar.Add($"{StudioModel.Name} successfully updated.", Severity.Success);
             NavigationManager.NavigateTo("/studios/liststudios");
         }
         catch
         {
-            Snackbar.Add($"And error occurred updating studio {StudioModel.Name}. Please try again.", Severity.Error);
+            Snackbar.Add($"And error occurred updating {StudioModel.Name}. Please try again.", Severity.Error);
         }
     }
 }

@@ -19,7 +19,7 @@ public partial class EditFilm
         {
             await CopyDisplayModelToModelAsync();
             await FilmHandler.UpdateFilmAsync(FilmModel, FilmDisplayModel.SelectedCastMemberIds, true);
-            Snackbar.Add($"Film {FilmModel.Name} successfully updated.", Severity.Success);
+            Snackbar.Add($"{FilmModel.Name} successfully updated.", Severity.Success);
             NavigationManager.NavigateTo("films/listfilms");
         }
         catch

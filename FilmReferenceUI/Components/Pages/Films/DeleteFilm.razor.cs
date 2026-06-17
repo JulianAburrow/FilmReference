@@ -13,12 +13,12 @@ public partial class DeleteFilm
         try
         {
             await FilmHandler.DeleteFilmAsync(FilmId, true);
-            Snackbar.Add($"Film {FilmModel.Name} successfully deleted.", Severity.Success);
+            Snackbar.Add($"{FilmModel.Name} successfully deleted.", Severity.Success);
             NavigationManager.NavigateTo("films/listfilms");
         }
         catch
         {
-            Snackbar.Add($"An error occurred deleting film {FilmModel.Name}. Please try again.", Severity.Error);
+            Snackbar.Add($"An error occurred deleting {FilmModel.Name}. Please try again.", Severity.Error);
         }
     }
 }

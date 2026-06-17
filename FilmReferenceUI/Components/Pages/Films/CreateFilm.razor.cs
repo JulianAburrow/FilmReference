@@ -36,12 +36,12 @@ public partial class CreateFilm
         {
             await CopyDisplayModelToModelAsync();
             await FilmHandler.CreateFilmAsync(FilmModel, FilmDisplayModel.SelectedCastMemberIds, true);
-            Snackbar.Add($"Film {FilmModel.Name} successfully created.", Severity.Success);
+            Snackbar.Add($"{FilmModel.Name} successfully created.", Severity.Success);
             NavigationManager.NavigateTo("films/listfilms");
         }
         catch
         {
-            Snackbar.Add($"An error occurred creating film {FilmModel.Name}. Please try again.", Severity.Error);
+            Snackbar.Add($"An error occurred creating {FilmModel.Name}. Please try again.", Severity.Error);
         }
     }
 }

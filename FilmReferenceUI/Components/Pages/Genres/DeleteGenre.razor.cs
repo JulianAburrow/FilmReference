@@ -14,12 +14,12 @@ public partial class DeleteGenre
         try
         {
             await GenreHandler.DeleteGenreAsync(GenreId, true);
-            Snackbar.Add($"Genre {GenreModel.Name} successfully deleted", Severity.Success);
+            Snackbar.Add($"{GenreModel.Name} successfully deleted", Severity.Success);
             NavigationManager.NavigateTo("genres/listgenres");
         }
         catch
         {
-            Snackbar.Add($"An error occurred deleting genre {GenreModel.Name}. Please try again.", Severity.Error);
+            Snackbar.Add($"An error occurred deleting {GenreModel.Name}. Please try again.", Severity.Error);
         }
         
     }

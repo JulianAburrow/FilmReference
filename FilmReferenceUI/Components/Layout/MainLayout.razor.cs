@@ -77,12 +77,12 @@ public partial class MainLayout
             try
             {
                 await FavouriteHandler.DeleteFavouriteAsync((int)CurrentEntityType, CurrentEntityId, true);
-                Snackbar.Add($"Favourite {CurrentEntityType} successfully removed from Favourites.", Severity.Success);
+                Snackbar.Add($"Favourite {CurrentEntityType} successfully removed.", Severity.Success);
                 IsAlreadyFavourite = false;
             }
             catch
             {
-                Snackbar.Add($"An error occurred removing Favourite {CurrentEntityType}. Please try again.", Severity.Error);
+                Snackbar.Add($"An error occurred removing favourite {CurrentEntityType}. Please try again.", Severity.Error);
             }
             return;
         }
@@ -103,7 +103,7 @@ public partial class MainLayout
         }
         catch
         {
-            Snackbar.Add($"An error occurred creating Favourite {CurrentEntityType}. Please try again.", Severity.Error);
+            Snackbar.Add($"An error occurred creating {CurrentEntityType}. Please try again.", Severity.Error);
         }
     }
 }

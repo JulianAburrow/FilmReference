@@ -11,12 +11,12 @@ public partial class CreateStudio
         {
             await CopyDisplayModelToModel();
             await StudioHandler.CreateStudioAsync(StudioModel, true);
-            Snackbar.Add($"Studio {StudioModel.Name} successfully created.", Severity.Success);
+            Snackbar.Add($"{StudioModel.Name} successfully created.", Severity.Success);
             NavigationManager.NavigateTo("/studios/liststudios");
         }
         catch
         {
-            Snackbar.Add($"An error occurred creating studio {StudioModel.Name}. Please try again.", Severity.Error);
+            Snackbar.Add($"An error occurred creating {StudioModel.Name}. Please try again.", Severity.Error);
         }
     }
 }

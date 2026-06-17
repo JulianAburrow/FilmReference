@@ -9,21 +9,26 @@ public partial class CreatePerson
 
     private async Task CreatePersonAsync()
     {
+        var personName = string.Empty;
+        
         try
         {
             await CopyDisplayModelToModel();
+            personName = PersonModel.LastName is not null
+                ? $"{PersonModel.FirstName} {PersonModel.LastName}"
+                : PersonModel.FirstName;
             if (!PersonModel.IsDirector && !PersonModel.IsCastMember)
             {
                 ShowRoleError = true;
                 return;
             }
             await PersonHandler.CreatePersonAsync(PersonModel, true);
-            Snackbar.Add($"Person {PersonModel.FirstName} successfully created.", Severity.Success);
+            Snackbar.Add($"{personName} successfully created.", Severity.Success);
             NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? RoleEnum.CastMembers : RoleEnum.Directors)}");
         }
         catch
         {
-            Snackbar.Add($"An error occurred creating person {PersonModel.FirstName}. Please try again.", Severity.Error);
+            Snackbar.Add($"An error occurred creating {personName}. Please try again.", Severity.Error);
         }
     }
 }
