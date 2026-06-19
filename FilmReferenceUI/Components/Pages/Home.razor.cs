@@ -10,7 +10,15 @@ public partial class Home
 
     private List<PersonModel> PeopleFound = [];
 
-    private RandomPersonModel? RandomPerson = null!;
+    private bool ShowBirthdays = true;
+
+    List<PersonModel> BirthdayPeople = [];
+
+    private bool BirthdaysToShow;
+
+    private FeaturedPersonModel? FeaturedPerson = null!;
+
+    private bool FeaturedPersonToShow;
 
     private List<StudioModel> StudiosFound = [];
 
@@ -30,11 +38,13 @@ public partial class Home
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)
-        {
             return;
-        }
 
-        RandomPerson = await PersonHandler.GetRandomPersonAsync();
+        BirthdayPeople = await PersonHandler.GetTodaysBirthdays(DateTime.Today);
+        BirthdaysToShow = BirthdayPeople is not null && BirthdayPeople.Count > 0;
+        FeaturedPerson = await PersonHandler.GetFeaturedPersonAsync();
+        FeaturedPersonToShow = FeaturedPerson is not null && FeaturedPerson.PersonId != 0;
+
         StateHasChanged();
     }
 
@@ -77,5 +87,10 @@ public partial class Home
         {
             await SearchTextBox.FocusAsync();
         }
+    }
+
+    private void SwitchBirthdaysFeaturedPersonDisplay()
+    {
+        ShowBirthdays = !ShowBirthdays;
     }
 }

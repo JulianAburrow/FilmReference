@@ -1,0 +1,32 @@
+﻿<MudCard Class="ma-2 pa-2" Style="max-width: 375px; width: 100%;">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">@FeaturedPerson.FirstName @FeaturedPerson.LastName</MudText>
+            <MudText Typo="Typo.caption" Color="Color.Secondary">
+                @FeaturedPerson.FilmCount @(FeaturedPerson.FilmCount == 1 ? "film" : "films")
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent Class="pt-0">
+        @{
+            var ImageTitle = FeaturedPerson.LastName is null
+                ? FeaturedPerson.FirstName
+                : $"{FeaturedPerson.FirstName} {FeaturedPerson.LastName}";
+
+            if (!string.IsNullOrWhiteSpace(FeaturedPerson.Description))
+                ImageTitle += $" - {FeaturedPerson.Description}";
+        }
+        <MudLink Href="@($"/person/view/{FeaturedPerson.PersonId}")" Class="no-underline d-block">
+            <ViewImageComponent ImageData="@FeaturedPerson.Picture"
+                                ImageTitle="@(ImageTitle)" />
+        </MudLink>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Size="Size.Small"
+                   Href="@($"/person/view/{FeaturedPerson.PersonId}")">
+            View
+        </MudButton>
+    </MudCardActions>
+</MudCard>

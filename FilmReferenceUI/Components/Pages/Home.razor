@@ -7,9 +7,35 @@
 <MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
     <MudStack Spacing="4">
 
-        @if (RandomPerson is not null && RandomPerson.PersonId != 0)
+        @if (BirthdaysToShow && ShowBirthdays)
         {
-            <ViewRandomPersonComponent RandomPerson="RandomPerson" />
+            <MudText Typo="Typo.h5">Born On This Day</MudText>
+            <ListPeopleComponent
+                PersonModels="BirthdayPeople"
+                PersonRole="@RoleEnum.CastMembers.ToString()"
+                ShowEditButton="false" />
+        }
+        else if (!BirthdaysToShow && FeaturedPersonToShow)
+        {
+            <MudText Typo="Typo.h5">Featured Person</MudText>
+            <ViewFeaturedPersonComponent FeaturedPerson="FeaturedPerson" />
+        }
+        else if (BirthdaysToShow && !ShowBirthdays)
+        {
+            <MudText Typo="Typo.h5">Featured Person</MudText>
+            <ViewFeaturedPersonComponent FeaturedPerson="FeaturedPerson" />
+        }
+        
+        @if (BirthdaysToShow)
+        {
+            <span>
+                <MudButton Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.SwapHoriz"
+                        OnClick="SwitchBirthdaysFeaturedPersonDisplay">
+                    @(ShowBirthdays ? "Show Featured Person" : "Show Birthdays")
+                </MudButton>
+            </span>
         }
 
         <MudText Typo="Typo.h5">Search</MudText>

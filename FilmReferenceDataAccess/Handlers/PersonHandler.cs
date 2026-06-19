@@ -1,6 +1,4 @@
-﻿using System.Net.WebSockets;
-
-namespace FilmReferenceDataAccess.Handlers;
+﻿namespace FilmReferenceDataAccess.Handlers;
 
 public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IPersonHandler
 {
@@ -43,7 +41,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
         scope.Complete();
     }
 
-    public async Task<RandomPersonModel> GetRandomPersonAsync()
+    public async Task<FeaturedPersonModel> GetFeaturedPersonAsync()
     {
         await using var context = await factory.CreateDbContextAsync();
         var castQuery = context.People
@@ -53,7 +51,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
         var castCount = await castQuery.CountAsync();
 
         if (castCount == 0)
-            return new RandomPersonModel();
+            return new FeaturedPersonModel();
 
         var randomIndex = _random.Next(castCount);
 
@@ -62,13 +60,14 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
             .FirstOrDefaultAsync();
 
         if (person is null)
-            return new RandomPersonModel();
+            return new FeaturedPersonModel();
 
-        return new RandomPersonModel
+        return new FeaturedPersonModel
         {
             PersonId = person.PersonId,
             FirstName = person.FirstName,
             LastName = person.LastName,
+            Description = person.Description,
             FilmCount = person.FilmPerson.Count,
             Picture = person.Picture
         };
@@ -176,6 +175,33 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
                 FirstName = p.FirstName,
                 LastName = p.LastName
             })
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<List<PersonModel>> GetTodaysBirthdays(DateTime today)
+    {
+        await using var context = await factory.CreateDbContextAsync();
+        var isLeapYear = DateTime.IsLeapYear(today.Year);
+
+        return await context.People
+            .Where(p =>
+                p.IsCastMember &&
+                p.DateOfBirth.HasValue &&
+                (
+                    (p.DateOfBirth.Value.Month == today.Month &&
+                     p.DateOfBirth.Value.Day == today.Day)
+                    ||
+                    (!isLeapYear &&
+                     p.DateOfBirth.Value.Month == 2 &&
+                     p.DateOfBirth.Value.Day == 29 &&
+                     today.Month == 2 &&
+                     today.Day == 28)
+                )
+            )
+            .Include(p => p.FilmPerson)
+            .OrderBy(p => p.FirstName)
+            .ThenBy(p => p.LastName)
             .AsNoTracking()
             .ToListAsync();
     }

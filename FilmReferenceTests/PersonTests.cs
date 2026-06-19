@@ -412,19 +412,19 @@ public class PersonTests
     // ----------------------------------------------------------------------
 
     [Fact]
-    public async Task GetRandomPersonAsync_ShouldReturnNewPersonModel_WhenNoCastMembersExist()
+    public async Task GetFeaturedPersonAsync_ShouldReturnNewPersonModel_WhenNoCastMembersExist()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
         await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new PersonHandler(factory);
 
-        var result = await handler.GetRandomPersonAsync();
+        var result = await handler.GetFeaturedPersonAsync();
 
         result.PersonId.Should().Be(0);
     }
 
     [Fact]
-    public async Task GetRandomPersonAsync_ShouldReturnNewPersonModel_WhenCastMembersHaveNoPictures()
+    public async Task GetFeaturedPersonAsync_ShouldReturnNewPersonModel_WhenCastMembersHaveNoPictures()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
         await using var context = await factory.CreateDbContextAsync(CT.Token);
@@ -439,13 +439,13 @@ public class PersonTests
         await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
-        var result = await handler.GetRandomPersonAsync();
+        var result = await handler.GetFeaturedPersonAsync();
 
         result.PersonId.Should().Be(0);
     }
 
     [Fact]
-    public async Task GetRandomPersonAsync_ShouldReturnCastMemberWithPicture()
+    public async Task GetFeaturedPersonAsync_ShouldReturnCastMemberWithPicture()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
         await using var context = await factory.CreateDbContextAsync(CT.Token);
@@ -459,14 +459,14 @@ public class PersonTests
         await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
-        var result = await handler.GetRandomPersonAsync();
+        var result = await handler.GetFeaturedPersonAsync();
 
         result.Picture.Should().NotBeNull();
         result.PersonId.Should().BeOneOf(1, 2);
     }
 
     [Fact]
-    public async Task GetRandomPersonAsync_ShouldExcludeNonCastMembersAndPicturelessPeople()
+    public async Task GetFeaturedPersonAsync_ShouldExcludeNonCastMembersAndPicturelessPeople()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
         await using var context = await factory.CreateDbContextAsync(CT.Token);
@@ -481,7 +481,7 @@ public class PersonTests
         await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
-        var result = await handler.GetRandomPersonAsync();
+        var result = await handler.GetFeaturedPersonAsync();
 
         result.PersonId.Should().Be(1);
     }
@@ -605,4 +605,137 @@ public class PersonTests
         verify.Favourites.Where(f => f.EntityId == 300 && f.EntityTypeId == (int)FavouriteEntityEnum.Person).Should().BeEmpty();
         verify.Favourites.Where(f => f.EntityId == 999 && f.EntityTypeId == (int)FavouriteEntityEnum.Person).Should().HaveCount(1);
     }
+
+    // ----------------------------------------------------------------------
+    // BIRTHDAYS
+    // ----------------------------------------------------------------------
+
+    [Fact]
+    public async Task GetTodaysBirthdays_ShouldReturnPeopleWithBirthdayToday()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
+
+        var today = DateTime.Today;
+        context.People.AddRange(
+            new PersonModel
+            {
+                PersonId = 1,
+                FirstName = "Birthday",
+                LastName = "Today",
+                IsCastMember = true,
+                DateOfBirth = today
+            },
+            new PersonModel
+            {
+                PersonId = 2,
+                FirstName = "Not",
+                LastName = "Today",
+                IsCastMember = true,
+                DateOfBirth = today.AddDays(-1)
+            },
+            new PersonModel
+            {
+                PersonId = 3,
+                FirstName = "Director",
+                LastName = "Only",
+                IsCastMember = false,
+                DateOfBirth = today
+            }
+        );
+        await context.SaveChangesAsync(CT.Token);
+
+        var handler = new PersonHandler(factory);
+        var result = await handler.GetTodaysBirthdays(today);
+        result.Should().HaveCount(1);
+        result.First().PersonId.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task GetTodaysBirthdays_ShouldReturnLeapDayBirthdaysOnFeb28_InNonLeapYears()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
+
+        // Simulate a non-leap year Feb 28
+        var today = new DateTime(2025, 2, 28); // 2025 is not a leap year
+
+        context.People.AddRange(
+            new PersonModel
+            {
+                PersonId = 1,
+                FirstName = "Leap",
+                LastName = "Baby",
+                IsCastMember = true,
+                DateOfBirth = new DateTime(2000, 2, 29)
+            },
+            new PersonModel
+            {
+                PersonId = 2,
+                FirstName = "Normal",
+                LastName = "Person",
+                IsCastMember = true,
+                DateOfBirth = today
+            },
+            new PersonModel
+            {
+                PersonId = 3,
+                FirstName = "Director",
+                LastName = "Only",
+                IsCastMember = false,
+                DateOfBirth = new DateTime(2000, 2, 29)
+            }
+        );
+        await context.SaveChangesAsync(CT.Token);
+
+        var handler = new PersonHandler(factory);
+        var result = await handler.GetTodaysBirthdays(today);
+
+        result.Should().HaveCount(2);
+        result.Select(p => p.PersonId).Should().Contain(new[] { 1, 2 });
+    }
+
+    [Fact]
+    public async Task GetTodaysBirthdays_ShouldReturnLeapDayBirthdaysOnlyOnFeb29_InLeapYears()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
+
+        var today = new DateTime(2024, 2, 29); // leap year
+
+        context.People.AddRange(
+            new PersonModel
+            {
+                PersonId = 1,
+                FirstName = "Leap",
+                LastName = "Baby",
+                IsCastMember = true,
+                DateOfBirth = new DateTime(2000, 2, 29)
+            },
+            new PersonModel
+            {
+                PersonId = 2,
+                FirstName = "Normal",
+                LastName = "Person",
+                IsCastMember = true,
+                DateOfBirth = new DateTime(2000, 2, 28)
+            },
+            new PersonModel
+            {
+                PersonId = 3,
+                FirstName = "Director",
+                LastName = "Only",
+                IsCastMember = false,
+                DateOfBirth = new DateTime(2000, 2, 29)
+            }
+        );
+        await context.SaveChangesAsync(CT.Token);
+
+        var handler = new PersonHandler(factory);
+        var result = await handler.GetTodaysBirthdays(today);
+
+        result.Should().HaveCount(1);
+        result.First().PersonId.Should().Be(1);
+    }
+
 }
