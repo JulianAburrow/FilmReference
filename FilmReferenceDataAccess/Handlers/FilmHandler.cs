@@ -25,6 +25,8 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
             await SaveChangesAsync();
         }
 
+        film.FilmId = filmToAdd.FilmId;
+
         if (selectedCastMemberIds != null && selectedCastMemberIds.Any())
         {
             foreach (var selectedCastMemberId in selectedCastMemberIds)
