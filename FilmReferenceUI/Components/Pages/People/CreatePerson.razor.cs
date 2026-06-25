@@ -24,7 +24,7 @@ public partial class CreatePerson
             }
             await PersonHandler.CreatePersonAsync(PersonModel, true);
             Snackbar.Add($"{personName} successfully created.", Severity.Success);
-            NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? RoleEnum.CastMembers : RoleEnum.Directors)}");
+            NavigationManager.NavigateTo($"/person/view/{PersonModel.PersonId}");
         }
         catch
         {

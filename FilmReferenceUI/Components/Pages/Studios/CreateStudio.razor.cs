@@ -12,7 +12,7 @@ public partial class CreateStudio
             await CopyDisplayModelToModel();
             await StudioHandler.CreateStudioAsync(StudioModel, true);
             Snackbar.Add($"{StudioModel.Name} successfully created.", Severity.Success);
-            NavigationManager.NavigateTo("/studios/liststudios");
+            NavigationManager.NavigateTo($"/studio/view/{StudioModel.StudioId}");
         }
         catch
         {

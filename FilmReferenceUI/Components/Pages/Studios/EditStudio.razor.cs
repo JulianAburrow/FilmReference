@@ -16,7 +16,7 @@ public partial class EditStudio
             await CopyDisplayModelToModel();
             await StudioHandler.UpdateStudioAsync(StudioModel, true);
             Snackbar.Add($"{StudioModel.Name} successfully updated.", Severity.Success);
-            NavigationManager.NavigateTo("/studios/liststudios");
+            NavigationManager.NavigateTo($"/studio/view/{StudioModel.StudioId}");
         }
         catch
         {

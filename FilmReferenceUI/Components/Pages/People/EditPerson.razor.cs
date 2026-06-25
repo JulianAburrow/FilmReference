@@ -28,7 +28,7 @@ public partial class EditPerson
             }
             await PersonHandler.UpdatePersonAsync(PersonModel, true);
             Snackbar.Add($"{personName} successfully updated.", Severity.Success);
-            NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? RoleEnum.CastMembers : RoleEnum.Directors)}");
+            NavigationManager.NavigateTo($"/person/view/{PersonModel.PersonId}");
         }
         catch
         {
