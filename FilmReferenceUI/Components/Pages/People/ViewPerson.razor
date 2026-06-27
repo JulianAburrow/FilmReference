@@ -60,16 +60,16 @@
     return;
 }
 
-@if (FilmsStarredIn.Count > 1 || FilmsDirected.Count > 1)
-{
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortLists">Reverse Sort Order</MudButton>
-    <br />
-    <br />
-}
-
 @if (FilmsStarredIn.Any())
 {
     <h3>@FilmsStarredIn.Count @(FilmsStarredIn.Count == 1 ? "film" : "films") as cast member</h3>
+
+    @if (FilmsStarredIn.Count > 1)
+    {
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => ResortList(FilmListToSortEnum.FilmsStarredIn))">Reverse Sort Order</MudButton>
+        <br />
+        <br />
+    }
 
     <ListFilmsComponent FilmModels="@FilmsStarredIn" />
 }
@@ -77,6 +77,13 @@
 @if (FilmsDirected.Any())
 {
     <h3>@FilmsDirected.Count @(FilmsDirected.Count == 1 ? "film" : "films") as director</h3>
+
+    @if (FilmsDirected.Count > 1)
+    {
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => ResortList(FilmListToSortEnum.FilmsDirected))">Reverse Sort Order</MudButton>
+        <br />
+        <br />
+    }
 
     <ListFilmsComponent FilmModels="@FilmsDirected" />
 }

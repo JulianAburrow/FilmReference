@@ -8,6 +8,12 @@ public partial class ViewPerson
 
     private List<FilmModel> FilmsDirected { get; set; } = [];
 
+    private enum FilmListToSortEnum
+    {
+        FilmsDirected = 0,
+        FilmsStarredIn = 1,
+    };
+
     protected override async Task OnInitializedAsync()
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
@@ -41,25 +47,46 @@ public partial class ViewPerson
         }
     }
 
-    private void ResortLists()
+    private void ResortList(FilmListToSortEnum listToSort)
     {
         switch (NextSortDirection)
         {
             case SortDirection.Ascending:
-                FilmsDirected = [.. FilmsDirected.OrderBy(f => f.Name)];
-                FilmsStarredIn = [.. FilmsStarredIn.OrderBy(f => f.Name)];
+                if (listToSort == FilmListToSortEnum.FilmsStarredIn)
+                {
+                    FilmsStarredIn = [.. FilmsStarredIn.OrderBy(f => f.Name)];
+                }
+                else
+                {
+                    FilmsDirected = [.. FilmsDirected.OrderBy(f => f.Name)];
+                }
+
                 NextSortDirection = SortDirection.Descending;
                 break;
-            case SortDirection.Descending:
-                FilmsDirected = [.. FilmsDirected.OrderByDescending(f => f.Name)];
+        case SortDirection.Descending:
+            if (listToSort == FilmListToSortEnum.FilmsStarredIn)
+            {
                 FilmsStarredIn = [.. FilmsStarredIn.OrderByDescending(f => f.Name)];
-                NextSortDirection = SortDirection.Ascending;
-                break;
-            default:
-                FilmsDirected = [.. FilmsDirected.OrderBy(f => f.Name)];
+            }
+            else
+            {
+                FilmsDirected = [.. FilmsDirected.OrderByDescending(f => f.Name)];
+            }
+
+            NextSortDirection = SortDirection.Ascending;
+            break;
+        default:
+            if (listToSort == FilmListToSortEnum.FilmsStarredIn)
+            {
                 FilmsStarredIn = [.. FilmsStarredIn.OrderBy(f => f.Name)];
-                NextSortDirection = SortDirection.Descending;
-                break;
+            }
+            else
+            {
+                FilmsDirected = [.. FilmsDirected.OrderBy(f => f.Name)];
+            }
+
+            NextSortDirection = SortDirection.Descending;
+            break;
         }
     }
 }
