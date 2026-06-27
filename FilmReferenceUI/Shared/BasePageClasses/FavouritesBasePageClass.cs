@@ -1,5 +1,5 @@
 ﻿namespace FilmReferenceUI.Shared.BasePageClasses;
 
-public class FavouritesBasePageClass : BasePageClass
+public abstract class FavouritesBasePageClass : BasePageClass
 {
 }

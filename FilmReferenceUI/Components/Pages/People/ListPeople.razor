@@ -46,16 +46,21 @@
     </h4>
 	return;
 }
-else
+
+<h4>
+    @FilteredPersonModels.Count()
+    @(FilteredPersonModels.Count() == 1 ? "person" : "people")
+    found
+    @(FilteredPersonModels.Count == AllPersonModels.Count
+        ? ""
+        : $"with initial {Initial}")
+</h4>
+
+@if (FilteredPersonModels.Count > 1)
 {
-    <h4>
-        @FilteredPersonModels.Count()
-        @(FilteredPersonModels.Count() == 1 ? "person" : "people")
-        found
-        @(FilteredPersonModels.Count == AllPersonModels.Count
-            ? ""
-            : $"with initial {Initial}")
-    </h4>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
+    <br />
+    <br />
 }
 
 <ListPeopleComponent PersonModels="FilteredPersonModels" PersonRole="@PersonRole" />

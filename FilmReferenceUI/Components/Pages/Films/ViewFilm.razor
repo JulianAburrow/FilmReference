@@ -50,6 +50,13 @@
     return;
 }
 
+@if (Cast.Count > 1)
+{
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
+    <br />
+    <br />
+}
+
 <h3>@Cast.Count cast @(Cast.Count == 1 ? "member" : "members")</h3>
 
 <ListPeopleComponent PersonModels="@Cast" />

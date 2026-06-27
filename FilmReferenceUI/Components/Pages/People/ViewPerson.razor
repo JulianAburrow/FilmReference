@@ -60,6 +60,13 @@
     return;
 }
 
+@if (FilmsStarredIn.Count > 1 || FilmsDirected.Count > 1)
+{
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortLists">Reverse Sort Order</MudButton>
+    <br />
+    <br />
+}
+
 @if (FilmsStarredIn.Any())
 {
     <h3>@FilmsStarredIn.Count @(FilmsStarredIn.Count == 1 ? "film" : "films") as cast member</h3>

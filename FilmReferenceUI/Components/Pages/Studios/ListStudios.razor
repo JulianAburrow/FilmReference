@@ -25,13 +25,18 @@
     <p>No Studios found.</p>
     return;
 }
-else
+
+<h4>
+    @StudioModels.Count()
+    @(StudioModels.Count() == 1 ? "studio" : "studios")
+    found
+</h4>
+
+@if (StudioModels.Count > 1)
 {
-    <h4>
-        @StudioModels.Count()
-        @(StudioModels.Count() == 1 ? "studio" : "studios")
-        found
-    </h4>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
+    <br />
+    <br />
 }
 
 <ListStudiosComponent StudioModels="StudioModels" />

@@ -22,13 +22,13 @@ public partial class ListFilms
 
         if (string.IsNullOrWhiteSpace(genreName) || genreName == "All")
         {
-            FilteredFilmModels = AllFilmModels;
+            FilteredFilmModels = [.. AllFilmModels.OrderBy(f => f.Name)];
         }
         else
         {
-            FilteredFilmModels = AllFilmModels
+            FilteredFilmModels = [.. AllFilmModels
                 .Where(f => f.Genre.Name.Equals(genreName, StringComparison.OrdinalIgnoreCase))
-                .ToList();
+                .OrderBy(f => f.Name)];
         }
 
         var filmWord = FilteredFilmModels.Count == 1 ? "film" : "films";
@@ -38,6 +38,25 @@ public partial class ListFilms
             $"{FilteredFilmModels.Count} {filmWord} found {genreText}.",
             FilteredFilmModels.Count > 0 ? Severity.Info : Severity.Warning);
 
-        StateHasChanged();
+        NextSortDirection = SortDirection.Descending;
+    }
+
+    private void ResortList()
+    {
+        switch (NextSortDirection)
+        {
+            case SortDirection.Ascending:
+                FilteredFilmModels = [.. FilteredFilmModels.OrderBy(f => f.Name)];
+                NextSortDirection = SortDirection.Descending;
+                break;
+            case SortDirection.Descending:
+                FilteredFilmModels = [.. FilteredFilmModels.OrderByDescending(f => f.Name)];
+                NextSortDirection = SortDirection.Ascending;
+                break;
+            default:
+                FilteredFilmModels = [.. FilteredFilmModels.OrderBy(f => f.Name)];
+                NextSortDirection = SortDirection.Descending;
+                break;
+        }
     }
 }

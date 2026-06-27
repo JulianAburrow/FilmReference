@@ -25,13 +25,18 @@
     <p>No Genres found.</p>
     return;
 }
-else
+
+<h4>
+    @GenreModels.Count()
+    @(GenreModels.Count() == 1 ? "genre" : "genres")
+    found
+</h4>
+
+@if (GenreModels.Count > 1)
 {
-    <h4>
-        @GenreModels.Count()
-        @(GenreModels.Count() == 1 ? "genre" : "genres")
-        found
-    </h4>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
+    <br />
+    <br />
 }
 
 <ListGenresComponent GenreModels="GenreModels" />

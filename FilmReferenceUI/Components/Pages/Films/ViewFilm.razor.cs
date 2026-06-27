@@ -20,5 +20,26 @@ public partial class ViewFilm
         {
             Cast.Add(filmPerson.Person);
         }
+
+        NextSortDirection = SortDirection.Descending;
+    }
+
+    private void ResortList()
+    {
+        switch (NextSortDirection)
+        {
+            case SortDirection.Ascending:
+                Cast = [.. Cast.OrderBy(c => c.FirstName).ThenBy(c => c.LastName)];
+                NextSortDirection = SortDirection.Descending;
+                break;
+            case SortDirection.Descending:
+                Cast = [.. Cast.OrderByDescending(c => c.FirstName).ThenByDescending(c => c.LastName)];
+                NextSortDirection = SortDirection.Ascending;
+                break;
+            default:
+                Cast = [.. Cast.OrderBy(c => c.FirstName).ThenBy(c => c.LastName)];
+                NextSortDirection = SortDirection.Descending;
+                break;
+        }
     }
 }

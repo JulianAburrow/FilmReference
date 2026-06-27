@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿namespace FilmReferenceUI.Shared.BasePageClasses;
 
-namespace FilmReferenceUI.Shared.BasePageClasses;
-
-public class BasePageClass : ComponentBase
+public abstract class BasePageClass : ComponentBase
 {
     [Inject] protected NavigationManager NavigationManager { get; set; } = null!;
 
@@ -11,6 +9,8 @@ public class BasePageClass : ComponentBase
     [Inject] protected IFavouriteHandler FavouriteHandler { get; set; } = null!;
 
     [CascadingParameter] public MainLayout MainLayout { get; set; } = new();
+
+    protected SortDirection NextSortDirection = SortDirection.Ascending;
 
     protected bool PreventDeleting;
 
