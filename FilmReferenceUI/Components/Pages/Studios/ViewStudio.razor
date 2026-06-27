@@ -53,4 +53,11 @@
 
 <h3>@StudioModel.Films.Count @(StudioModel.Films.Count == 1 ? "film" : "films")</h3>
 
+@if (StudioModel.Films.Count > 1)
+{
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
+    <br />
+    <br />
+}
+
 <ListFilmsComponent FilmModels="@StudioModel.Films.ToList()" />

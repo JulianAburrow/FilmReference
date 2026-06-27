@@ -1,6 +1,6 @@
 ﻿namespace FilmReferenceUI.Shared.BasePageClasses;
 
-public class PeopleBasePageClass : BasePageClass
+public abstract class PeopleBasePageClass : BasePageClass
 {
     [Inject] protected IPersonHandler PersonHandler { get; set; } = null!;
 

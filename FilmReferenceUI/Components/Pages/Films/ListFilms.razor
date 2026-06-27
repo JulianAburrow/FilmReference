@@ -45,16 +45,22 @@
     <h4>No films found in genre @Genre.</h4>
     return;
 }
-else
-{
+
+@{
     var count = FilteredFilmModels.Count;
     var filmWord = count == 1 ? "film" : "films";
     var genreText = Genre == "All"
         ? "all genres"
         : $"genre {Genre}";
-
-    <h4>@count @filmWord found in @genreText</h4>
 }
 
+<h4>@count @filmWord found in @genreText</h4>
+
+@if (FilteredFilmModels.Count > 1)
+{
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
+    <br />
+    <br />
+}
 
 <ListFilmsComponent FilmModels="FilteredFilmModels" />

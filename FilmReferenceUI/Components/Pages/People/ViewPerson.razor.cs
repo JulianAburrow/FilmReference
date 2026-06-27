@@ -26,6 +26,7 @@ public partial class ViewPerson
         FilmsDirected = PersonModel.Films
             .OrderBy(f => f.Name)
             .ToList();
+        NextSortDirection = SortDirection.Descending;
     }
 
     private void DoNavigation(RoleEnum role)
@@ -37,6 +38,28 @@ public partial class ViewPerson
         if (role == RoleEnum.Directors)
         {
             NavigationManager.NavigateTo($"/people/listpeople/{RoleEnum.Directors}");
+        }
+    }
+
+    private void ResortLists()
+    {
+        switch (NextSortDirection)
+        {
+            case SortDirection.Ascending:
+                FilmsDirected = [.. FilmsDirected.OrderBy(f => f.Name)];
+                FilmsStarredIn = [.. FilmsStarredIn.OrderBy(f => f.Name)];
+                NextSortDirection = SortDirection.Descending;
+                break;
+            case SortDirection.Descending:
+                FilmsDirected = [.. FilmsDirected.OrderByDescending(f => f.Name)];
+                FilmsStarredIn = [.. FilmsStarredIn.OrderByDescending(f => f.Name)];
+                NextSortDirection = SortDirection.Ascending;
+                break;
+            default:
+                FilmsDirected = [.. FilmsDirected.OrderBy(f => f.Name)];
+                FilmsStarredIn = [.. FilmsStarredIn.OrderBy(f => f.Name)];
+                NextSortDirection = SortDirection.Descending;
+                break;
         }
     }
 }

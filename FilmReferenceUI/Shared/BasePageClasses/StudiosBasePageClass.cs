@@ -1,6 +1,6 @@
 ﻿namespace FilmReferenceUI.Shared.BasePageClasses;
 
-public class StudiosBasePageClass : BasePageClass
+public abstract class StudiosBasePageClass : BasePageClass
 {
     [Inject] protected IStudioHandler StudioHandler { get; set; } = null!;
 

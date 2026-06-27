@@ -1,6 +1,6 @@
 ﻿namespace FilmReferenceUI.Shared.BasePageClasses;
 
-public class GenresBasePageClass : BasePageClass
+public abstract class GenresBasePageClass : BasePageClass
 {
     [Inject] protected IGenreHandler GenreHandler { get; set; } = null!;
 

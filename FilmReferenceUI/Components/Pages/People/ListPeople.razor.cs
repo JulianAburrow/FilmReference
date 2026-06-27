@@ -54,6 +54,8 @@ public partial class ListPeople
 
     private void FilterPeople(string initial)
     {
+        NextSortDirection = SortDirection.Ascending;
+
         Initial = initial;
 
         if (string.IsNullOrWhiteSpace(initial) || initial == "All")
@@ -77,6 +79,26 @@ public partial class ListPeople
         Snackbar.Add(
             message,
             FilteredPersonModels.Count > 0 ? Severity.Info : Severity.Warning);
+
+        NextSortDirection = SortDirection.Descending;
+    }
+
+    private void ResortList()
+    {
+        switch (NextSortDirection)
+        {
+            case SortDirection.Ascending:
+                FilteredPersonModels = [.. FilteredPersonModels.OrderBy(p => p.FirstName).ThenBy(p => p.LastName)];
+                NextSortDirection = SortDirection.Descending;
+                break;
+            case SortDirection.Descending:
+                FilteredPersonModels = [.. FilteredPersonModels.OrderByDescending(p => p.FirstName).ThenByDescending(p => p.LastName)];
+                NextSortDirection = SortDirection.Ascending;
+                break;
+            default:
+                FilteredPersonModels = [.. FilteredPersonModels.OrderBy(p => p.FirstName).ThenBy(p => p.LastName)];
+                NextSortDirection = SortDirection.Descending;
+                break;
+        }
     }
 }
-
