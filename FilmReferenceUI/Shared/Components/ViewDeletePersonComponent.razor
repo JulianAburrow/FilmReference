@@ -16,8 +16,16 @@
             <!-- Metadata rows (Actor, Director, DOB, DOD, Age) -->
             <MudStack Spacing="1">
 
-                <MudText><b>Actor:</b> @(PersonModel.IsCastMember ? "Yes" : "No")</MudText>
-                <MudText><b>Director:</b> @(PersonModel.IsDirector ? "Yes" : "No")</MudText>
+                @{
+                    var textToShow = PersonModel switch
+                    {
+                        { IsCastMember: true,  IsDirector: false } => "Cast member",
+                        { IsCastMember: false, IsDirector: true  } => "Director",
+                        { IsCastMember: true,  IsDirector: true  } => "Acts and directs",
+                        _ => string.Empty
+                    };
+                }
+                <MudText Style="font-weight: bold;">@textToShow</MudText>
 
                 @if (PersonModel.DateOfBirth is not null)
                 {
