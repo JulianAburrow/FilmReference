@@ -8,6 +8,8 @@ public abstract class BasePageClass : ComponentBase
 
     [Inject] protected IFavouriteHandler FavouriteHandler { get; set; } = null!;
 
+    [Inject] protected SearchState SearchState { get; set; } = null!;
+
     [CascadingParameter] public MainLayout MainLayout { get; set; } = new();
 
     protected SortDirection NextSortDirection = SortDirection.Ascending;

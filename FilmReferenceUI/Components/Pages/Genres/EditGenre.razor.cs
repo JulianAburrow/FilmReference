@@ -6,7 +6,7 @@ public partial class EditGenre
     {
         GenreModel = await GenreHandler.GetGenreAsync(GenreId);
         CopyModelToDisplayModel();
-        MainLayout.SetHeaderValue($"Edit Genre {GenreModel.Name}");
+        MainLayout.SetHeaderValue($"Edit {GenreModel.Name}");
     }
 
     private async void Update()

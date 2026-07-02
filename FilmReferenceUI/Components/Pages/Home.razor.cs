@@ -1,6 +1,4 @@
-﻿using System.Timers;
-
-namespace FilmReferenceUI.Components.Pages;
+﻿namespace FilmReferenceUI.Components.Pages;
 
 public partial class Home
 {
@@ -22,7 +20,10 @@ public partial class Home
 
     protected override async Task OnInitializedAsync()
     {
-        SearchModel.SearchType = SharedValues.PleaseSelectValue;
+        if (SearchState.LastSearchValue > SharedValues.PleaseSelectValue)
+        {
+            SearchModel.SearchType = SearchState.LastSearchValue;
+        }
         MainLayout.SetHeaderValue("Home / Search");  
     }
 
@@ -40,6 +41,7 @@ public partial class Home
     private async Task DoSearch()
     {
         SubmitClicked = true;
+        SearchState.LastSearchValue = SearchModel.SearchType;
 
         switch ((SearchTypeEnum)SearchModel.SearchType)
         {
@@ -64,6 +66,7 @@ public partial class Home
     {
         SubmitClicked = false;
         SearchModel.SearchType = SharedValues.PleaseSelectValue;
+        SearchState.LastSearchValue = SharedValues.PleaseSelectValue;
         SearchModel.SearchText = string.Empty;
     }
 

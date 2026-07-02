@@ -6,7 +6,7 @@ public partial class DeletePerson
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         PreventDeleting = PersonModel.FilmPerson.Count != 0 || PersonModel.Films.Count != 0;
-        MainLayout.SetHeaderValue($"Delete Person {PersonModel.FirstName} {PersonModel.LastName}");
+        MainLayout.SetHeaderValue($"Delete {PersonModel.FirstName} {PersonModel.LastName}");
     }
 
     private async Task DeletePersonAsync()

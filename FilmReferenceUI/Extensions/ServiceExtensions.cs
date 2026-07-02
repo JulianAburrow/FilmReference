@@ -16,5 +16,6 @@ public static class ServiceExtensions
         services.AddTransient<IPersonHandler, PersonHandler>();
         services.AddTransient<IStudioHandler, StudioHandler>();
         services.AddTransient<ISearchHandler, SearchHandler>();
+        services.AddScoped<SearchState>();
     }
 }
