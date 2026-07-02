@@ -8,7 +8,7 @@ public partial class EditPerson
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         CopyModelToDisplayModel();
-        MainLayout.SetHeaderValue($"Edit Person {PersonModel.FirstName} {PersonModel.LastName}");
+        MainLayout.SetHeaderValue($"Edit {PersonModel.FirstName} {PersonModel.LastName}");
     }
 
     private async void Update()
