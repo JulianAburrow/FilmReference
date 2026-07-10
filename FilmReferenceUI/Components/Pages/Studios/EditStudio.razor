@@ -3,34 +3,35 @@
 
 <PageTitle>Edit Studio</PageTitle>
 
-@if (StudioDisplayModel is null)
+@if (!_isLoaded)
 {
-	<LoadingComponent />
+    <LoadingComponent />
     return;
 }
 
-<EditForm Model="@StudioDisplayModel" OnValidSubmit="UpdateStudioAsync">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    <EditForm Model="@StudioDisplayModel" OnValidSubmit="UpdateStudioAsync">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <MudGrid>
-        <MudItem xs="12">
-            <MudCard>
-                <CreateUpdateStudioComponent StudioDisplayModel="StudioDisplayModel" />
-                <MudCardActions>
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               ButtonType="ButtonType.Submit">
-                        Update
-                    </MudButton>
-                    &nbsp;
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               Href="@($"/studio/view/{StudioId}")">
-                        Cancel
-                    </MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
-</EditForm>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudCard>
+                    <CreateUpdateStudioComponent StudioDisplayModel="StudioDisplayModel" />
+                    <MudCardActions Class="gap-2">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   ButtonType="ButtonType.Submit">
+                            Update
+                        </MudButton>
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Href="@($"/studio/view/{StudioId}")">
+                            Cancel
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudContainer>

@@ -1,66 +1,74 @@
 ﻿@page "/films/listfilms"
+
 @inherits FilmsBasePageClass
 
 <PageTitle>Films</PageTitle>
 
-@if(AllFilmModels is null || FilteredFilmModels is null || GenreModels is null)
+@if (AllFilmModels is null || FilteredFilmModels is null || GenreModels is null)
 {
     <LoadingComponent />
     return;
 }
 
-<div class="sticky-div">
-    <MudButton Variant="Variant.Filled"
-               Color="Color.Primary"
-               Href="/film/create">
-        Create Film
-    </MudButton>
-</div>
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
 
-<br />
-<br />
+    <div class="sticky-div">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   Href="/film/create">
+            Create Film
+        </MudButton>
+    </div>
 
-<MudButton Variant="Variant.Filled"
-           Color="@(NormaliseHelper.Normalised(Genre) == "all" ? Color.Error : Color.Primary)"
-           OnClick="@(() => FilterFilms("All"))"
-           Class="ma-1">
-    All (@AllFilmModels.Count)
-</MudButton>
+    <MudDivider Class="my-4" />
 
-@foreach (var genreModel in GenreModels)
-{
-    <MudButton Variant="Variant.Filled"
-               Color="@(NormaliseHelper.Normalised(Genre) == NormaliseHelper.Normalised(genreModel.Name) ? Color.Error : Color.Primary)"
-               OnClick="@(() => FilterFilms(genreModel.Name))"
-               Class="ma-1">
-        @genreModel.Name (@genreModel.Films.Count)
-    </MudButton>
-}
+    <MudStack Spacing="3">
 
-<br />
-<br />
+        <div class="d-flex flex-wrap gap-1">
+            <MudButton Variant="@(NormaliseHelper.Normalised(Genre) == "all" ? Variant.Filled : Variant.Outlined)"
+                       Color="@(NormaliseHelper.Normalised(Genre) == "all" ? Color.Secondary : Color.Default)"
+                       OnClick="@(() => FilterFilms("All"))"
+                       Size="Size.Small">
+                All (@AllFilmModels.Count)
+            </MudButton>
 
-@if (!FilteredFilmModels.Any())
-{
-    <h4>No films found in genre @Genre.</h4>
-    return;
-}
+            @foreach (var genreModel in GenreModels)
+            {
+                <MudButton Variant="@(NormaliseHelper.Normalised(Genre) == NormaliseHelper.Normalised(genreModel.Name) ? Variant.Filled : Variant.Outlined)"
+                           Color="@(NormaliseHelper.Normalised(Genre) == NormaliseHelper.Normalised(genreModel.Name) ? Color.Secondary : Color.Default)"
+                           OnClick="@(() => FilterFilms(genreModel.Name))"
+                           Size="Size.Small">
+                    @genreModel.Name (@genreModel.Films.Count)
+                </MudButton>
+            }
+        </div>
 
-@{
-    var count = FilteredFilmModels.Count;
-    var filmWord = count == 1 ? "film" : "films";
-    var genreText = Genre == "All"
-        ? "all genres"
-        : $"genre {Genre}";
-}
+        @if (!FilteredFilmModels.Any())
+        {
+            <LoadingComponent DisplayValue="@($"No films found in genre {Genre}.")" IsLoading="false" />
+        }
+        else
+        {
+            <div class="d-flex align-center gap-3">
+                <MudText Typo="Typo.subtitle1">
+                    @FilteredFilmModels.Count @(FilteredFilmModels.Count == 1 ? "film" : "films") in @(Genre == "All" ? "all genres" : $"genre {Genre}")
+                </MudText>
+                @if (FilteredFilmModels.Count > 1)
+                {
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Default"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Filled.SwapVert"
+                               OnClick="ResortList">
+                        Reverse Sort
+                    </MudButton>
+                }
+            </div>
 
-<h4>@count @filmWord found in @genreText</h4>
+            <ListFilmsComponent FilmModels="FilteredFilmModels" />
+        }
 
-@if (FilteredFilmModels.Count > 1)
-{
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
-    <br />
-    <br />
-}
+    </MudStack>
 
-<ListFilmsComponent FilmModels="FilteredFilmModels" />
+</MudContainer>

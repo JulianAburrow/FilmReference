@@ -4,9 +4,14 @@ public partial class DeleteGenre
 {
     protected override async Task OnInitializedAsync()
     {
+        if (!RendererInfo.IsInteractive)
+            return;
+
         GenreModel = await GenreHandler.GetGenreAsync(GenreId);
         PreventDeleting = GenreModel.Films.Any();
         MainLayout.SetHeaderValue($"Delete {GenreModel.Name}");
+
+        _isLoaded = true;
     }
 
     private async Task DeleteGenreAsync()

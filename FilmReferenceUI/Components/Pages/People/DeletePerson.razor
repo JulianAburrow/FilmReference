@@ -3,57 +3,55 @@
 
 <PageTitle>Delete Person</PageTitle>
 
-@if (PersonModel is null)
+@if (!_isLoaded)
 {
-	<LoadingComponent DisplayValue="Loading person" />
+    <LoadingComponent DisplayValue="Loading person" />
     return;
 }
 
-@if (PreventDeleting)
-{
-    <MudAlert Severity="Severity.Warning" ContentAlignment="HorizontalAlignment.Center">
-        <h4>This Person cannot be deleted as they have films associated with them.</h4>
-    </MudAlert>
-    <br />
-    <MudButton Variant="Variant.Filled"
-               Color="Color.Primary"
-               Href="@($"/person/view/{PersonId}")">
-        Cancel
-    </MudButton>
-    return;
-}
-else
-{
-    <MudAlert Severity="Severity.Warning" ContentAlignment="HorizontalAlignment.Center">
-        <h4>Are you sure you want to delete this Person?</h4>
-    </MudAlert>
-}
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    <MudStack Spacing="3">
 
-<br />
-
-<MudGrid>
-    <MudItem xs="12">
-        <MudCard>
-            <ViewDeletePersonComponent PersonModel="PersonModel" />
-            <MudCardActions>
-                @if (!PreventDeleting)
-                {
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Error"
-                               OnClick="DeletePersonAsync">
-                        Delete
-                    </MudButton>
-                    @:&nbsp;
-                }                
-                <MudButton Variant="Variant.Filled"
-                           Color="Color.Primary"
+        @if (PreventDeleting)
+        {
+            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">
+                This person cannot be deleted as they have films associated with them.
+            </MudAlert>
+            <div>
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
                            Href="@($"/person/view/{PersonId}")">
-                    Cancel
+                    Back
                 </MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
-</MudGrid>
+            </div>
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Warning" ContentAlignment="HorizontalAlignment.Center">
+                Are you sure you want to delete this person?
+            </MudAlert>
 
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudCard>
+                        <ViewDeletePersonComponent PersonModel="PersonModel" />
+                        <MudCardActions Class="gap-2">
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Error"
+                                       StartIcon="@Icons.Material.Filled.Delete"
+                                       OnClick="DeletePersonAsync">
+                                Delete
+                            </MudButton>
+                            <MudButton Variant="Variant.Outlined"
+                                       Color="Color.Default"
+                                       Href="@($"/person/view/{PersonId}")">
+                                Cancel
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        }
 
-
+    </MudStack>
+</MudContainer>

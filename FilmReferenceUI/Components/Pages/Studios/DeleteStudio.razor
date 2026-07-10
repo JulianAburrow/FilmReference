@@ -3,51 +3,55 @@
 
 <PageTitle>Delete Studio</PageTitle>
 
-@if (StudioModel is null)
+@if (!_isLoaded)
 {
-	<LoadingComponent DisplayValue="Loading studio" />
+    <LoadingComponent DisplayValue="Loading studio" />
     return;
 }
 
-@if (PreventDeleting)
-{
-    <MudAlert Severity="Severity.Warning" ContentAlignment="HorizontalAlignment.Center">
-        <h4>This Studio cannot be deleted as it is in use.</h4>
-    </MudAlert>
-    <br />
-    <MudButton Variant="Variant.Filled"
-               Color="Color.Primary"
-               Href="@($"/studio/view/{StudioId}")">
-        Cancel
-    </MudButton>
-    return;
-}
-else
-{
-    <MudAlert Severity="Severity.Warning" ContentAlignment="HorizontalAlignment.Center">
-        <h4>Are you sure you want to delete this Studio?</h4>
-    </MudAlert>
-}
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    <MudStack Spacing="3">
 
-<br />
-
-<MudGrid>
-    <MudItem xs="12">
-        <MudCard>
-            <ViewDeleteStudioComponent StudioModel="StudioModel" />
-            <MudCardActions>
-                <MudButton Variant="Variant.Filled"
-                           Color="Color.Error"
-                           OnClick="DeleteStudioAsync">
-                    Delete
-                </MudButton>
-                &nbsp;
-                <MudButton Variant="Variant.Filled"
-                           Color="Color.Primary"
+        @if (PreventDeleting)
+        {
+            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">
+                This studio cannot be deleted as it has films associated with it.
+            </MudAlert>
+            <div>
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
                            Href="@($"/studio/view/{StudioId}")">
-                    Cancel
+                    Back
                 </MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
-</MudGrid>
+            </div>
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Warning" ContentAlignment="HorizontalAlignment.Center">
+                Are you sure you want to delete this studio?
+            </MudAlert>
+
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudCard>
+                        <ViewDeleteStudioComponent StudioModel="StudioModel" />
+                        <MudCardActions Class="gap-2">
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Error"
+                                       StartIcon="@Icons.Material.Filled.Delete"
+                                       OnClick="DeleteStudioAsync">
+                                Delete
+                            </MudButton>
+                            <MudButton Variant="Variant.Outlined"
+                                       Color="Color.Default"
+                                       Href="@($"/studio/view/{StudioId}")">
+                                Cancel
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        }
+
+    </MudStack>
+</MudContainer>

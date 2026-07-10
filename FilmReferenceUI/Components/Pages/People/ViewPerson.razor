@@ -1,89 +1,104 @@
 ﻿@page "/person/view/{PersonId:int}"
 @inherits PeopleBasePageClass
 
-@if (PersonModel is null || PersonModel.FilmPerson is null)
+<PageTitle>View Person</PageTitle>
+
+@if (!_isLoaded)
 {
-	<LoadingComponent DisplayValue="Loading person" />
+    <LoadingComponent DisplayValue="Loading person" />
     return;
 }
 
-<MudGrid>
-    <MudItem xs="12">
-        <MudCard>
-            <ViewDeletePersonComponent PersonModel="PersonModel" />
-            <MudCardActions>
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    <MudStack Spacing="4">
 
-                <MudButton Variant="Variant.Filled"
-                            Color="Color.Primary"
-                            Href="@($"/person/edit/{PersonModel.PersonId}")">
-                    Edit
-                </MudButton>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudCard>
+                    <ViewDeletePersonComponent PersonModel="PersonModel" />
+                    <MudCardActions Class="gap-2">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   Href="@($"/person/edit/{PersonModel.PersonId}")">
+                            Edit
+                        </MudButton>
+                        @if (!PreventDeleting)
+                        {
+                            <MudButton Variant="Variant.Outlined"
+                                       Color="Color.Error"
+                                       Href="@($"/person/delete/{PersonModel.PersonId}")">
+                                Delete
+                            </MudButton>
+                        }
+                        @if (PersonModel.IsCastMember)
+                        {
+                            <MudButton Variant="Variant.Outlined"
+                                       Color="Color.Default"
+                                       OnClick="@(() => DoNavigation(RoleEnum.CastMembers))">
+                                All Cast Members
+                            </MudButton>
+                        }
+                        @if (PersonModel.IsDirector)
+                        {
+                            <MudButton Variant="Variant.Outlined"
+                                       Color="Color.Default"
+                                       OnClick="@(() => DoNavigation(RoleEnum.Directors))">
+                                All Directors
+                            </MudButton>
+                        }
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
 
-                @if (!PreventDeleting)
-                {
-                    @:&nbsp;
-                    <MudButton Variant="Variant.Filled"
-                                Color="Color.Error"
-                                Href="@($"/person/delete/{PersonModel.PersonId}")">
-                        Delete
-                    </MudButton>
-                }
-                &nbsp;
-                @if (PersonModel.IsCastMember)
-                {
-                    <MudButton Variant="Variant.Filled"
-                                Color="Color.Primary"
-                                OnClick="@(() => DoNavigation(RoleEnum.CastMembers))">
-                        All Cast Members
-                    </MudButton>
-                    @:&nbsp;
-                }
-                @if (PersonModel.IsDirector)
-                {
-                    <MudButton Variant="Variant.Filled"
-                                Color="Color.Primary"
-                                OnClick="@(() => DoNavigation(RoleEnum.Directors))">
-                        All Directors
-                    </MudButton>
-                }
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
-</MudGrid>
+        @if (!FilmsStarredIn.Any() && !FilmsDirected.Any())
+        {
+            <LoadingComponent DisplayValue="No films found for this person." IsLoading="false" />
+        }
 
-<br />
-<br />
+        @if (FilmsStarredIn.Any())
+        {
+            <MudStack Spacing="2">
+                <div class="d-flex align-center gap-3">
+                    <MudText Typo="Typo.h6">
+                        @FilmsStarredIn.Count @(FilmsStarredIn.Count == 1 ? "film" : "films") as cast member
+                    </MudText>
+                    @if (FilmsStarredIn.Count > 1)
+                    {
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Filled.SwapVert"
+                                   OnClick="@(() => ResortList(FilmListToSortEnum.FilmsStarredIn))">
+                            Reverse Sort
+                        </MudButton>
+                    }
+                </div>
+                <ListFilmsComponent FilmModels="@FilmsStarredIn" />
+            </MudStack>
+        }
 
-@if (!FilmsStarredIn.Any() && !FilmsDirected.Any())
-{
-    <h3>No films found for this person</h3>
-    return;
-}
+        @if (FilmsDirected.Any())
+        {
+            <MudStack Spacing="2">
+                <div class="d-flex align-center gap-3">
+                    <MudText Typo="Typo.h6">
+                        @FilmsDirected.Count @(FilmsDirected.Count == 1 ? "film" : "films") as director
+                    </MudText>
+                    @if (FilmsDirected.Count > 1)
+                    {
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Filled.SwapVert"
+                                   OnClick="@(() => ResortList(FilmListToSortEnum.FilmsDirected))">
+                            Reverse Sort
+                        </MudButton>
+                    }
+                </div>
+                <ListFilmsComponent FilmModels="@FilmsDirected" />
+            </MudStack>
+        }
 
-@if (FilmsStarredIn.Any())
-{
-    <h3>@FilmsStarredIn.Count @(FilmsStarredIn.Count == 1 ? "film" : "films") as cast member</h3>
-
-    @if (FilmsStarredIn.Count > 1)
-    {
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => ResortList(FilmListToSortEnum.FilmsStarredIn))">Reverse Sort Order</MudButton>
-        <br />
-        <br />
-    }
-
-    <ListFilmsComponent FilmModels="@FilmsStarredIn" />
-}
-
-@if (FilmsDirected.Any())
-{
-    <h3>@FilmsDirected.Count @(FilmsDirected.Count == 1 ? "film" : "films") as director</h3>
-
-    @if (FilmsDirected.Count > 1)
-    {
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => ResortList(FilmListToSortEnum.FilmsDirected))">Reverse Sort Order</MudButton>
-        <br />
-        <br />
-    }
-
-    <ListFilmsComponent FilmModels="@FilmsDirected" />
-}
+    </MudStack>
+</MudContainer>

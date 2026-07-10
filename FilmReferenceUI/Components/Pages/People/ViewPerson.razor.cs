@@ -16,11 +16,17 @@ public partial class ViewPerson
 
     protected override async Task OnInitializedAsync()
     {
+        if (!RendererInfo.IsInteractive)
+            return;
+
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         PreventDeleting = PersonModel.FilmPerson.Count != 0 || PersonModel.Films.Count != 0;
         MainLayout.SetHeaderValue($"{PersonModel.FirstName} {PersonModel.LastName}");
         var isFavourite = await FavouriteHandler.IsFavouriteAsync((int)FavouriteEntityEnum.Person, PersonId);
         MainLayout.ConfigureFavouriteButton(FavouriteEntityEnum.Person, PersonId, isFavourite);
+
+        _isLoaded = true;
+
         if (PersonModel.FilmPerson is null)
         {
             return;

@@ -3,43 +3,39 @@
 
 <PageTitle>Edit Film</PageTitle>
 
-@if (StudioModels is null || GenreModels is null || CastMemberModels is null || DirectorModels is null)
+@if (!_isLoaded)
 {
     <LoadingComponent />
     return;
 }
 
-<EditForm Model="@FilmDisplayModel" OnValidSubmit="UpdateFilmAsync">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    <EditForm Model="@FilmDisplayModel" OnValidSubmit="UpdateFilmAsync">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <MudGrid>
-        <MudItem xs="12">
-            <MudCard>
-                <MudCardContent>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudCard>
                     <CreateUpdateFilmComponent FilmDisplayModel="FilmDisplayModel"
                                                GenreModels="GenreModels"
                                                StudioModels="StudioModels"
                                                DirectorModels="DirectorModels"
                                                ActorModels="CastMemberModels" />
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               ButtonType="ButtonType.Submit">
-                        Update
-                    </MudButton>
-
-                    &nbsp;
-
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               Href="@($"/film/view/{FilmId}")">
-                        Cancel
-                    </MudButton>
-
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
-</EditForm>
+                    <MudCardActions Class="gap-2">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   ButtonType="ButtonType.Submit">
+                            Update
+                        </MudButton>
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Href="@($"/film/view/{FilmId}")">
+                            Cancel
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudContainer>

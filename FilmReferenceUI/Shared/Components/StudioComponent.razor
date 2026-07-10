@@ -1,35 +1,41 @@
-﻿<MudCard Class="ma-2 pa-2" Style="width: 100%; max-width: 350px;">
+﻿<MudCard Class="ma-2" Style="width: 100%;">
     <MudCardHeader>
-        <MudText Typo="Typo.h6">@Studio.Name</MudText>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">@Studio.Name</MudText>
+            <MudText Typo="Typo.caption" Color="Color.Secondary">
+                @Studio.Films.Count @(Studio.Films.Count == 1 ? "film" : "films")
+            </MudText>
+        </CardHeaderContent>
     </MudCardHeader>
-
-    <MudCardContent>
-        <MudText>@Studio.Films.Count @(Studio.Films.Count == 1 ? "film" : "films")</MudText>
-        <br />
+    <MudCardContent Class="pt-0">
         @{
-            var ImageTitle = string.IsNullOrWhiteSpace(Studio.Description)
-                        ? Studio.Name
-                        : $"{Studio.Name} - {Studio.Description}";
+            var imageTitle = string.IsNullOrWhiteSpace(Studio.Description)
+                ? Studio.Name
+                : $"{Studio.Name} - {Studio.Description}";
         }
-        <MudButton Variant="Variant.Text"
-                   Color="Color.Primary"
-                   Href="@($"/studio/view/{Studio.StudioId}")"
-                   Class="p-0">
-            <ViewImageComponent ImageData="Studio.Logo"
-                                ImageTitle="@ImageTitle" />
-        </MudButton>
+        <MudLink Href="@($"/studio/view/{Studio.StudioId}")" Class="no-underline d-block">
+            <ViewImageComponent ImageData="Studio.Logo" ImageTitle="@imageTitle" />
+        </MudLink>
     </MudCardContent>
-
-    <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/studio/view/{Studio.StudioId}")>
+    <MudCardActions Class="gap-2">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Size="Size.Small"
+                   Href="@($"/studio/view/{Studio.StudioId}")">
             View
         </MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/studio/edit/{Studio.StudioId}")>
+        <MudButton Variant="Variant.Outlined"
+                   Color="Color.Primary"
+                   Size="Size.Small"
+                   Href="@($"/studio/edit/{Studio.StudioId}")">
             Edit
         </MudButton>
         @if (Studio.Films.Count == 0)
-        {            
-            <MudButton Variant="Variant.Filled" Color="Color.Error" Href=@($"/studio/delete/{Studio.StudioId}")>
+        {
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Error"
+                       Size="Size.Small"
+                       Href="@($"/studio/delete/{Studio.StudioId}")">
                 Delete
             </MudButton>
         }

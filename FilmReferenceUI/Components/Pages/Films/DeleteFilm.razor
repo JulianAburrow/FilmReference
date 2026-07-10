@@ -8,33 +8,34 @@
 	<LoadingComponent DisplayValue="Loading film" />
     return;
 }
-<MudAlert Severity="Severity.Warning" ContentAlignment="HorizontalAlignment.Center">
-    <h4>Are you sure you want to delete this Film?</h4>
-</MudAlert>
 
-<br />
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    <MudStack Spacing="3">
 
-<MudGrid>
-    <MudItem xs="12">
-        <MudCard>
-            <ViewDeleteFilmComponent FilmModel="FilmModel" />
-            <MudCardActions>
-                <MudButton Variant="Variant.Filled"
-                           Color="Color.Error"
-                           OnClick="DeleteFilmAsync">
-                    Delete
-                </MudButton>
+        <MudAlert Severity="Severity.Warning" ContentAlignment="HorizontalAlignment.Center">
+            Are you sure you want to delete this film?
+        </MudAlert>
 
-                &nbsp;
+        <MudGrid>
+            <MudItem xs="12">
+                <MudCard>
+                    <ViewDeleteFilmComponent FilmModel="FilmModel" />
+                    <MudCardActions Class="gap-2">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Error"
+                                   StartIcon="@Icons.Material.Filled.Delete"
+                                   OnClick="DeleteFilmAsync">
+                            Delete
+                        </MudButton>
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Href="@($"/film/view/{FilmId}")">
+                            Cancel
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
 
-                <MudButton Variant="Variant.Filled"
-                           Color="Color.Primary"
-                           Href="@($"/film/view/{FilmId}")">
-                    Cancel
-                </MudButton>
-
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
-</MudGrid>
-
+    </MudStack>
+</MudContainer>

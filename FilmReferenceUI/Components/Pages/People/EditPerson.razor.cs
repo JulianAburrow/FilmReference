@@ -6,9 +6,14 @@ public partial class EditPerson
 
     protected override async Task OnInitializedAsync()
     {
+        if (!RendererInfo.IsInteractive)
+            return;
+
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue($"Edit {PersonModel.FirstName} {PersonModel.LastName}");
+
+        _isLoaded = true;
     }
 
     private async void Update()

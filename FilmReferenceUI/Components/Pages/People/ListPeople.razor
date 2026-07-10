@@ -1,66 +1,74 @@
 ﻿@page "/people/listpeople/{PersonRole}"
 @inherits PeopleBasePageClass
 
+<PageTitle>View People</PageTitle>
+
 @if (AllPersonModels is null || FilteredPersonModels is null)
 {
     <LoadingComponent />
     return;
 }
 
-<div class="sticky-div">
-    <MudButton Variant="Variant.Filled"
-               Color="Color.Primary"
-               Href="/person/create">
-        Create Person
-    </MudButton>
-</div>
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
 
-<br />
-<br />
+    <div class="sticky-div">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.PersonAdd"
+                   Href="/person/create">
+            Create Person
+        </MudButton>
+    </div>
 
-<MudButton Variant="Variant.Filled"
-           Color="@(NormaliseHelper.Normalised(Initial) == "all" ? Color.Error : Color.Primary)"
-           OnClick="@(() => FilterPeople("All"))"
-           Class="ma-1">
-    All (@AllPersonModels.Count)
-</MudButton>
+    <MudDivider Class="my-4" />
 
-@foreach (var letter in Enumerable.Range('A', 26).Select(c => ((char)c).ToString()))
-{    
-    <MudButton
-        Variant="Variant.Filled"
-               Color="@(NormaliseHelper.Normalised(Initial).ToLower() == NormaliseHelper.Normalised(letter) ? Color.Error : Color.Primary)"
-        OnClick="(() => FilterPeople(letter))"
-        Class="ma-1">
-            @letter (@LetterCounts[letter])
-    </MudButton>
-}
+    <MudStack Spacing="3">
 
-<br />
-<br />
+        <div class="d-flex flex-wrap gap-1">
+            <MudButton Variant="@(NormaliseHelper.Normalised(Initial) == "all" ? Variant.Filled : Variant.Outlined)"
+                       Color="@(NormaliseHelper.Normalised(Initial) == "all" ? Color.Secondary : Color.Default)"
+                       OnClick="@(() => FilterPeople("All"))"
+                       Size="Size.Small">
+                All (@AllPersonModels.Count)
+            </MudButton>
 
-@if (!FilteredPersonModels.Any())
-{
-    <h4>
-        No people found@(Initial == "All" ? "" : $" with initial {Initial}")
-    </h4>
-	return;
-}
+            @foreach (var letter in Enumerable.Range('A', 26).Select(c => ((char)c).ToString()))
+            {
+                <MudButton Variant="@(NormaliseHelper.Normalised(Initial).ToLower() == NormaliseHelper.Normalised(letter) ? Variant.Filled : Variant.Outlined)"
+                           Color="@(NormaliseHelper.Normalised(Initial).ToLower() == NormaliseHelper.Normalised(letter) ? Color.Secondary : Color.Default)"
+                           OnClick="@(() => FilterPeople(letter))"
+                           Size="Size.Small">
+                    @letter (@LetterCounts[letter])
+                </MudButton>
+            }
+        </div>
 
-<h4>
-    @FilteredPersonModels.Count()
-    @(FilteredPersonModels.Count() == 1 ? "person" : "people")
-    found
-    @(FilteredPersonModels.Count == AllPersonModels.Count
-        ? ""
-        : $"with initial {Initial}")
-</h4>
+        @if (!FilteredPersonModels.Any())
+        {
+            <LoadingComponent DisplayValue="@($"No people found{(Initial == "All" ? "" : $" with initial {Initial}")}")"
+                              IsLoading="false" />
+        }
+        else
+        {
+            <div class="d-flex align-center gap-3">
+                <MudText Typo="Typo.subtitle1">
+                    @FilteredPersonModels.Count @(FilteredPersonModels.Count == 1 ? "person" : "people") found@(FilteredPersonModels.Count == AllPersonModels.Count ? "" : $" with initial {Initial}")
+                </MudText>
+                @if (FilteredPersonModels.Count > 1)
+                {
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Default"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Filled.SwapVert"
+                               OnClick="ResortList">
+                        Reverse Sort
+                    </MudButton>
+                }
+            </div>
 
-@if (FilteredPersonModels.Count > 1)
-{
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
-    <br />
-    <br />
-}
+            <ListPeopleComponent PersonModels="FilteredPersonModels" PersonRole="@PersonRole" />
+        }
 
-<ListPeopleComponent PersonModels="FilteredPersonModels" PersonRole="@PersonRole" />
+    </MudStack>
+
+</MudContainer>

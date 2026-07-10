@@ -16,6 +16,8 @@ public abstract class BasePageClass : ComponentBase
 
     protected bool PreventDeleting;
 
+    protected bool _isLoaded;
+
     protected string? ImageName = null;
 
     protected byte[]? ImageForDisplay = null;

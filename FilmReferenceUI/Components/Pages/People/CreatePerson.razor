@@ -3,36 +3,36 @@
 
 <PageTitle>Create Person</PageTitle>
 
-@if (ShowRoleError)
-{
-    <p style="color: red">Person must be either a cast member or a director or both.</p>
-}
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    @if (ShowRoleError)
+    {
+        <MudAlert Severity="Severity.Error" Class="mb-3">
+            Person must be either a cast member or a director or both.
+        </MudAlert>
+    }
 
-<EditForm Model="@PersonDisplayModel" OnValidSubmit="CreatePersonAsync">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+    <EditForm Model="@PersonDisplayModel" OnValidSubmit="CreatePersonAsync">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <MudGrid>
-        <MudItem xs="12">
-            <MudCard>
-                <CreateUpdatePersonComponent PersonDisplayModel="PersonDisplayModel" />
-                <MudCardActions>
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               ButtonType="ButtonType.Submit">
-                        Create
-                    </MudButton>
-
-                    &nbsp;
-
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               Href=@($"/people/listpeople/{RoleEnum.CastMembers}")>
-                        Cancel
-                    </MudButton>
-
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
-</EditForm>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudCard>
+                    <CreateUpdatePersonComponent PersonDisplayModel="PersonDisplayModel" />
+                    <MudCardActions Class="gap-2">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   ButtonType="ButtonType.Submit">
+                            Create
+                        </MudButton>
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Href="@($"/people/listpeople/{RoleEnum.CastMembers}")">
+                            Cancel
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudContainer>

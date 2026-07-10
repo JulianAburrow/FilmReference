@@ -4,6 +4,9 @@ public partial class CreateFilm
 {
     protected override async Task OnInitializedAsync()
     {
+        if (!RendererInfo.IsInteractive)
+            return;
+
         GenreModels = await GenreHandler.GetGenresAsync();
         GenreModels.Insert(0, new GenreModel
         {
@@ -27,6 +30,8 @@ public partial class CreateFilm
         FilmDisplayModel.GenreId = SharedValues.PleaseSelectValue;
         FilmDisplayModel.StudioId = SharedValues.PleaseSelectValue;
         FilmDisplayModel.DirectorId = SharedValues.PleaseSelectValue;
+
+        _isLoaded = true;
     }
 
 

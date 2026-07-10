@@ -1,4 +1,5 @@
 ﻿global using FilmReferenceDataAccess.Data;
+global using FilmReferenceDataAccess.Enums;
 global using FilmReferenceDataAccess.Handlers;
 global using FilmReferenceDataAccess.Interfaces;
 global using FilmReferenceDataAccess.Models;

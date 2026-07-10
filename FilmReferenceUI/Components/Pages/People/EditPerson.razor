@@ -3,42 +3,42 @@
 
 <PageTitle>Edit Person</PageTitle>
 
-@if (PersonDisplayModel is null)
+@if (!_isLoaded)
 {
-	<LoadingComponent />
+    <LoadingComponent />
     return;
 }
 
-@if (ShowRoleError)
-{
-    <p style="color: red">Person must be either a cast member or a director or both.</p>
-}
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    @if (ShowRoleError)
+    {
+        <MudAlert Severity="Severity.Error" Class="mb-3">
+            Person must be either a cast member or a director or both.
+        </MudAlert>
+    }
 
-<EditForm Model="@PersonDisplayModel" OnValidSubmit="Update">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+    <EditForm Model="@PersonDisplayModel" OnValidSubmit="Update">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <MudGrid>
-        <MudItem xs="12">
-            <MudCard>
-                <CreateUpdatePersonComponent PersonDisplayModel="PersonDisplayModel" />
-                <MudCardActions>
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               ButtonType="ButtonType.Submit">
-                        Update
-                    </MudButton>
-
-                    &nbsp;
-
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               Href="@($"/person/view/{PersonId}")">
-                        Cancel
-                    </MudButton>
-
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
-</EditForm>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudCard>
+                    <CreateUpdatePersonComponent PersonDisplayModel="PersonDisplayModel" />
+                    <MudCardActions Class="gap-2">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   ButtonType="ButtonType.Submit">
+                            Update
+                        </MudButton>
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Href="@($"/person/view/{PersonId}")">
+                            Cancel
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudContainer>
