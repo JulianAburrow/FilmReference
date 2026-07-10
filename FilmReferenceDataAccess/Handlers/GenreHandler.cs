@@ -1,36 +1,34 @@
 ﻿namespace FilmReferenceDataAccess.Handlers;
 
-public class GenreHandler(FilmReferenceContext context) : IGenreHandler
+public class GenreHandler(IDbContextFactory<FilmReferenceContext> factory) : IGenreHandler
 {
-    private readonly FilmReferenceContext _context = context;
-
-    public async Task CreateGenreAsync(GenreModel genre, bool saveChanges)
+    public async Task CreateGenreAsync(GenreModel genre)
     {
-        _context.Genres.Add(genre);
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        await using var context = await factory.CreateDbContextAsync();
+
+        context.Genres.Add(genre);        
+        await context.SaveChangesAsync();
     }
 
-    public async Task DeleteGenreAsync(int genreId, bool saveChanges)
+    public async Task DeleteGenreAsync(int genreId)
     {
-        var genreToDelete = _context.Genres
-            .FirstOrDefault(g => g.GenreId == genreId);
+        await using var context = await factory.CreateDbContextAsync();
+
+        var genreToDelete = await context.Genres
+            .FirstOrDefaultAsync(g => g.GenreId == genreId);
         if (genreToDelete is null)
         {
             return;
         }
-        _context.Genres.Remove(genreToDelete);
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        context.Genres.Remove(genreToDelete);
+        await context.SaveChangesAsync();
     }
 
     public async Task<GenreModel> GetGenreAsync(int genreId)
     {
-        var genre = await _context.Genres
+        await using var context = await factory.CreateDbContextAsync();
+
+        var genre = await context.Genres
             .Include(g => g.Films)
                 .ThenInclude(f => f.Studio)
             .AsNoTracking()
@@ -43,20 +41,25 @@ public class GenreHandler(FilmReferenceContext context) : IGenreHandler
         return genre ?? new GenreModel();
     }        
 
-    public async Task<List<GenreModel>> GetGenresAsync() =>
-        await _context.Genres
+    public async Task<List<GenreModel>> GetGenresAsync()
+    {
+        await using var context = await factory.CreateDbContextAsync();
+
+        return await context.Genres
             .Include(g => g.Films)
             .OrderBy(g => g.Name)
         .AsNoTracking()
         .ToListAsync();
+    }
+        
 
-    public async Task SaveChangesAsync() =>
-        await _context.SaveChangesAsync();
-
-    public async Task UpdateGenreAsync(GenreModel genre, bool saveChanges)
+    public async Task UpdateGenreAsync(GenreModel genre)
     {
-        var genreToUpdate = _context.Genres
-            .FirstOrDefault(g => g.GenreId == genre.GenreId);
+        await using var context = await factory.CreateDbContextAsync();
+
+        var genreToUpdate = await context.Genres
+            .FirstOrDefaultAsync(g => g.GenreId == genre.GenreId);
+
         if (genreToUpdate is null)
         {
             return;
@@ -65,9 +68,6 @@ public class GenreHandler(FilmReferenceContext context) : IGenreHandler
         genreToUpdate.Description = genre.Description;
         genreToUpdate.Logo = genre.Logo;
 
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        await context.SaveChangesAsync();
     }
 }

@@ -1,38 +1,37 @@
 ﻿namespace FilmReferenceDataAccess.Handlers;
 
-public class PersonHandler(FilmReferenceContext context) : IPersonHandler
+public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IPersonHandler
 {
-    private readonly FilmReferenceContext _context = context;
-
     private static readonly Random _random = new();
 
-    public async Task CreatePersonAsync(PersonModel person, bool saveChanges)
+    public async Task CreatePersonAsync(PersonModel person)
     {
-        _context.People.Add(person);
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        await using var context = await factory.CreateDbContextAsync();
+        context.People.Add(person);
+        
+        await context.SaveChangesAsync();
     }
 
-    public async Task DeletePersonAsync(int personId, bool saveChanges)
+    public async Task DeletePersonAsync(int personId)
     {
-        var personToDelete = _context.People
-            .FirstOrDefault(p => p.PersonId == personId);
+        await using var context = await factory.CreateDbContextAsync();
+
+        var personToDelete = await context.People
+            .FirstOrDefaultAsync(p => p.PersonId == personId);
+
         if (personToDelete is null)
         {
             return;
         }
-        _context.People.Remove(personToDelete);
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+
+        context.People.Remove(personToDelete);
+        await context.SaveChangesAsync();
     }
 
     public async Task<RandomPersonModel> GetRandomPersonAsync()
     {
-        var castQuery = _context.People
+        await using var context = await factory.CreateDbContextAsync();
+        var castQuery = context.People
             .Include(p => p.FilmPerson)
             .Where(p => p.IsCastMember && p.Picture != null);
 
@@ -60,18 +59,24 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         };
     }
 
-    public async Task<List<PersonModel>> GetCastMembersAsync() =>
-        await _context.People
-            .Include(p =>p.Films)
+    public async Task<List<PersonModel>> GetCastMembersAsync()
+    {
+        await using var context = await factory.CreateDbContextAsync();
+        return await context.People
+            .Include(p => p.Films)
             .Include(p => p.FilmPerson)
             .Where(p => p.IsCastMember)
             .OrderBy(p => p.FirstName)
             .ThenBy(p => p.LastName)
             .AsNoTracking()
             .ToListAsync();
+    }
+        
 
-    public async Task<List<PersonModel>> GetDirectorsAsync() =>
-        await _context.People
+    public async Task<List<PersonModel>> GetDirectorsAsync()
+    {
+        await using var context = await factory.CreateDbContextAsync();
+        return await context.People
             .Include(p => p.Films)
             .Include(p => p.FilmPerson)
             .Where(p => p.IsDirector)
@@ -79,10 +84,12 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
             .ThenBy(p => p.LastName)
             .AsNoTracking()
             .ToListAsync();
+    }
 
     public async Task<PersonModel> GetPersonAsync(int personId)
     {
-        var person = await _context.People
+        await using var context = await factory.CreateDbContextAsync();
+        var person = await context.People
             .Include(p => p.FilmPerson)
                 .ThenInclude(fp => fp.Film)
                     .ThenInclude(f => f.Genre)
@@ -103,14 +110,12 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         return person ?? new PersonModel();
     }
 
-    public async Task SaveChangesAsync() =>
-        await _context.SaveChangesAsync();
-
-    public async Task UpdatePersonAsync(PersonModel person, bool saveChanges)
+    public async Task UpdatePersonAsync(PersonModel person)
     {
-        var personToUpdate = _context.People
+        await using var context = await factory.CreateDbContextAsync();
+        var personToUpdate = await context.People
             .Where(p => p.PersonId == person.PersonId)
-            .FirstOrDefault();
+            .FirstOrDefaultAsync();
         if (personToUpdate is null)
         {
             return;
@@ -124,9 +129,6 @@ public class PersonHandler(FilmReferenceContext context) : IPersonHandler
         personToUpdate.DateOfDeath = person.DateOfDeath;
         personToUpdate.Picture = person.Picture;
 
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        await context.SaveChangesAsync();
     }
 }

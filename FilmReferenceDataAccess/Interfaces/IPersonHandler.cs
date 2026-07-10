@@ -8,13 +8,11 @@ public interface IPersonHandler
 
     Task<PersonModel> GetPersonAsync(int personId);
 
-    Task CreatePersonAsync(PersonModel person, bool saveChanges);
+    Task CreatePersonAsync(PersonModel person);
     
-    Task UpdatePersonAsync(PersonModel person, bool saveChanges);
+    Task UpdatePersonAsync(PersonModel person);
 
-    Task DeletePersonAsync(int personId, bool saveChanges);
+    Task DeletePersonAsync(int personId);
 
     Task<RandomPersonModel> GetRandomPersonAsync();
-
-    Task SaveChangesAsync();
 }

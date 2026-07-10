@@ -3,14 +3,15 @@
 public class StudioTests
 {
     [Fact]
-    public async Task CreateStudioAsync_ShouldAddStudio_WhenSaveChangesTrue()
+    public async Task CreateStudioAsync_ShouldAddStudio()
     {
-        using var context = DbContextHelper.GetInMemoryContext();
-        var handler = new StudioHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new StudioHandler(factory);
 
         var studio = new StudioModel { StudioId = 1, Name = "Warner Bros" };
 
-        await handler.CreateStudioAsync(studio, saveChanges: true);
+        await handler.CreateStudioAsync(studio);
 
         var result = await context.Studios.FindAsync(1);
         result.Should().NotBeNull();
@@ -20,14 +21,18 @@ public class StudioTests
     [Fact]
     public async Task DeleteStudioAsync_ShouldRemoveStudio_WhenExists()
     {
-        using var context = DbContextHelper.GetInMemoryContext();
-        var handler = new StudioHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
 
         var studio = new StudioModel { StudioId = 2, Name = "Paramount" };
         context.Studios.Add(studio);
         await context.SaveChangesAsync();
 
-        await handler.DeleteStudioAsync(2, saveChanges: true);
+        // Clear so FindAsync queries the DB rather than returning the stale cached entity.
+        context.ChangeTracker.Clear();
+
+        var handler = new StudioHandler(factory);
+        await handler.DeleteStudioAsync(2);
 
         var result = await context.Studios.FindAsync(2);
         result.Should().BeNull();
@@ -36,10 +41,11 @@ public class StudioTests
     [Fact]
     public async Task DeleteStudioAsync_ShouldDoNothing_WhenNotFound()
     {
-        using var context = DbContextHelper.GetInMemoryContext();
-        var handler = new StudioHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new StudioHandler(factory);
 
-        await handler.DeleteStudioAsync(99, saveChanges: true);
+        await handler.DeleteStudioAsync(99);
 
         context.Studios.Should().BeEmpty();
     }
@@ -47,8 +53,9 @@ public class StudioTests
     [Fact]
     public async Task GetStudioAsync_ShouldReturnStudioWithFilmsOrdered()
     {
-        using var context = DbContextHelper.GetInMemoryContext();
-        var handler = new StudioHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new StudioHandler(factory);
 
         var studio = TestDataFactory.CreateStudio();
         var genre = TestDataFactory.CreateGenre();
@@ -69,20 +76,22 @@ public class StudioTests
     [Fact]
     public async Task GetStudioAsync_ShouldReturnEmptyStudio_WhenNotFound()
     {
-        using var context = DbContextHelper.GetInMemoryContext();
-        var handler = new StudioHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new StudioHandler(factory);
 
         var result = await handler.GetStudioAsync(123);
 
         result.Should().NotBeNull();
-        result.StudioId.Should().Be(0); // default new StudioModel
+        result.StudioId.Should().Be(0);
     }
 
     [Fact]
     public async Task GetStudiosAsync_ShouldReturnStudiosOrderedByName()
     {
-        using var context = DbContextHelper.GetInMemoryContext();
-        var handler = new StudioHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new StudioHandler(factory);
 
         context.Studios.AddRange(
             new StudioModel { StudioId = 10, Name = "Zeta" },
@@ -99,15 +108,19 @@ public class StudioTests
     [Fact]
     public async Task UpdateStudioAsync_ShouldModifyProperties_WhenStudioExists()
     {
-        using var context = DbContextHelper.GetInMemoryContext();
-        var handler = new StudioHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
 
         var studio = new StudioModel { StudioId = 20, Name = "Old Name", Description = "Old Desc" };
         context.Studios.Add(studio);
         await context.SaveChangesAsync();
 
+        // Clear so FindAsync queries the DB rather than returning the stale cached entity.
+        context.ChangeTracker.Clear();
+
+        var handler = new StudioHandler(factory);
         var updated = new StudioModel { StudioId = 20, Name = "New Name", Description = "New Desc" };
-        await handler.UpdateStudioAsync(updated, saveChanges: true);
+        await handler.UpdateStudioAsync(updated);
 
         var result = await context.Studios.FindAsync(20);
         result!.Name.Should().Be("New Name");
@@ -117,11 +130,12 @@ public class StudioTests
     [Fact]
     public async Task UpdateStudioAsync_ShouldDoNothing_WhenStudioNotFound()
     {
-        using var context = DbContextHelper.GetInMemoryContext();
-        var handler = new StudioHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new StudioHandler(factory);
 
         var updated = new StudioModel { StudioId = 999, Name = "Does Not Exist" };
-        await handler.UpdateStudioAsync(updated, saveChanges: true);
+        await handler.UpdateStudioAsync(updated);
 
         context.Studios.Should().BeEmpty();
     }

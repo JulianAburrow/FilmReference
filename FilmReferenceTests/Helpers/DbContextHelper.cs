@@ -2,11 +2,14 @@
 
 public static class DbContextHelper
 {
-    public static FilmReferenceContext GetInMemoryContext()
+    public static IDbContextFactory<FilmReferenceContext> GetInMemoryFactory()
     {
-        var options = new DbContextOptionsBuilder<FilmReferenceContext>()
+        var options = BuildOptions();
+        return new TestDbContextFactory(options);
+    }
+
+    private static DbContextOptions<FilmReferenceContext> BuildOptions() =>
+        new DbContextOptionsBuilder<FilmReferenceContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString()) // unique DB per test
             .Options;
-        return new FilmReferenceContext(options);
-    }
 }

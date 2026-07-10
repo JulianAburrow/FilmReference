@@ -10,7 +10,7 @@ public partial class CreateGenre
         try
         {
             CopyDisplayModelToModel();
-            await GenreHandler.CreateGenreAsync(GenreModel, true);
+            await GenreHandler.CreateGenreAsync(GenreModel);
             Snackbar.Add($"{GenreModel.Name} successfully created.", Severity.Success);
             NavigationManager.NavigateTo($"/genre/view/{GenreModel.GenreId}");
         }

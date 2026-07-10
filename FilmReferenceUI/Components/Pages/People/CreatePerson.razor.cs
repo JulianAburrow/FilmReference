@@ -22,7 +22,7 @@ public partial class CreatePerson
                 ShowRoleError = true;
                 return;
             }
-            await PersonHandler.CreatePersonAsync(PersonModel, true);
+            await PersonHandler.CreatePersonAsync(PersonModel);
             Snackbar.Add($"{personName} successfully created.", Severity.Success);
             NavigationManager.NavigateTo($"/person/view/{PersonModel.PersonId}");
         }
