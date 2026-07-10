@@ -11,17 +11,19 @@
 
 @if (!FavouriteDisplayModels.Any())
 {
-    <p>No favourites found.</p>
+    <LoadingComponent DisplayValue="No favourites added yet." IsLoading="false" />
     return;
 }
-else
-{
-    <h4>
-        @FavouriteDisplayModels.Count()
-        @(FavouriteDisplayModels.Count() == 1 ? "favourite" : "favourites")
-        found
-    </h4>
-}
 
-<ListFavouritesComponent FavouriteDisplayModels="FavouriteDisplayModels" OnRemoved="HandleRemoved" />
+<MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
+    <MudStack Spacing="2">
+        @{
+            var count = FavouriteDisplayModels.Count();
+            var word = count == 1 ? "favourite" : "favourites";
+        }
+        <MudText Typo="Typo.subtitle1">@count @word</MudText>
+
+        <ListFavouritesComponent FavouriteDisplayModels="FavouriteDisplayModels" OnRemoved="HandleRemoved" />
+    </MudStack>
+</MudContainer>
 

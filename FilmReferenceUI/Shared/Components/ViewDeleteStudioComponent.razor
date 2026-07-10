@@ -22,11 +22,8 @@
         <MudItem xs="12" md="4"
                  Class="d-flex justify-center align-center">
 
-            @if (StudioModel.Logo is not null)
-            {
-                <ViewImageComponent ImageData="StudioModel.Logo"
+            <ViewImageComponent ImageData="StudioModel.Logo"
                                     ImageTitle="@StudioModel.Name" />
-            }
 
         </MudItem>
 

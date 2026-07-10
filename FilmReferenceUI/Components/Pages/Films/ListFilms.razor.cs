@@ -10,10 +10,14 @@ public partial class ListFilms
 
     protected override async Task OnInitializedAsync()
     {
+        if (!RendererInfo.IsInteractive)
+            return;
+
         AllFilmModels = await FilmHandler.GetAllFilmsAsync();
         GenreModels = await GenreHandler.GetGenresAsync();
         MainLayout.SetHeaderValue("View Films");
         FilterFilms(Genre);
+        _isLoaded = true;
     }
 
     private void FilterFilms(string genreName)

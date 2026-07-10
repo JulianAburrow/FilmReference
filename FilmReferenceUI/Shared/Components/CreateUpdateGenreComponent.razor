@@ -15,7 +15,7 @@
             <MudTextField Label="Description"
                           @bind-Value="GenreDisplayModel.Description" />
 
-            <br />
+            <div class="my-4"></div>
 
             <MudFileUpload T="IBrowserFile"
                            FilesChanged="LocalUploadImage"
@@ -48,12 +48,9 @@
         <MudItem xs="12" md="4"
                  Class="d-flex justify-center align-center">
 
-            @if (GenreDisplayModel.Logo is not null)
-            {
-                <ViewImageComponent ImageData="GenreDisplayModel.Logo"
-                                    ImageTitle="GenreDisplayModel.Name" />
-            }
-
+            <ViewImageComponent ImageData="GenreDisplayModel.Logo"
+                                ImageTitle="@GenreDisplayModel.Name" />
+            
         </MudItem>
 
     </MudGrid>

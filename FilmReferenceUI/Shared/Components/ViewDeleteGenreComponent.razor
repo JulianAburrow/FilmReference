@@ -23,11 +23,8 @@
                  Class="d-flex justify-center align-center">
 
             
-            @if (GenreModel.Logo is not null)
-            {
-                <ViewImageComponent ImageData="@GenreModel.Logo"
+            <ViewImageComponent ImageData="@GenreModel.Logo"
                                     ImageTitle="@GenreModel.Name" />
-            }
 
         </MudItem>
 

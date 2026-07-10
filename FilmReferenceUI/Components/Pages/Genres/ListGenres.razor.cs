@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace FilmReferenceUI.Components.Pages.Genres;
+﻿namespace FilmReferenceUI.Components.Pages.Genres;
 
 public partial class ListGenres
 {
@@ -8,10 +6,15 @@ public partial class ListGenres
 
     protected override async Task OnInitializedAsync()
     {
+        if (!RendererInfo.IsInteractive)
+            return;
+
         GenreModels = await GenreHandler.GetGenresAsync();
         Snackbar.Add($"{GenreModels.Count} {(GenreModels.Count == 1 ? "genre" : "genres")} found.", GenreModels.Count > 0 ? Severity.Info : Severity.Warning);
         MainLayout.SetHeaderValue("View Genres");
         NextSortDirection = SortDirection.Descending;
+
+        _isLoaded = true;
     }
 
     private void ResortList()

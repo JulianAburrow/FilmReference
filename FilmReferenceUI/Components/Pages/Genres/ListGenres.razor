@@ -9,34 +9,46 @@
     return;
 }
 
-<div class="sticky-div">
-    <MudButton Variant="Variant.Filled"
-               Color="Color.Primary"
-               Href="/genre/create">
-        Create Genre
-    </MudButton>
-</div>
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
 
-<br />
-<br />
+    <div class="sticky-div">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   Href="/genre/create">
+            Create Genre
+        </MudButton>
+    </div>
 
-@if (!GenreModels.Any())
-{
-    <p>No Genres found.</p>
-    return;
-}
+    <MudDivider Class="my-4" />
 
-<h4>
-    @GenreModels.Count()
-    @(GenreModels.Count() == 1 ? "genre" : "genres")
-    found
-</h4>
+    <MudStack Spacing="3">
 
-@if (GenreModels.Count > 1)
-{
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
-    <br />
-    <br />
-}
+        @if (!GenreModels.Any())
+        {
+            <LoadingComponent DisplayValue="No genres found." IsLoading="false" />
+        }
+        else
+        {
+            <div class="d-flex align-center gap-3">
+                <MudText Typo="Typo.subtitle1">
+                    @GenreModels.Count() @(GenreModels.Count() == 1 ? "genre" : "genres") found
+                </MudText>
+                @if (GenreModels.Count > 1)
+                {
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Default"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Filled.SwapVert"
+                               OnClick="ResortList">
+                        Reverse Sort
+                    </MudButton>
+                }
+            </div>
 
-<ListGenresComponent GenreModels="GenreModels" />
+            <ListGenresComponent GenreModels="GenreModels" />
+        }
+
+    </MudStack>
+
+</MudContainer>

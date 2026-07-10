@@ -1,63 +1,69 @@
 ﻿@page "/genre/view/{GenreId:int}"
 @inherits GenresBasePageClass
 
-@if (GenreModel is null || GenreModel.Films is null)
+<PageTitle>View Genre</PageTitle>
+
+@if (!_isLoaded)
 {
-	<LoadingComponent DisplayValue="Loading genre" />
+    <LoadingComponent DisplayValue="Loading genre" />
     return;
 }
 
-<MudGrid>
-    <MudItem xs="12">
-        <MudCard>
-            <ViewDeleteGenreComponent GenreModel="GenreModel" />
-            <MudCardActions>
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    <MudStack Spacing="4">
 
-                <MudButton Variant="Variant.Filled"
-                            Color="Color.Primary"
-                            Href="@($"/genre/edit/{GenreModel.GenreId}")">
-                    Edit
-                </MudButton>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudCard>
+                    <ViewDeleteGenreComponent GenreModel="GenreModel" />
+                    <MudCardActions Class="gap-2">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   Href="@($"/genre/edit/{GenreModel.GenreId}")">
+                            Edit
+                        </MudButton>
+                        @if (!PreventDeleting)
+                        {
+                            <MudButton Variant="Variant.Outlined"
+                                       Color="Color.Error"
+                                       Href="@($"/genre/delete/{GenreModel.GenreId}")">
+                                Delete
+                            </MudButton>
+                        }
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Href="/genres/listgenres">
+                            All Genres
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
 
-                @if (!PreventDeleting)
+        @if (!GenreModel.Films.Any())
+        {
+            <LoadingComponent DisplayValue="No films found for this genre." IsLoading="false" />
+        }
+        else
+        {
+            <div class="d-flex align-center gap-3">
+                <MudText Typo="Typo.h6">
+                    @GenreModel.Films.Count @(GenreModel.Films.Count == 1 ? "film" : "films")
+                </MudText>
+                @if (GenreModel.Films.Count > 1)
                 {
-                    @:&nbsp;
-                    <MudButton Variant="Variant.Filled"
-                                Color="Color.Error"
-                                Href="@($"/genre/delete/{GenreModel.GenreId}")">
-                        Delete
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Default"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Filled.SwapVert"
+                               OnClick="ResortList">
+                        Reverse Sort
                     </MudButton>
                 }
+            </div>
 
-                &nbsp;
-                <MudButton Variant="Variant.Filled"
-                            Color="Color.Primary"
-                            Href="/genres/listgenres">
-                    All Genres
-                </MudButton>
+            <ListFilmsComponent FilmModels="GenreModel.Films.ToList()" />
+        }
 
-            </MudCardActions>
-
-        </MudCard>
-    </MudItem>
-</MudGrid>
-
-<br />
-<br />
-
-@if (!GenreModel.Films.Any())
-{
-    <h3>No films found for this genre</h3>
-    return;
-}
-
-<h3>@GenreModel.Films.Count @(GenreModel.Films.Count == 1 ? "film" : "films")</h3>
-
-@if (GenreModel.Films.Count > 1)
-{
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
-    <br />
-    <br />
-}
-
-<ListFilmsComponent FilmModels="GenreModel.Films.ToList()" />
+    </MudStack>
+</MudContainer>

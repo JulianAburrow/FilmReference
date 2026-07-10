@@ -64,7 +64,7 @@
                 }
             </MudSelect>
 
-            <br />
+            <div class="my-4"></div>
 
             <MudFileUpload T="IBrowserFile"
                            FilesChanged="LocalUploadImage"
@@ -93,10 +93,9 @@
         </MudItem>
 
         <!-- RIGHT COLUMN: Box cover -->
-        <MudItem xs="12" md="4"
-                 Class="d-flex justify-center align-center">
+        <MudItem xs="12" md="4" Class="d-flex justify-center align-center">
             <ViewImageComponent ImageData="FilmDisplayModel.BoxCover"
-                                ImageTitle="FilmDisplayModel.Name" />
+                                ImageTitle="@FilmDisplayModel.Name" />
         </MudItem>
 
     </MudGrid>

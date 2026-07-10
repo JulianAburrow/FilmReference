@@ -5,38 +5,50 @@
 
 @if (StudioModels is null)
 {
-	<LoadingComponent />
+    <LoadingComponent />
     return;
 }
 
-<div class="sticky-div">
-    <MudButton Variant="Variant.Filled"
-               Color="Color.Primary"
-               Href="/studio/create">
-        Create Studio
-    </MudButton>
-</div>
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
 
-<br />
-<br />
+    <div class="sticky-div">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   Href="/studio/create">
+            Create Studio
+        </MudButton>
+    </div>
 
-@if (!StudioModels.Any())
-{
-    <p>No Studios found.</p>
-    return;
-}
+    <MudDivider Class="my-4" />
 
-<h4>
-    @StudioModels.Count()
-    @(StudioModels.Count() == 1 ? "studio" : "studios")
-    found
-</h4>
+    <MudStack Spacing="3">
 
-@if (StudioModels.Count > 1)
-{
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ResortList">Reverse Sort Order</MudButton>
-    <br />
-    <br />
-}
+        @if (!StudioModels.Any())
+        {
+            <LoadingComponent DisplayValue="No studios found." IsLoading="false" />
+        }
+        else
+        {
+            <div class="d-flex align-center gap-3">
+                <MudText Typo="Typo.subtitle1">
+                    @StudioModels.Count() @(StudioModels.Count() == 1 ? "studio" : "studios") found
+                </MudText>
+                @if (StudioModels.Count > 1)
+                {
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Default"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Filled.SwapVert"
+                               OnClick="ResortList">
+                        Reverse Sort
+                    </MudButton>
+                }
+            </div>
 
-<ListStudiosComponent StudioModels="StudioModels" />
+            <ListStudiosComponent StudioModels="StudioModels" />
+        }
+
+    </MudStack>
+
+</MudContainer>

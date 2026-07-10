@@ -4,7 +4,6 @@
 
     <MudGrid>
 
-        <!-- LEFT COLUMN: Studio fields -->
         <MudItem xs="12" md="8">
 
             <MudTextField Label="Name"
@@ -15,7 +14,7 @@
             <MudTextField Label="Description"
                           @bind-Value="StudioDisplayModel.Description" />
 
-            <br />
+            <div class="my-4"></div>
 
             <MudFileUpload T="IBrowserFile"
                            FilesChanged="LocalUploadImage"
@@ -48,11 +47,8 @@
         <MudItem xs="12" md="4"
                  Class="d-flex justify-center align-center">
 
-            @if (StudioDisplayModel.Logo is not null)
-            {
-                <ViewImageComponent ImageData="StudioDisplayModel.Logo"
+            <ViewImageComponent ImageData="StudioDisplayModel.Logo"
                                     ImageTitle="StudioDisplayModel.Name" />
-            }
 
         </MudItem>
 

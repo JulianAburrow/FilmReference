@@ -14,7 +14,9 @@
                 @Person.Films.Count @(Person.Films.Count == 1 ? " film" : " films")
             }
         </MudText>
-        <br />
+        
+        <div class="my-4"></div>
+
         @{
             var ImageTitle = Person.LastName is null
                 ? Person.FirstName

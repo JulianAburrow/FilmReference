@@ -1,21 +1,20 @@
-﻿<MudStack Justify="Justify.Center">
-	@if (ImageData is not null)
-	{
-		<div class="image-wrapper">
-			<MudImage src="@(ImageHelper.ImageSource(ImageData))"
-					  title="@ImageTitle"
-					  Elevation="25"
-					  Class="rounded-lg"
-					  Style="width: auto !important;
-						max-width: 200px;
-						height:auto;
-						margin-left: auto;
-						margin-right: auto;
-						object-fit:contain;" />
-		</div>
-	}
-	else
-	{
-		<MudField>No Image Available</MudField>
-	}
+﻿<MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+    @if (ImageData is not null)
+    {
+        <MudImage Src="@(ImageHelper.ImageSource(ImageData))"
+                  title="@ImageTitle"
+                  Elevation="25"
+                  Class="rounded-lg"
+                  Style="width: auto; max-width: 200px; height: auto; object-fit: contain;" />
+    }
+    else
+    {
+        <div class="d-flex flex-column align-center justify-center pa-4 gap-1"
+             style="min-width: 120px; min-height: 120px; border: 1px dashed var(--mud-palette-divider); border-radius: 8px;">
+            <MudIcon Icon="@Icons.Material.Outlined.BrokenImage"
+                     Color="Color.Default"
+                     Size="Size.Large" />
+            <MudText Typo="Typo.caption" Color="Color.Secondary">No image</MudText>
+        </div>
+    }
 </MudStack>

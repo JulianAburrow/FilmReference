@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider Theme="FilmReferenceTheme.Theme" @bind-IsDarkMode="_isDarkMode" />
 <MudDialogProvider />
 <MudPopoverProvider />
 <MudSnackbarProvider />
@@ -9,11 +9,18 @@
 
 <CascadingValue Value="this">
     <MudLayout>
-        <MudAppBar Elevation="1">
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudAppBar Elevation="2">
+            <MudIconButton
+                Icon="@Icons.Material.Filled.Menu"
+                Color="Color.Inherit"
+                Edge="Edge.Start"
+                OnClick="@((e) => DrawerToggle())" />
             <MudText Typo="Typo.h5" Class="ml-3">Film Reference</MudText>
             <MudSpacer />
-            <div style="width: 80%; color: white; font-size: 24px">@HeaderText</div>
+            @if (!string.IsNullOrEmpty(HeaderText))
+            {
+                <MudText Typo="Typo.h6" Class="mx-4">@HeaderText</MudText>
+            }
             @if (DisplayFavouriteButton)
             {
                 <MudTooltip Text="@FavouriteTooltipText">
@@ -22,6 +29,11 @@
                                    OnClick="AddRemoveFavourite" />
                 </MudTooltip>
             }
+            <MudTooltip Text="@(_isDarkMode ? "Switch to light mode" : "Switch to dark mode")">
+                <MudIconButton Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
+                               Color="Color.Inherit"
+                               OnClick="ToggleDarkMode" />
+            </MudTooltip>
         </MudAppBar>
         <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
             <NavMenu FirstGenre="@FirstGenre" />

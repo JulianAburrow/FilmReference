@@ -3,31 +3,29 @@
 
 <PageTitle>Create Genre</PageTitle>
 
-<EditForm Model="@GenreDisplayModel" OnValidSubmit="CreateGenreAsync">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    <EditForm Model="@GenreDisplayModel" OnValidSubmit="CreateGenreAsync">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <MudGrid>
-        <MudItem xs="12">
-            <MudCard>
-                <CreateUpdateGenreComponent GenreDisplayModel="@GenreDisplayModel" />
-                <MudCardActions>
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               ButtonType="ButtonType.Submit">
-                        Create
-                    </MudButton>
-
-                    &nbsp;
-
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               Href="/genres/listgenres">
-                        Cancel
-                    </MudButton>
-
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
-</EditForm>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudCard>
+                    <CreateUpdateGenreComponent GenreDisplayModel="@GenreDisplayModel" />
+                    <MudCardActions Class="gap-2">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   ButtonType="ButtonType.Submit">
+                            Create
+                        </MudButton>
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   Href="/genres/listgenres">
+                            Cancel
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudContainer>

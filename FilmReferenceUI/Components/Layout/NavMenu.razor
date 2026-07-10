@@ -1,23 +1,21 @@
 ﻿<MudNavMenu>
-    <MudNavLink Href="">Home / Search</MudNavLink>
-    <MudNavGroup Title="Films" Expanded="true">
-        <MudNavLink Href="/films/listfilms">View Films</MudNavLink>
-        <MudNavLink Href="/film/create">Create Film</MudNavLink>
+    <MudNavLink Href="" Icon="@Icons.Material.Filled.Home">Home / Search</MudNavLink>
+    <MudNavGroup Title="Films" Icon="@Icons.Material.Filled.Movie" Expanded="false">
+        <MudNavLink Href="/films/listfilms" Icon="@Icons.Material.Outlined.VideoLibrary">View Films</MudNavLink>
+        <MudNavLink Href="/film/create" Icon="@Icons.Material.Outlined.AddCircleOutline">Create Film</MudNavLink>
     </MudNavGroup>
-    <MudNavGroup Title="People" Expanded="true">
-        <MudNavLink OnClick="@(() => DoNavigation(RoleEnum.CastMembers))">View Cast Members</MudNavLink>
-        <MudNavLink OnClick="@(() => DoNavigation(RoleEnum.Directors))">View Directors</MudNavLink>
-        <MudNavLink Href="/person/create">Create Person</MudNavLink>
+    <MudNavGroup Title="People" Icon="@Icons.Material.Filled.People" Expanded="false">
+        <MudNavLink OnClick="@(() => DoNavigation(RoleEnum.CastMembers))" Icon="@Icons.Material.Outlined.TheaterComedy">View Cast Members</MudNavLink>
+        <MudNavLink OnClick="@(() => DoNavigation(RoleEnum.Directors))" Icon="@Icons.Material.Outlined.VideoCameraBack">View Directors</MudNavLink>
+        <MudNavLink Href="/person/create" Icon="@Icons.Material.Outlined.PersonAdd">Create Person</MudNavLink>
     </MudNavGroup>
-    <MudNavGroup Title="Genres" Expanded="true">
-        <MudNavLink Href="/genres/listgenres">View Genres</MudNavLink>
-        <MudNavLink Href="/genre/create">Create Genre</MudNavLink>
+    <MudNavGroup Title="Genres" Icon="@Icons.Material.Filled.Category" Expanded="false">
+        <MudNavLink Href="/genres/listgenres" Icon="@Icons.Material.Outlined.List">View Genres</MudNavLink>
+        <MudNavLink Href="/genre/create" Icon="@Icons.Material.Outlined.AddCircleOutline">Create Genre</MudNavLink>
     </MudNavGroup>
-    <MudNavGroup Title="Studios" Expanded="true">
-        <MudNavLink Href="/studios/liststudios">View Studios</MudNavLink>
-        <MudNavLink Href="/studio/create">Create Studio</MudNavLink>
+    <MudNavGroup Title="Studios" Icon="@Icons.Material.Filled.Business" Expanded="false">
+        <MudNavLink Href="/studios/liststudios" Icon="@Icons.Material.Outlined.List">View Studios</MudNavLink>
+        <MudNavLink Href="/studio/create" Icon="@Icons.Material.Outlined.AddCircleOutline">Create Studio</MudNavLink>
     </MudNavGroup>
-    <MudNavGroup Title="Favourites" Expanded="true">
-        <MudNavLink Href="favourites/listfavourites">View Favourites</MudNavLink>
-    </MudNavGroup>
+    <MudNavLink Href="favourites/listfavourites" Icon="@Icons.Material.Outlined.FavoriteBorder">View Favourites</MudNavLink>
 </MudNavMenu>
