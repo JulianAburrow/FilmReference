@@ -35,7 +35,7 @@ public partial class CreateFilm
         try
         {
             await CopyDisplayModelToModelAsync();
-            await FilmHandler.CreateFilmAsync(FilmModel, FilmDisplayModel.SelectedCastMemberIds, true);
+            await FilmHandler.CreateFilmAsync(FilmModel, FilmDisplayModel.SelectedCastMemberIds);
             Snackbar.Add($"{FilmModel.Name} successfully created.", Severity.Success);
             NavigationManager.NavigateTo($"/film/view/{FilmModel.FilmId}");
         }

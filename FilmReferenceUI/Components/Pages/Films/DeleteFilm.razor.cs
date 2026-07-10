@@ -12,7 +12,7 @@ public partial class DeleteFilm
     {
         try
         {
-            await FilmHandler.DeleteFilmAsync(FilmId, true);
+            await FilmHandler.DeleteFilmAsync(FilmId);
             Snackbar.Add($"{FilmModel.Name} successfully deleted.", Severity.Success);
             NavigationManager.NavigateTo("films/listfilms");
         }

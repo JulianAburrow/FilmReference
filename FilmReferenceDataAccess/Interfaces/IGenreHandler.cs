@@ -6,11 +6,9 @@ public interface IGenreHandler
 
     Task<GenreModel> GetGenreAsync(int genreId);
 
-    Task CreateGenreAsync(GenreModel genre, bool saveChanges);
+    Task CreateGenreAsync(GenreModel genre);
 
-    Task UpdateGenreAsync(GenreModel genre, bool saveChanges);
+    Task UpdateGenreAsync(GenreModel genre);
 
-    Task DeleteGenreAsync(int genreId, bool saveChanges);
-
-    Task SaveChangesAsync();
+    Task DeleteGenreAsync(int genreId);
 }

@@ -13,7 +13,7 @@ public partial class DeleteStudio
     {
         try
         {
-            await StudioHandler.DeleteStudioAsync(StudioId, true);
+            await StudioHandler.DeleteStudioAsync(StudioId);
             Snackbar.Add($"{StudioModel.Name} successfully deleted.", Severity.Success);
             NavigationManager.NavigateTo("studios/liststudios");
         }

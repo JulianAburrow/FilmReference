@@ -6,11 +6,9 @@ public interface IStudioHandler
 
     Task<StudioModel> GetStudioAsync(int studioId);
 
-    Task CreateStudioAsync(StudioModel studio, bool saveChanges);
+    Task CreateStudioAsync(StudioModel studio);
 
-    Task UpdateStudioAsync(StudioModel studio, bool saveChanges);
+    Task UpdateStudioAsync(StudioModel studio);
 
-    Task DeleteStudioAsync(int studioId, bool saveChanges);
-
-    Task SaveChangesAsync();
+    Task DeleteStudioAsync(int studioId);
 }

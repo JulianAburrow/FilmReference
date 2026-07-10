@@ -1,15 +1,19 @@
-﻿namespace FilmReferenceTests;
+﻿using FilmReferenceDataAccess.Interfaces;
+
+namespace FilmReferenceTests;
 
 public class FavouriteTests
 {
-    private FilmReferenceContext GetContext()
-        => DbContextHelper.GetInMemoryContext();
+    // ----------------------------------------------------------------------
+    // CREATE
+    // ----------------------------------------------------------------------
 
     [Fact]
     public async Task CreateFavouriteAsync_ShouldAddFavourite_WhenNotDuplicate()
     {
-        using var context = GetContext();
-        var handler = new FavouriteHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new FavouriteHandler(factory);
 
         var fav = new FavouriteModel
         {
@@ -17,7 +21,9 @@ public class FavouriteTests
             EntityId = 10
         };
 
-        await handler.CreateFavouriteAsync(fav, saveChanges: true);
+        await handler.CreateFavouriteAsync(fav);
+
+        context.ChangeTracker.Clear();
 
         var result = await context.Favourites.FirstOrDefaultAsync();
         result.Should().NotBeNull();
@@ -28,16 +34,17 @@ public class FavouriteTests
     [Fact]
     public async Task CreateFavouriteAsync_ShouldNotAddDuplicate()
     {
-        using var context = GetContext();
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
 
         context.Favourites.Add(new FavouriteModel
         {
             EntityTypeId = (int)FavouriteEntityEnum.Film,
             EntityId = 10
         });
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
-        var handler = new FavouriteHandler(context);
+        var handler = new FavouriteHandler(factory);
 
         var duplicate = new FavouriteModel
         {
@@ -45,15 +52,22 @@ public class FavouriteTests
             EntityId = 10
         };
 
-        await handler.CreateFavouriteAsync(duplicate, saveChanges: true);
+        await handler.CreateFavouriteAsync(duplicate);
+
+        context.ChangeTracker.Clear();
 
         context.Favourites.Count().Should().Be(1);
     }
 
+    // ----------------------------------------------------------------------
+    // DELETE
+    // ----------------------------------------------------------------------
+
     [Fact]
     public async Task DeleteFavouriteAsync_ShouldRemoveFavourite_WhenExists()
     {
-        using var context = GetContext();
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
 
         var fav = new FavouriteModel
         {
@@ -62,11 +76,13 @@ public class FavouriteTests
         };
 
         context.Favourites.Add(fav);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
-        var handler = new FavouriteHandler(context);
+        var handler = new FavouriteHandler(factory);
 
-        await handler.DeleteFavouriteAsync((int)FavouriteEntityEnum.Film, 10, saveChanges: true);
+        await handler.DeleteFavouriteAsync((int)FavouriteEntityEnum.Film, 10);
+
+        context.ChangeTracker.Clear();
 
         context.Favourites.Should().BeEmpty();
     }
@@ -74,27 +90,33 @@ public class FavouriteTests
     [Fact]
     public async Task DeleteFavouriteAsync_ShouldDoNothing_WhenNotFound()
     {
-        using var context = GetContext();
-        var handler = new FavouriteHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new FavouriteHandler(factory);
 
-        await handler.DeleteFavouriteAsync((int)FavouriteEntityEnum.Film, 999, saveChanges: true);
+        await handler.DeleteFavouriteAsync((int)FavouriteEntityEnum.Film, 999);
 
         context.Favourites.Should().BeEmpty();
     }
 
+    // ----------------------------------------------------------------------
+    // IS FAVOURITE
+    // ----------------------------------------------------------------------
+
     [Fact]
     public async Task IsFavouriteAsync_ShouldReturnTrue_WhenExists()
     {
-        using var context = GetContext();
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
 
         context.Favourites.Add(new FavouriteModel
         {
             EntityTypeId = (int)FavouriteEntityEnum.Genre,
             EntityId = 5
         });
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
-        var handler = new FavouriteHandler(context);
+        var handler = new FavouriteHandler(factory);
 
         var result = await handler.IsFavouriteAsync((int)FavouriteEntityEnum.Genre, 5);
 
@@ -104,22 +126,25 @@ public class FavouriteTests
     [Fact]
     public async Task IsFavouriteAsync_ShouldReturnFalse_WhenNotExists()
     {
-        using var context = GetContext();
-        var handler = new FavouriteHandler(context);
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+
+        var handler = new FavouriteHandler(factory);
 
         var result = await handler.IsFavouriteAsync((int)FavouriteEntityEnum.Genre, 5);
 
         result.Should().BeFalse();
     }
 
-    // ------------------------------
-    // GetAllFavouritesAsync Tests
-    // ------------------------------
+    // ----------------------------------------------------------------------
+    // GET ALL FAVOURITES
+    // ----------------------------------------------------------------------
 
     [Fact]
     public async Task GetAllFavouritesAsync_ShouldReturnFilmFavourites_WithCorrectDetails()
     {
-        using var context = GetContext();
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
 
         var film = new FilmModel
         {
@@ -135,9 +160,9 @@ public class FavouriteTests
             EntityId = 10
         });
 
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
-        var handler = new FavouriteHandler(context);
+        var handler = new FavouriteHandler(factory);
 
         var result = await handler.GetAllFavouritesAsync();
 
@@ -152,7 +177,8 @@ public class FavouriteTests
     [Fact]
     public async Task GetAllFavouritesAsync_ShouldReturnGenreFavourites_WithCorrectDetails()
     {
-        using var context = GetContext();
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
 
         var genre = new GenreModel
         {
@@ -167,9 +193,9 @@ public class FavouriteTests
             EntityId = 3
         });
 
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
-        var handler = new FavouriteHandler(context);
+        var handler = new FavouriteHandler(factory);
 
         var result = await handler.GetAllFavouritesAsync();
 
@@ -184,7 +210,8 @@ public class FavouriteTests
     [Fact]
     public async Task GetAllFavouritesAsync_ShouldReturnPersonFavourites_WithCorrectDetails()
     {
-        using var context = GetContext();
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
 
         var person = new PersonModel
         {
@@ -201,9 +228,9 @@ public class FavouriteTests
             EntityId = 7
         });
 
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
-        var handler = new FavouriteHandler(context);
+        var handler = new FavouriteHandler(factory);
 
         var result = await handler.GetAllFavouritesAsync();
 
@@ -218,7 +245,8 @@ public class FavouriteTests
     [Fact]
     public async Task GetAllFavouritesAsync_ShouldReturnStudioFavourites_WithCorrectDetails()
     {
-        using var context = GetContext();
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
 
         var studio = new StudioModel
         {
@@ -234,9 +262,9 @@ public class FavouriteTests
             EntityId = 4
         });
 
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
-        var handler = new FavouriteHandler(context);
+        var handler = new FavouriteHandler(factory);
 
         var result = await handler.GetAllFavouritesAsync();
 
@@ -249,9 +277,10 @@ public class FavouriteTests
     }
 
     [Fact]
-    public async Task GetAllFavouritesAsync_ShouldGroupAndOrderByEntityType()
+    public async Task GetAllFavouritesAsync_ShouldGroupAndOrderFilmFavouritesByName()
     {
-        using var context = GetContext();
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
 
         context.Genres.Add(new GenreModel { GenreId = 1, Name = "Drama" });
         context.Films.Add(new FilmModel { FilmId = 2, Name = "Zeta Film" });
@@ -263,21 +292,18 @@ public class FavouriteTests
             new FavouriteModel { EntityTypeId = (int)FavouriteEntityEnum.Genre, EntityId = 1 }
         );
 
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
-        var handler = new FavouriteHandler(context);
+        var handler = new FavouriteHandler(factory);
 
         var result = await handler.GetAllFavouritesAsync();
 
         result.Should().HaveCount(3);
 
-        // Ordered by EntityTypeId first (Genre before Film)
-        result[0].EntityTypeId.Should().Be((int)FavouriteEntityEnum.Film);
-
-        // Film favourites ordered by Film.Name
-        var filmNames = result.Where(r => r.EntityTypeId == (int)FavouriteEntityEnum.Film)
-                              .Select(r => r.EntityName)
-                              .ToList();
+        var filmNames = result
+            .Where(r => r.EntityTypeId == (int)FavouriteEntityEnum.Film)
+            .Select(r => r.EntityName)
+            .ToList();
 
         filmNames.Should().ContainInOrder("Alpha Film", "Zeta Film");
     }

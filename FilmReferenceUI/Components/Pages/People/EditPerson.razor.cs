@@ -26,7 +26,7 @@ public partial class EditPerson
                 ShowRoleError = true;
                 return;
             }
-            await PersonHandler.UpdatePersonAsync(PersonModel, true);
+            await PersonHandler.UpdatePersonAsync(PersonModel);
             Snackbar.Add($"{personName} successfully updated.", Severity.Success);
             NavigationManager.NavigateTo($"/person/view/{PersonModel.PersonId}");
         }

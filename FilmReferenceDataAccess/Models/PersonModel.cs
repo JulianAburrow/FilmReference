@@ -41,7 +41,7 @@ public class PersonModel
 
     public byte[]? Picture { get; set; }
 
-    public ICollection<FilmModel> Films { get; set; } = null!;
+    public ICollection<FilmModel> Films { get; set; } = [];
 
-    public ICollection<FilmPersonModel> FilmPerson { get; set; } = null!;
+    public ICollection<FilmPersonModel> FilmPerson { get; set; } = [];
 }

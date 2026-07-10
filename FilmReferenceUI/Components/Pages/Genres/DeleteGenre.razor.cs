@@ -13,7 +13,7 @@ public partial class DeleteGenre
     {
         try
         {
-            await GenreHandler.DeleteGenreAsync(GenreId, true);
+            await GenreHandler.DeleteGenreAsync(GenreId);
             Snackbar.Add($"{GenreModel.Name} successfully deleted", Severity.Success);
             NavigationManager.NavigateTo("genres/listgenres");
         }

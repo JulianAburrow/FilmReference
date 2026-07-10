@@ -76,7 +76,7 @@ public partial class MainLayout
         {
             try
             {
-                await FavouriteHandler.DeleteFavouriteAsync((int)CurrentEntityType, CurrentEntityId, true);
+                await FavouriteHandler.DeleteFavouriteAsync((int)CurrentEntityType, CurrentEntityId);
                 Snackbar.Add($"Favourite {CurrentEntityType} successfully removed.", Severity.Success);
                 IsAlreadyFavourite = false;
             }
@@ -95,7 +95,7 @@ public partial class MainLayout
                 EntityId = CurrentEntityId
             };
 
-            await FavouriteHandler.CreateFavouriteAsync(favourite, true);
+            await FavouriteHandler.CreateFavouriteAsync(favourite);
             IsAlreadyFavourite = true;
             StateHasChanged() ;
 

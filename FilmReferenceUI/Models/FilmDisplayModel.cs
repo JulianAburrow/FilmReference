@@ -34,6 +34,6 @@
 
         public StudioModel Studio { get; set; } = null!;
 
-        public ICollection<FilmPersonModel>? FilmPerson { get; set; } = null!;
+        public ICollection<FilmPersonModel>? FilmPerson { get; set; } = [];
     }
 }

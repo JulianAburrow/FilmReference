@@ -1,36 +1,33 @@
 ﻿namespace FilmReferenceDataAccess.Handlers;
 
-public class StudioHandler(FilmReferenceContext context) : IStudioHandler
+public class StudioHandler(IDbContextFactory<FilmReferenceContext> factory) : IStudioHandler
 {
-    private readonly FilmReferenceContext _context = context;
-
-    public async Task CreateStudioAsync(StudioModel studio, bool saveChanges)
+    public async Task CreateStudioAsync(StudioModel studio)
     {
-        _context.Studios.Add(studio);
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        await using var context = await factory.CreateDbContextAsync();
+        context.Studios.Add(studio);
+        await context.SaveChangesAsync();
     }
 
-    public async Task DeleteStudioAsync(int studioId, bool saveChanges)
+    public async Task DeleteStudioAsync(int studioId)
     {
-        var studioToDelete = _context.Studios
-            .FirstOrDefault(s => s.StudioId == studioId);
+        await using var context = await factory.CreateDbContextAsync();
+
+        var studioToDelete = await context.Studios
+            .FirstOrDefaultAsync(s => s.StudioId == studioId);
+
         if (studioToDelete is null)
-        {
             return;
-        }
-        _context.Studios.Remove(studioToDelete);
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+
+        context.Studios.Remove(studioToDelete);
+        await context.SaveChangesAsync();
     }
 
     public async Task<StudioModel> GetStudioAsync(int studioId)
     {
-        var studio = await _context.Studios
+        await using var context = await factory.CreateDbContextAsync();
+
+        var studio = await context.Studios
             .Include(s => s.Films)
                 .ThenInclude(f => f.Director)
             .Include(s => s.Films)
@@ -46,32 +43,32 @@ public class StudioHandler(FilmReferenceContext context) : IStudioHandler
     }
         
 
-    public async Task<List<StudioModel>> GetStudiosAsync() =>
-        await _context.Studios
+    public async Task<List<StudioModel>> GetStudiosAsync()
+    {
+        await using var context = await factory.CreateDbContextAsync();
+
+        return await context.Studios
             .Include(s => s.Films)
             .OrderBy(s => s.Name)
             .AsNoTracking()
-            .ToListAsync();        
+            .ToListAsync();
+    }
+        
 
-    public async Task SaveChangesAsync() =>
-        await _context.SaveChangesAsync();
-
-    public async Task UpdateStudioAsync(StudioModel studio, bool saveChanges)
+    public async Task UpdateStudioAsync(StudioModel studio)
     {
-        var studioToUpdate = _context.Studios
-            .Where(s => s.StudioId == studio.StudioId)
-            .FirstOrDefault();
+        await using var context = await factory.CreateDbContextAsync();
+
+        var studioToUpdate = await context.Studios
+            .FirstOrDefaultAsync(s => s.StudioId == studio.StudioId);
+
         if (studioToUpdate is null)
-        {
             return;
-        }
+
         studioToUpdate.Name = studio.Name;
         studioToUpdate.Description = studio.Description;
         studioToUpdate.Logo = studio.Logo;
 
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        await context.SaveChangesAsync();
     }
 }

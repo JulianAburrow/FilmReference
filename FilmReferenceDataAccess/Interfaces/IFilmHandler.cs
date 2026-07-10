@@ -6,11 +6,9 @@ public interface IFilmHandler
 
     Task<FilmModel> GetFilmAsync(int filmId);
 
-    Task CreateFilmAsync(FilmModel film, IEnumerable<int> selectedCastMemberIds, bool saveChanges);
+    Task CreateFilmAsync(FilmModel film, IEnumerable<int> selectedCastMemberIds);
 
-    Task UpdateFilmAsync(FilmModel film, IEnumerable<int> selectedCastMemberIds, bool saveChanges);
+    Task UpdateFilmAsync(FilmModel film, IEnumerable<int> selectedCastMemberIds);
 
-    Task DeleteFilmAsync(int filmId, bool saveChanges);
-
-    Task SaveChangesAsync();   
+    Task DeleteFilmAsync(int filmId);
 }

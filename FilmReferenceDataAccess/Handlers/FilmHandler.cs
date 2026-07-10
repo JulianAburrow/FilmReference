@@ -1,11 +1,10 @@
 ﻿namespace FilmReferenceDataAccess.Handlers;
 
-public class FilmHandler(FilmReferenceContext context) : IFilmHandler
+public class FilmHandler(IDbContextFactory<FilmReferenceContext> factory) : IFilmHandler
 {
-    private readonly FilmReferenceContext _context = context;
-
-    public async Task CreateFilmAsync(FilmModel film, IEnumerable<int> selectedCastMemberIds, bool saveChanges)
+    public async Task CreateFilmAsync(FilmModel film, IEnumerable<int> selectedCastMemberIds)
     {
+        await using var context = await factory.CreateDbContextAsync();
         using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
         
         var filmToAdd = new FilmModel
@@ -18,12 +17,9 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
             BoxCover = film.BoxCover,
         };
 
-        _context.Films.Add(filmToAdd);
+        context.Films.Add(filmToAdd);
 
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        await context.SaveChangesAsync();
 
         film.FilmId = filmToAdd.FilmId;
 
@@ -31,52 +27,52 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
         {
             foreach (var selectedCastMemberId in selectedCastMemberIds)
             {
-                _context.FilmPeople.Add(new FilmPersonModel
+                context.FilmPeople.Add(new FilmPersonModel
                 {
                     FilmId = filmToAdd.FilmId,
                     PersonId = selectedCastMemberId,
                 });
             }
 
-            if (saveChanges)
-            {
-                await SaveChangesAsync();
-            }
+            await context.SaveChangesAsync();            
         }
 
         scope.Complete();        
     }
 
-    public async Task DeleteFilmAsync(int filmId, bool saveChanges)
+    public async Task DeleteFilmAsync(int filmId)
     {
-        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        await using var context = await factory.CreateDbContextAsync();
 
-        var filmToDelete = _context.Films
+        var filmToDelete = await context.Films
             .Include(f => f.FilmPerson)
-            .FirstOrDefault(f => f.FilmId == filmId);
+            .FirstOrDefaultAsync(f => f.FilmId == filmId);
         if (filmToDelete is null)
         {
             return;
         }
+
+        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
         if (filmToDelete.FilmPerson?.Count > 0)
         {
             foreach (var filmPerson in filmToDelete.FilmPerson)
             {
-                _context.Remove(filmPerson);
+                context.Remove(filmPerson);
             }
         }
-        _context.Films.Remove(filmToDelete);
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        context.Films.Remove(filmToDelete);
+        
+        await context.SaveChangesAsync();
 
         scope.Complete();
     }
 
     public async Task<FilmModel> GetFilmAsync(int filmId)
     {
-        var film = await _context.Films
+        await using var context = await factory.CreateDbContextAsync();
+
+        var film = await context.Films
             .Include(f => f.Studio)
             .Include(f => f.Director)
             .Include(f => f.Genre)
@@ -95,8 +91,11 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
         return film ?? new FilmModel();
     }
 
-    public async Task<List<FilmModel>> GetAllFilmsAsync() =>
-        await _context.Films
+    public async Task<List<FilmModel>> GetAllFilmsAsync()
+    {
+        await using var context = await factory.CreateDbContextAsync();
+
+        return await context.Films
             .AsNoTracking()
             .OrderBy(f => f.Name)
             .Select(f => new FilmModel
@@ -111,20 +110,20 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
                 Genre = new GenreModel { GenreId = f.GenreId, Name = f.Genre.Name }
             })
             .ToListAsync();
+    }
 
-    public async Task SaveChangesAsync() =>
-        await _context.SaveChangesAsync();
-
-    public async Task UpdateFilmAsync(FilmModel film, IEnumerable<int> selectedCastMemberIds, bool saveChanges)
+    public async Task UpdateFilmAsync(FilmModel film, IEnumerable<int> selectedCastMemberIds)
     {
-        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        using var context = await factory.CreateDbContextAsync();
 
-        var filmToUpdate = _context.Films
-            .FirstOrDefault(f => f.FilmId == film.FilmId);
+        var filmToUpdate = await context.Films
+            .FirstOrDefaultAsync(f => f.FilmId == film.FilmId);
+
         if (filmToUpdate is null)
-        {
             return;
-        }
+
+        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        
         filmToUpdate.Name = film.Name;
         filmToUpdate.Description = film.Description;
         filmToUpdate.StudioId = film.StudioId;
@@ -132,26 +131,23 @@ public class FilmHandler(FilmReferenceContext context) : IFilmHandler
         filmToUpdate.GenreId = film.GenreId;
         filmToUpdate.BoxCover = film.BoxCover;
 
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        await context.SaveChangesAsync();
 
-        if (selectedCastMemberIds != null && selectedCastMemberIds.Any())
-        {
-            _context.FilmPeople.RemoveRange(_context.FilmPeople.Where(fp => fp.FilmId == filmToUpdate.FilmId));
+        context.FilmPeople.RemoveRange(
+            context.FilmPeople.Where(fp => fp.FilmId == filmToUpdate.FilmId));
+
+        if (selectedCastMemberIds is not null && selectedCastMemberIds.Any())
+        {            
             foreach (var selectedCastMemberId in selectedCastMemberIds)
             {
-                _context.FilmPeople.Add(new FilmPersonModel
+                context.FilmPeople.Add(new FilmPersonModel
                 {
                     FilmId = filmToUpdate.FilmId,
                     PersonId = selectedCastMemberId,
                 });
             }
-            if (saveChanges)
-            {
-                await SaveChangesAsync();
-            }
+            
+            await context.SaveChangesAsync();
         }
 
         scope.Complete();

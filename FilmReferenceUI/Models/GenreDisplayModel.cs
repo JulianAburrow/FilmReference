@@ -13,6 +13,6 @@
 
         public byte[]? Logo { get; set; }
 
-        public ICollection<FilmModel> Film { get; set; } = null!;
+        public ICollection<FilmModel> Film { get; set; } = [];
     }
 }

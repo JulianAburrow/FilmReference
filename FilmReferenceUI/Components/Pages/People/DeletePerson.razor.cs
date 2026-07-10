@@ -17,7 +17,7 @@ public partial class DeletePerson
 
         try
         {
-            await PersonHandler.DeletePersonAsync(PersonId, true);
+            await PersonHandler.DeletePersonAsync(PersonId);
             Snackbar.Add($"{personName} successfully deleted.", Severity.Success);
             NavigationManager.NavigateTo($"/people/listpeople/{(PersonModel.IsCastMember ? RoleEnum.CastMembers : RoleEnum.Directors)}");
         }

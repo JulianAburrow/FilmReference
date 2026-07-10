@@ -10,5 +10,5 @@ public partial class GenreModel
 
     public byte[]? Logo { get; set; }
 
-    public ICollection<FilmModel> Films { get; set; } = null!;
+    public ICollection<FilmModel> Films { get; set; } = [];
 }

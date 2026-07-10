@@ -14,7 +14,7 @@ public partial class EditGenre
         try
         {
             CopyDisplayModelToModel();
-            await GenreHandler.UpdateGenreAsync(GenreModel, true);
+            await GenreHandler.UpdateGenreAsync(GenreModel);
             Snackbar.Add($"{GenreModel.Name} successfully updated.", Severity.Success);
             NavigationManager.NavigateTo($"/genre/view/{GenreModel.GenreId}");
         }

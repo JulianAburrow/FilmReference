@@ -16,7 +16,7 @@ public partial class FavouriteComponent
     {
         try
         {
-            await FavouriteHandler.DeleteFavouriteAsync(Favourite.EntityTypeId, Favourite.EntityId, true);
+            await FavouriteHandler.DeleteFavouriteAsync(Favourite.EntityTypeId, Favourite.EntityId);
             Snackbar.Add("Favourite removed", Severity.Success);
             await OnRemoved.InvokeAsync(Favourite.FavouriteId);
         }

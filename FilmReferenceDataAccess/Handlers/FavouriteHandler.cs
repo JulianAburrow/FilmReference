@@ -2,42 +2,39 @@
 
 namespace FilmReferenceDataAccess.Handlers;
 
-public class FavouriteHandler(FilmReferenceContext context) : IFavouriteHandler
+public class FavouriteHandler(IDbContextFactory<FilmReferenceContext> filmReferenceContextFactory) : IFavouriteHandler
 {
-    private readonly FilmReferenceContext _context = context;
-
-    public async Task CreateFavouriteAsync(FavouriteModel favourite, bool saveChanges)
+    public async Task CreateFavouriteAsync(FavouriteModel favourite)
     {
-        if (_context.Favourites.Any(f => f.EntityTypeId == favourite.EntityTypeId && f.EntityId == favourite.EntityId))
+        await using var context = await filmReferenceContextFactory.CreateDbContextAsync();
+        if (await context.Favourites.AnyAsync(f => f.EntityTypeId == favourite.EntityTypeId && f.EntityId == favourite.EntityId))
         {
             return;
         }
 
-        _context.Favourites.Add(favourite);
-        if (saveChanges)
-        {
-            await SaveChangesAsync();
-        }
+        context.Favourites.Add(favourite);
+        await context.SaveChangesAsync();
     }
 
-    public async Task DeleteFavouriteAsync(int entityTypeId, int entityId, bool saveChanges)
+    public async Task DeleteFavouriteAsync(int entityTypeId, int entityId)
     {
-        var favouriteToDelete = await _context.Favourites
+        await using var context = await filmReferenceContextFactory.CreateDbContextAsync();
+        var favouriteToDelete = await context.Favourites
             .FirstOrDefaultAsync(f => f.EntityTypeId == entityTypeId
                                    && f.EntityId == entityId);
 
         if (favouriteToDelete is null)
             return;
 
-        _context.Favourites.Remove(favouriteToDelete);
+        context.Favourites.Remove(favouriteToDelete);
 
-        if (saveChanges)
-            await SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 
     public async Task<List<FavouriteDisplayModel>> GetAllFavouritesAsync()
     {
-        var favourites = await _context.Favourites
+        await using var context = await filmReferenceContextFactory.CreateDbContextAsync();
+        var favourites = await context.Favourites
             .OrderBy(f => f.EntityTypeId)
             .AsNoTracking()
             .ToListAsync();
@@ -58,7 +55,7 @@ public class FavouriteHandler(FilmReferenceContext context) : IFavouriteHandler
             switch (entityTypeId)
             {
                 case (int)FavouriteEntityEnum.Film:
-                    lookup = await _context.Films
+                    lookup = await context.Films
                         .Where(f => entityIds.Contains(f.FilmId))
                         .ToDictionaryAsync(
                             f => f.FilmId,
@@ -67,7 +64,7 @@ public class FavouriteHandler(FilmReferenceContext context) : IFavouriteHandler
                     break;
 
                 case (int)FavouriteEntityEnum.Genre:
-                    lookup = await _context.Genres
+                    lookup = await context.Genres
                         .Where(g => entityIds.Contains(g.GenreId))
                         .ToDictionaryAsync(
                             g => g.GenreId,
@@ -76,7 +73,7 @@ public class FavouriteHandler(FilmReferenceContext context) : IFavouriteHandler
                     break;
 
                 case (int)FavouriteEntityEnum.Person:
-                    lookup = await _context.People
+                    lookup = await context.People
                         .Where(p => entityIds.Contains(p.PersonId))
                         .ToDictionaryAsync(
                             p => p.PersonId,
@@ -85,7 +82,7 @@ public class FavouriteHandler(FilmReferenceContext context) : IFavouriteHandler
                     break;
 
                 case (int)FavouriteEntityEnum.Studio:
-                    lookup = await _context.Studios
+                    lookup = await context.Studios
                         .Where(s => entityIds.Contains(s.StudioId))
                         .ToDictionaryAsync(
                             s => s.StudioId,
@@ -122,9 +119,7 @@ public class FavouriteHandler(FilmReferenceContext context) : IFavouriteHandler
 
     public async Task<bool> IsFavouriteAsync(int entityTypeId, int entityId)
     {
-        return _context.Favourites.Any(f => f.EntityTypeId == entityTypeId && f.EntityId == entityId);
+        await using var context = await filmReferenceContextFactory.CreateDbContextAsync();
+        return await context.Favourites.AnyAsync(f => f.EntityTypeId == entityTypeId && f.EntityId == entityId);
     }
-
-    public Task SaveChangesAsync() =>
-        _context.SaveChangesAsync();
 }
