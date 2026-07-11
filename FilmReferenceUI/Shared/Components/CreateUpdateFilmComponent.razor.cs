@@ -4,13 +4,13 @@ public partial class CreateUpdateFilmComponent
 {
     [Parameter] public FilmDisplayModel FilmDisplayModel { get; set; } = new();
 
-    [Parameter] public List<PersonModel> ActorModels { get; set; } = [];
+    [Parameter] public List<PersonModelLightweight> ActorModels { get; set; } = [];
 
-    [Parameter] public List<PersonModel> DirectorModels { get; set; } = [];
+    [Parameter] public List<PersonModelLightweight> DirectorModels { get; set; } = [];
 
-    [Parameter] public List<GenreModel> GenreModels { get; set; } = [];
+    [Parameter] public List<GenreModelLightweight> GenreModels { get; set; } = [];
     
-    [Parameter] public List<StudioModel> StudioModels { get; set; } = [];
+    [Parameter] public List<StudioModelLightweight> StudioModels { get; set; } = [];
 
     private Dictionary<int, string> _actorLookup = [];
 

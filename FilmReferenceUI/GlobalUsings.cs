@@ -3,6 +3,7 @@ global using FilmReferenceDataAccess.Enums;
 global using FilmReferenceDataAccess.Handlers;
 global using FilmReferenceDataAccess.Interfaces;
 global using FilmReferenceDataAccess.Models;
+global using FilmReferenceDataAccess.ViewModels;
 global using FilmReferenceUI.Components;
 global using FilmReferenceUI.Components.Layout;
 global using FilmReferenceUI.Extensions;

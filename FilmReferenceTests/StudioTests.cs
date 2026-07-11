@@ -139,4 +139,38 @@ public class StudioTests
 
         context.Studios.Should().BeEmpty();
     }
+
+    [Fact]
+    public async Task GetStudiosLightweightAsync_ShouldReturnProjectedStudiosOrdered()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new StudioHandler(factory);
+
+        context.Studios.AddRange(
+            new StudioModel { StudioId = 1, Name = "Universal" },
+            new StudioModel { StudioId = 2, Name = "Paramount" }
+        );
+        await context.SaveChangesAsync();
+
+        var result = await handler.GetStudiosLightweightAsync();
+
+        result.Should().HaveCount(2);
+
+        result[0].Name.Should().Be("Paramount");
+        result[1].Name.Should().Be("Universal");
+    }
+
+    [Fact]
+    public async Task GetStudiosLightweightAsync_ShouldReturnEmptyList_WhenNoStudiosExist()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new StudioHandler(factory);
+
+        var result = await handler.GetStudiosLightweightAsync();
+
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
 }

@@ -22,13 +22,21 @@ public abstract class FilmsBasePageClass : BasePageClass
 
     protected FilmDisplayModel FilmDisplayModel { get; set; } = new();
 
+    protected List<PersonModel> CastMemberModels { get; set; } = [];
+
+    protected List<PersonModel> DirectorModels { get; set; } = [];
+
     protected List<GenreModel> GenreModels { get; set; } = [];
 
     protected List<StudioModel> StudioModels { get; set; } = [];
 
-    public List<PersonModel> CastMemberModels { get; set; } = [];
+    protected List<GenreModelLightweight> GenreModelsLightweight { get; set; } = [];
 
-    protected List<PersonModel> DirectorModels { get; set; } = [];
+    protected List<StudioModelLightweight> StudioModelsLightweight { get; set; } = [];
+
+    public List<PersonModelLightweight> CastMemberModelsLightweight { get; set; } = [];
+
+    protected List<PersonModelLightweight> DirectorModelsLightweight { get; set; } = [];
 
     protected async Task CopyDisplayModelToModelAsync()
     {

@@ -131,10 +131,10 @@ public class FilmHandler(IDbContextFactory<FilmReferenceContext> factory) : IFil
         filmToUpdate.GenreId = film.GenreId;
         filmToUpdate.BoxCover = film.BoxCover;
 
-        await context.SaveChangesAsync();
-
         context.FilmPeople.RemoveRange(
             context.FilmPeople.Where(fp => fp.FilmId == filmToUpdate.FilmId));
+
+        await context.SaveChangesAsync();
 
         if (selectedCastMemberIds is not null && selectedCastMemberIds.Any())
         {            

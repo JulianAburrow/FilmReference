@@ -131,4 +131,38 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
 
         await context.SaveChangesAsync();
     }
+
+    public async Task<List<PersonModelLightweight>> GetCastMembersLightweightAsync()
+    {
+        await using var context = await factory.CreateDbContextAsync();
+        return await context.People
+            .Where(p => p.IsCastMember)
+            .OrderBy(p => p.FirstName)
+            .ThenBy(p => p.LastName)
+            .Select(p => new PersonModelLightweight
+            {
+                PersonId = p.PersonId,
+                FirstName = p.FirstName,
+                LastName = p.LastName
+            })
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<List<PersonModelLightweight>> GetDirectorsLightweightAsync()
+    {
+        await using var context = await factory.CreateDbContextAsync();
+        return await context.People
+            .Where(p => p.IsDirector)
+            .OrderBy(p => p.FirstName)
+            .ThenBy(p => p.LastName)
+            .Select(p => new PersonModelLightweight
+            {
+                PersonId = p.PersonId,
+                FirstName = p.FirstName,
+                LastName = p.LastName
+            })
+            .AsNoTracking()
+            .ToListAsync();
+    }
 }

@@ -51,7 +51,20 @@ public class GenreHandler(IDbContextFactory<FilmReferenceContext> factory) : IGe
         .AsNoTracking()
         .ToListAsync();
     }
-        
+
+    public async Task<List<GenreModelLightweight>> GetGenresLightweightAsync()
+    {
+        await using var context = await factory.CreateDbContextAsync();
+        return await context.Genres
+            .OrderBy(g => g.Name)
+            .Select(g => new GenreModelLightweight
+            {
+                GenreId = g.GenreId,
+                Name = g.Name
+            })
+            .AsNoTracking()
+            .ToListAsync();
+    }
 
     public async Task UpdateGenreAsync(GenreModel genre)
     {
