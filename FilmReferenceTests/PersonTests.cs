@@ -527,4 +527,58 @@ public class PersonTests
 
         person.Age.Should().BeNull();
     }
+
+    // ----------------------------------------------------------------------
+    // LIGHTWEIGHT CAST MEMBERS
+    // ----------------------------------------------------------------------
+
+    [Fact]
+    public async Task GetCastMembersLightweightAsync_ShouldReturnOnlyCastMembers()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new PersonHandler(factory);
+
+        context.People.AddRange(
+            new PersonModel { PersonId = 1, FirstName = "Tom", LastName = "Hardy", IsCastMember = true },
+            new PersonModel { PersonId = 2, FirstName = "Ridley", LastName = "Scott", IsCastMember = false }
+        );
+        await context.SaveChangesAsync();
+
+        var result = await handler.GetCastMembersLightweightAsync();
+
+        result.Should().HaveCount(1);
+
+        var cast = result.First();
+        cast.PersonId.Should().Be(1);
+        cast.FirstName.Should().Be("Tom");
+        cast.LastName.Should().Be("Hardy");
+    }
+
+    // ----------------------------------------------------------------------
+    // LIGHTWEIGHT DIRECTORS
+    // ----------------------------------------------------------------------
+
+    [Fact]
+    public async Task GetDirectorsLightweightAsync_ShouldReturnOnlyDirectors()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new PersonHandler(factory);
+
+        context.People.AddRange(
+            new PersonModel { PersonId = 1, FirstName = "Tom", LastName = "Hardy", IsDirector = false },
+            new PersonModel { PersonId = 2, FirstName = "Ridley", LastName = "Scott", IsDirector = true }
+        );
+        await context.SaveChangesAsync();
+
+        var result = await handler.GetDirectorsLightweightAsync();
+
+        result.Should().HaveCount(1);
+
+        var director = result.First();
+        director.PersonId.Should().Be(2);
+        director.FirstName.Should().Be("Ridley");
+        director.LastName.Should().Be("Scott");
+    }
 }

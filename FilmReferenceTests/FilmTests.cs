@@ -146,4 +146,146 @@ public class FilmTests
         result.Name.Should().Be("New Name");
         result.FilmPerson.Should().ContainSingle(fp => fp.PersonId == person.PersonId);
     }
+
+    [Fact]
+    public async Task UpdateFilmAsync_ShouldRemoveAllCastMembers_WhenNoneSelected()
+    {
+        // Arrange
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+
+        // Create film with existing cast members
+        var film = new FilmModel
+        {
+            FilmId = 100,
+            Name = "Original Name",
+            Description = "Original Desc",
+            StudioId = 1,
+            DirectorId = 1,
+            GenreId = 1,
+            BoxCover = [1, 2, 3]
+        };
+
+        context.Films.Add(film);
+
+        context.FilmPeople.AddRange(
+            new FilmPersonModel { FilmId = 100, PersonId = 10 },
+            new FilmPersonModel { FilmId = 100, PersonId = 20 }
+        );
+
+        await context.SaveChangesAsync();
+
+        context.ChangeTracker.Clear();
+
+        var handler = new FilmHandler(factory);
+
+        // Act
+        // Pass an empty list to simulate removing all cast members
+        await handler.UpdateFilmAsync(
+            new FilmModel
+            {
+                FilmId = 100,
+                Name = "Updated Name",
+                Description = "Updated Desc",
+                StudioId = 2,
+                DirectorId = 3,
+                GenreId = 4,
+                BoxCover = [9, 9, 9]
+            },
+            Enumerable.Empty<int>() // <-- no cast members selected
+        );
+
+        // Assert
+        await using var verifyContext = await factory.CreateDbContextAsync();
+
+        var updatedFilm = await verifyContext.Films.FindAsync(100);
+        updatedFilm.Should().NotBeNull();
+        updatedFilm!.Name.Should().Be("Updated Name");
+        updatedFilm.Description.Should().Be("Updated Desc");
+        updatedFilm.StudioId.Should().Be(2);
+        updatedFilm.DirectorId.Should().Be(3);
+        updatedFilm.GenreId.Should().Be(4);
+        updatedFilm.BoxCover.Should().Equal([9, 9, 9]);
+
+        // Most important part: all cast members removed
+        var remainingCast = verifyContext.FilmPeople
+            .Where(fp => fp.FilmId == 100)
+            .ToList();
+
+     
+        
+        remainingCast.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task UpdateFilmAsync_ShouldReplaceCastMembers_WhenNewOnesSelected()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+
+        context.Films.Add(new FilmModel { FilmId = 200, Name = "Film" });
+
+        context.FilmPeople.AddRange(
+            new FilmPersonModel { FilmId = 200, PersonId = 1 },
+            new FilmPersonModel { FilmId = 200, PersonId = 2 }
+        );
+
+        await context.SaveChangesAsync();
+        context.ChangeTracker.Clear();
+
+        var handler = new FilmHandler(factory);
+
+        await handler.UpdateFilmAsync(
+            new FilmModel { FilmId = 200, Name = "Updated" },
+            new[] { 3, 4 } // new cast
+        );
+
+        await using var verify = await factory.CreateDbContextAsync();
+
+        var cast = verify.FilmPeople.Where(fp => fp.FilmId == 200).ToList();
+
+        cast.Should().HaveCount(2);
+        cast.Select(c => c.PersonId).Should().BeEquivalentTo(new[] { 3, 4 });
+    }
+
+    [Fact]
+    public async Task UpdateFilmAsync_ShouldDoNothing_WhenFilmDoesNotExist()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+
+        var handler = new FilmHandler(factory);
+
+        await handler.UpdateFilmAsync(
+            new FilmModel { FilmId = 999, Name = "Ghost Film" },
+            new[] { 1, 2 }
+        );
+
+        context.Films.Should().BeEmpty();
+        context.FilmPeople.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task UpdateFilmAsync_ShouldHandleNullSelectedCastMembers()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+
+        context.Films.Add(new FilmModel { FilmId = 300, Name = "Film" });
+        context.FilmPeople.Add(new FilmPersonModel { FilmId = 300, PersonId = 10 });
+
+        await context.SaveChangesAsync();
+        context.ChangeTracker.Clear();
+
+        var handler = new FilmHandler(factory);
+
+        await handler.UpdateFilmAsync(
+            new FilmModel { FilmId = 300, Name = "Updated" },
+            Enumerable.Empty<int>()
+        );
+
+        await using var verify = await factory.CreateDbContextAsync();
+
+        verify.FilmPeople.Where(fp => fp.FilmId == 300).Should().BeEmpty();
+    }
 }

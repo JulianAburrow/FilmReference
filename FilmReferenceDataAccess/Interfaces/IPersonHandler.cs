@@ -4,7 +4,11 @@ public interface IPersonHandler
 {
     Task<List<PersonModel>> GetCastMembersAsync();
 
+    Task<List<PersonModelLightweight>> GetCastMembersLightweightAsync();
+
     Task<List<PersonModel>> GetDirectorsAsync();
+
+    Task<List<PersonModelLightweight>> GetDirectorsLightweightAsync();
 
     Task<PersonModel> GetPersonAsync(int personId);
 

@@ -4,7 +4,7 @@
 
 <PageTitle>Films</PageTitle>
 
-@if (AllFilmModels is null || FilteredFilmModels is null || GenreModels is null)
+@if (!_isLoaded)
 {
     <LoadingComponent />
     return;

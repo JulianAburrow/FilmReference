@@ -4,21 +4,21 @@ public partial class CreateFilm
 {
     protected override async Task OnInitializedAsync()
     {
-        GenreModels = await GenreHandler.GetGenresAsync();
-        GenreModels.Insert(0, new GenreModel
+        GenreModelsLightweight = await GenreHandler.GetGenresLightweightAsync();
+        GenreModelsLightweight.Insert(0, new GenreModelLightweight
         {
             GenreId = SharedValues.PleaseSelectValue,
             Name = SharedValues.PleaseSelectText,
         });
-        StudioModels = await StudioHandler.GetStudiosAsync();
-        StudioModels.Insert(0, new StudioModel
+        StudioModelsLightweight = await StudioHandler.GetStudiosLightweightAsync();
+        StudioModelsLightweight.Insert(0, new StudioModelLightweight
         {
             StudioId = SharedValues.PleaseSelectValue,
             Name = SharedValues.PleaseSelectText,
         });
-        CastMemberModels = await PersonHandler.GetCastMembersAsync();
-        DirectorModels = await PersonHandler.GetDirectorsAsync();
-        DirectorModels.Insert(0, new PersonModel
+        CastMemberModelsLightweight = await PersonHandler.GetCastMembersLightweightAsync();
+        DirectorModelsLightweight = await PersonHandler.GetDirectorsLightweightAsync();
+        DirectorModelsLightweight.Insert(0, new PersonModelLightweight
         {
             PersonId = SharedValues.PleaseSelectValue,
             FirstName = SharedValues.PleaseSelectText,

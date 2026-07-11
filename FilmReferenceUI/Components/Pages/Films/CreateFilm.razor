@@ -3,7 +3,7 @@
 
 <PageTitle>Create Film</PageTitle>
 
-@if (StudioModels is null || GenreModels is null || CastMemberModels is null || DirectorModels is null)
+@if (!_isLoaded)
 {
     <LoadingComponent />
     return;
@@ -18,10 +18,10 @@
             <MudItem xs="12">
                 <MudCard>
                     <CreateUpdateFilmComponent FilmDisplayModel="FilmDisplayModel"
-                                               GenreModels="GenreModels"
-                                               StudioModels="StudioModels"
-                                               ActorModels="CastMemberModels"
-                                               DirectorModels="DirectorModels" />
+                                               GenreModels="GenreModelsLightweight"
+                                               StudioModels="StudioModelsLightweight"
+                                               ActorModels="CastMemberModelsLightweight"
+                                               DirectorModels="DirectorModelsLightweight" />
                     <MudCardActions Class="gap-2">
                         <MudButton Variant="Variant.Filled"
                                    Color="Color.Primary"

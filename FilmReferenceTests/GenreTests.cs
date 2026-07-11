@@ -143,4 +143,43 @@ public class GenreTests
 
         context.Genres.Should().BeEmpty();
     }
+
+    [Fact]
+    public async Task GetGenresLightweightAsync_ShouldReturnProjectedGenresOrdered()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new GenreHandler(factory);
+
+        context.Genres.AddRange(
+            new GenreModel { GenreId = 10, Name = "Zeta" },
+            new GenreModel { GenreId = 11, Name = "Alpha" }
+        );
+        await context.SaveChangesAsync();
+
+        var result = await handler.GetGenresLightweightAsync();
+
+        result.Should().HaveCount(2);
+
+        // Ordered by Name ascending
+        result[0].GenreId.Should().Be(11);
+        result[0].Name.Should().Be("Alpha");
+
+        result[1].GenreId.Should().Be(10);
+        result[1].Name.Should().Be("Zeta");
+    }
+
+    [Fact]
+    public async Task GetGenresLightweightAsync_ShouldReturnEmptyList_WhenNoGenresExist()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+        var handler = new GenreHandler(factory);
+
+        var result = await handler.GetGenresLightweightAsync();
+
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
 }

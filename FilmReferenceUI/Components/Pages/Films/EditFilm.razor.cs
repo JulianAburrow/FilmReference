@@ -5,10 +5,10 @@ public partial class EditFilm
     protected override async Task OnInitializedAsync()
     {
         FilmModel = await FilmHandler.GetFilmAsync(FilmId);
-        GenreModels = await GenreHandler.GetGenresAsync();
-        StudioModels = await StudioHandler.GetStudiosAsync();
-        CastMemberModels = await PersonHandler.GetCastMembersAsync();
-        DirectorModels = await PersonHandler.GetDirectorsAsync();
+        GenreModelsLightweight = await GenreHandler.GetGenresLightweightAsync();
+        StudioModelsLightweight = await StudioHandler.GetStudiosLightweightAsync();
+        CastMemberModelsLightweight = await PersonHandler.GetCastMembersLightweightAsync();
+        DirectorModelsLightweight = await PersonHandler.GetDirectorsLightweightAsync();
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue($"Edit {FilmModel.Name}");
 

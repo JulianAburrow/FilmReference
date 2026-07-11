@@ -40,8 +40,7 @@ public class StudioHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
             .ToList();
 
         return studio ?? new StudioModel();
-    }
-        
+    }        
 
     public async Task<List<StudioModel>> GetStudiosAsync()
     {
@@ -53,7 +52,20 @@ public class StudioHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
             .AsNoTracking()
             .ToListAsync();
     }
-        
+
+    public async Task<List<StudioModelLightweight>> GetStudiosLightweightAsync()
+    {
+        await using var context = await factory.CreateDbContextAsync();
+        return await context.Studios
+            .OrderBy(s => s.Name)
+            .Select(s => new StudioModelLightweight
+            {
+                StudioId = s.StudioId,
+                Name = s.Name
+            })
+            .AsNoTracking()
+            .ToListAsync();
+    }
 
     public async Task UpdateStudioAsync(StudioModel studio)
     {
