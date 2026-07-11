@@ -4,9 +4,6 @@ public partial class DeletePerson
 {
     protected override async Task OnInitializedAsync()
     {
-        if (!RendererInfo.IsInteractive)
-            return;
-
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         PreventDeleting = PersonModel.FilmPerson.Count != 0 || PersonModel.Films.Count != 0;
         MainLayout.SetHeaderValue($"Delete {PersonModel.FirstName} {PersonModel.LastName}");

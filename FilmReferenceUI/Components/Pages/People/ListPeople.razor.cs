@@ -16,9 +16,6 @@ public partial class ListPeople
 
     protected override async Task OnParametersSetAsync()
     {
-        if (!RendererInfo.IsInteractive)
-            return;
-            
         Enum.TryParse<RoleEnum>(PersonRole, true, out var role);
 
         if(_lastRole == role)

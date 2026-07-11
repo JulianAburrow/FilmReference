@@ -4,9 +4,6 @@ public partial class EditStudio
 {
     protected override async Task OnInitializedAsync()
     {
-        if (!RendererInfo.IsInteractive)
-            return;
-
         StudioModel = await StudioHandler.GetStudioAsync(StudioId);
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue($"Edit {StudioModel.Name}");

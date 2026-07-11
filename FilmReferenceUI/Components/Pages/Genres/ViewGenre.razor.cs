@@ -4,9 +4,6 @@ public partial class ViewGenre
 {
     protected override async Task OnInitializedAsync()
     {
-        if (!RendererInfo.IsInteractive)
-            return;
-
         GenreModel = await GenreHandler.GetGenreAsync(GenreId);
         PreventDeleting = GenreModel.Films.Any();
         MainLayout.SetHeaderValue(GenreModel.Name);
