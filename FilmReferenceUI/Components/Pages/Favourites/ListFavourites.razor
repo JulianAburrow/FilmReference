@@ -16,13 +16,7 @@
 }
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
-    <MudStack Spacing="2">
-        @{
-            var count = FavouriteDisplayModels.Count();
-            var word = count == 1 ? "favourite" : "favourites";
-        }
-        <MudText Typo="Typo.subtitle1">@count @word</MudText>
-
+    <MudStack Spacing="3">
         <ListFavouritesComponent FavouriteDisplayModels="FavouriteDisplayModels" OnRemoved="HandleRemoved" />
     </MudStack>
 </MudContainer>

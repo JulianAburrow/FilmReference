@@ -24,7 +24,7 @@
 
     <MudStack Spacing="3">
 
-        <div class="d-flex flex-wrap gap-1">
+        <div class="d-flex flex-wrap gap-3">
             <MudButton Variant="@(NormaliseHelper.Normalised(Initial) == "all" ? Variant.Filled : Variant.Outlined)"
                        Color="@(NormaliseHelper.Normalised(Initial) == "all" ? Color.Secondary : Color.Default)"
                        OnClick="@(() => FilterPeople("All"))"
