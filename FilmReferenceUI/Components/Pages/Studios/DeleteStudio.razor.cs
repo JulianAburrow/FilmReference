@@ -4,9 +4,6 @@ public partial class DeleteStudio
 {
     protected override async Task OnInitializedAsync()
     {
-        if (!RendererInfo.IsInteractive)
-            return;
-
         StudioModel = await StudioHandler.GetStudioAsync(StudioId);
         PreventDeleting = StudioModel.Films.Count != 0;
         MainLayout.SetHeaderValue($"Delete {StudioModel.Name}");

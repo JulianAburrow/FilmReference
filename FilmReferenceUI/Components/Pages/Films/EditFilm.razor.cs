@@ -4,9 +4,6 @@ public partial class EditFilm
 {
     protected override async Task OnInitializedAsync()
     {
-        if (!RendererInfo.IsInteractive)
-            return;
-
         FilmModel = await FilmHandler.GetFilmAsync(FilmId);
         GenreModels = await GenreHandler.GetGenresAsync();
         StudioModels = await StudioHandler.GetStudiosAsync();

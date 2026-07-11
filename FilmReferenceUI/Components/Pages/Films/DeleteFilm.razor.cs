@@ -4,9 +4,6 @@ public partial class DeleteFilm
 {
     protected override async Task OnInitializedAsync()
     {
-        if (!RendererInfo.IsInteractive)
-            return;
-
         FilmModel = await FilmHandler.GetFilmAsync(FilmId);
         MainLayout.SetHeaderValue($"Delete {FilmModel.Name}");
 

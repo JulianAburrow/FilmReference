@@ -16,9 +16,6 @@ public partial class ViewPerson
 
     protected override async Task OnInitializedAsync()
     {
-        if (!RendererInfo.IsInteractive)
-            return;
-
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
         PreventDeleting = PersonModel.FilmPerson.Count != 0 || PersonModel.Films.Count != 0;
         MainLayout.SetHeaderValue($"{PersonModel.FirstName} {PersonModel.LastName}");

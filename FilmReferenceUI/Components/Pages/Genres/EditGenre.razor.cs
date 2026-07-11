@@ -4,9 +4,6 @@ public partial class EditGenre
 {
     protected override async Task OnInitializedAsync()
     {
-        if (!RendererInfo.IsInteractive)
-            return;
-
         GenreModel = await GenreHandler.GetGenreAsync(GenreId);
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue($"Edit {GenreModel.Name}");

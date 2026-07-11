@@ -6,9 +6,6 @@ public partial class ListGenres
 
     protected override async Task OnInitializedAsync()
     {
-        if (!RendererInfo.IsInteractive)
-            return;
-
         GenreModels = await GenreHandler.GetGenresAsync();
         Snackbar.Add($"{GenreModels.Count} {(GenreModels.Count == 1 ? "genre" : "genres")} found.", GenreModels.Count > 0 ? Severity.Info : Severity.Warning);
         MainLayout.SetHeaderValue("View Genres");
