@@ -1,6 +1,6 @@
 ﻿@inherits FavouritesBasePageClass
 
-<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="">
 
     @foreach (var group in _groupedFavourites)
     {
@@ -14,14 +14,26 @@
                 bool showButton = items.Count > 1;
             }
 
-            <MudButton
-                Variant="Variant.Filled"
-                Color="Color.Primary"
-                Disabled="@(items.Count <= 1)"
-                Style=@($"visibility:{(showButton ? "visible" : "hidden")}")
-                OnClick="(() => ResortList(entityTypeName))">
-                Reverse Sort Order
-            </MudButton>
+            <div class="my-4"></div>
+
+            @{
+                var count = FavouriteDisplayModels.Count();
+                var word = count == 1 ? "favourite" : "favourites";
+            }
+            <div class="d-flex align-center gap-3">
+                <MudText Typo="Typo.subtitle1" Style="margin-left:5px;">@count @word found</MudText>
+
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Filled.SwapVert"
+                           Disabled="@(items.Count <= 1)"
+                           Style=@($"visibility:{(showButton ? "visible" : "hidden")}")
+                           OnClick="(() => ResortList(entityTypeName))">
+                    Reverse Sort
+                </MudButton>
+            </div>
+
 
             <div class="my-8"></div>
 

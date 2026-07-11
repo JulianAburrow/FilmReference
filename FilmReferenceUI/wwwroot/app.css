@@ -67,3 +67,11 @@ h1:focus {
 .no-underline:focus {
     text-decoration: none !important;
 }
+
+
+/* Fix MudTabs padding on iPad Safari */
+@supports (-webkit-touch-callout: none) {
+    .mud-tab-panel {
+        padding: 0 !important;
+    }
+}

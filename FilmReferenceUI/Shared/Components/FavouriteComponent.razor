@@ -1,15 +1,14 @@
-﻿<MudCard Class="ma-2 pa-2" Style="width: 100%; max-width: 350px;">
+﻿<MudCard Class="ma-2 pa-2" Style="width: 100%; max-width: 100%;">
     <MudCardHeader>
         <MudText Typo="Typo.h6">@Favourite.EntityName</MudText>
     </MudCardHeader>
     <MudCardContent>
-        <MudButton Variant="Variant.Text"
-                   Color="Color.Primary"
-                   Href="@($"/{Favourite.EntityTypeName}/View/{Favourite.EntityId}")"
-                   Class="p-0">
+        <MudLink
+            Href="@($"/{Favourite.EntityTypeName}/View/{Favourite.EntityId}")"
+            Class="no-underline d-block">
             <ViewImageComponent ImageData="Favourite.EntityImage"
                                 ImageTitle="@Favourite.EntityName" />
-        </MudButton>
+        </MudLink>
     </MudCardContent>
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/{Favourite.EntityTypeName}/view/{Favourite.EntityId}")>
