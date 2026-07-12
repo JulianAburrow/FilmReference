@@ -1,9 +1,11 @@
 ﻿@page "/studio/view/{StudioId:int}"
 @inherits StudiosBasePageClass
 
+<PageTitle>View Studio</PageTitle>
+
 @if (!_isLoaded)
 {
-    <LoadingComponent DisplayValue="Loading studio" />
+    <LoadingComponent DisplayValue=@(StudioModel.StudioId == 0 ? StudioNotFoundMessage : "Loading studio...") IsLoading="@_isLoaded" />
     return;
 }
 

@@ -5,6 +5,13 @@ public partial class EditFilm
     protected override async Task OnInitializedAsync()
     {
         FilmModel = await FilmHandler.GetFilmAsync(FilmId);
+
+        if (FilmModel.FilmId == 0)
+        {
+            MainLayout.SetHeaderValue(FilmNotFoundMessage);
+            return;
+        }
+
         GenreModelsLightweight = await GenreHandler.GetGenresLightweightAsync();
         StudioModelsLightweight = await StudioHandler.GetStudiosLightweightAsync();
         CastMemberModelsLightweight = await PersonHandler.GetCastMembersLightweightAsync();

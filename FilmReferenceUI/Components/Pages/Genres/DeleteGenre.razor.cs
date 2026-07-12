@@ -5,6 +5,13 @@ public partial class DeleteGenre
     protected override async Task OnInitializedAsync()
     {
         GenreModel = await GenreHandler.GetGenreAsync(GenreId);
+
+        if (GenreModel.GenreId == 0)
+        {
+            MainLayout.SetHeaderValue(GenreNotFoundMessage);
+            return;
+        }
+
         PreventDeleting = GenreModel.Films.Any();
         MainLayout.SetHeaderValue($"Delete {GenreModel.Name}");
 

@@ -5,6 +5,13 @@ public partial class EditStudio
     protected override async Task OnInitializedAsync()
     {
         StudioModel = await StudioHandler.GetStudioAsync(StudioId);
+
+        if (StudioModel.StudioId == 0)
+        {
+            MainLayout.SetHeaderValue(StudioNotFoundMessage);
+            return;
+        }
+
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue($"Edit {StudioModel.Name}");
 

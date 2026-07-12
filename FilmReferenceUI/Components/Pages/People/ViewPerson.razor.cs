@@ -17,6 +17,13 @@ public partial class ViewPerson
     protected override async Task OnInitializedAsync()
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
+
+        if (PersonModel.PersonId == 0)
+        {
+            MainLayout.SetHeaderValue(PersonNotFoundMessage);
+            return;
+        }
+
         PreventDeleting = PersonModel.FilmPerson.Count != 0 || PersonModel.Films.Count != 0;
         MainLayout.SetHeaderValue($"{PersonModel.FirstName} {PersonModel.LastName}");
         var isFavourite = await FavouriteHandler.IsFavouriteAsync((int)FavouriteEntityEnum.Person, PersonId);

@@ -5,6 +5,13 @@ public partial class ViewGenre
     protected override async Task OnInitializedAsync()
     {
         GenreModel = await GenreHandler.GetGenreAsync(GenreId);
+
+        if (GenreModel.GenreId == 0)
+        {
+            MainLayout.SetHeaderValue(GenreNotFoundMessage);
+            return;
+        }
+
         PreventDeleting = GenreModel.Films.Any();
         MainLayout.SetHeaderValue(GenreModel.Name);
         var isFavourite = await FavouriteHandler.IsFavouriteAsync((int)FavouriteEntityEnum.Genre, GenreId);

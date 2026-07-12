@@ -10,6 +10,8 @@ public abstract class GenresBasePageClass : BasePageClass
 
     protected GenreDisplayModel GenreDisplayModel { get; set; } = new();
 
+    protected string GenreNotFoundMessage { get; set; } = "Genre not found.";
+
     protected void CopyDisplayModelToModel()
     {
         GenreModel.Name = GenreDisplayModel.Name;
