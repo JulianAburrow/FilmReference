@@ -5,6 +5,13 @@ public partial class DeleteStudio
     protected override async Task OnInitializedAsync()
     {
         StudioModel = await StudioHandler.GetStudioAsync(StudioId);
+
+        if (StudioModel.StudioId == 0)
+        {
+            MainLayout.SetHeaderValue(StudioNotFoundMessage);
+            return;
+        }
+
         PreventDeleting = StudioModel.Films.Count != 0;
         MainLayout.SetHeaderValue($"Delete {StudioModel.Name}");
 

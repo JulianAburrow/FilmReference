@@ -5,6 +5,13 @@ public partial class DeleteFilm
     protected override async Task OnInitializedAsync()
     {
         FilmModel = await FilmHandler.GetFilmAsync(FilmId);
+
+        if (FilmModel.FilmId == 0)
+        {
+            MainLayout.SetHeaderValue(FilmNotFoundMessage);
+            return;
+        }
+            
         MainLayout.SetHeaderValue($"Delete {FilmModel.Name}");
 
         _isLoaded = true;

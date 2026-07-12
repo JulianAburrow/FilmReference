@@ -13,6 +13,8 @@ public abstract class FilmsBasePageClass : BasePageClass
 
     [Parameter] public int FilmId { get; set; }
 
+    protected string FilmNotFoundMessage = "Film not found";
+
     protected FilmModel FilmModel { get; set; } = new FilmModel
     {
         Genre = new GenreModel(),

@@ -7,6 +7,13 @@ public partial class EditPerson
     protected override async Task OnInitializedAsync()
     {
         PersonModel = await PersonHandler.GetPersonAsync(PersonId);
+
+        if (PersonModel.PersonId == 0)
+        {
+            MainLayout.SetHeaderValue(PersonNotFoundMessage);
+            return;
+        }
+
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue($"Edit {PersonModel.FirstName} {PersonModel.LastName}");
 

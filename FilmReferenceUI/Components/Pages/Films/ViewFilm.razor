@@ -5,7 +5,7 @@
 
 @if (!_isLoaded)
 {
-    <LoadingComponent DisplayValue="Loading film" />
+    <LoadingComponent DisplayValue=@(FilmModel.FilmId == 0 ? FilmNotFoundMessage : "Loading film...") IsLoading="@_isLoaded" />
     return;
 }
 

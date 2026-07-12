@@ -9,6 +9,13 @@ public partial class ViewFilm
     protected override async Task OnInitializedAsync()
     {
         FilmModel = await FilmHandler.GetFilmAsync(FilmId);
+
+        if (FilmModel.FilmId == 0)
+        {
+            MainLayout.SetHeaderValue(FilmNotFoundMessage);
+            return;
+        }
+
         MainLayout.SetHeaderValue(FilmModel.Name);
         var isFavourite = await FavouriteHandler.IsFavouriteAsync((int)FavouriteEntityEnum.Film, FilmId);
         MainLayout.ConfigureFavouriteButton(FavouriteEntityEnum.Film, FilmId, isFavourite);

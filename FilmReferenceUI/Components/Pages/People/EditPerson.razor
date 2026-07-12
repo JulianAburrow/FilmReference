@@ -5,7 +5,7 @@
 
 @if (!_isLoaded)
 {
-    <LoadingComponent />
+    <LoadingComponent DisplayValue=@(PersonModel.PersonId == 0 ? PersonNotFoundMessage : "Loading person...") IsLoading="@_isLoaded" />
     return;
 }
 

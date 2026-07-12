@@ -5,6 +5,13 @@ public partial class EditGenre
     protected override async Task OnInitializedAsync()
     {
         GenreModel = await GenreHandler.GetGenreAsync(GenreId);
+
+        if (GenreModel.GenreId == 0)
+        {
+            MainLayout.SetHeaderValue(GenreNotFoundMessage);
+            return;
+        }
+            
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue($"Edit {GenreModel.Name}");
 

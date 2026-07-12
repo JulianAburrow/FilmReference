@@ -1,10 +1,10 @@
 ﻿<MudNavMenu>
     <MudNavLink Href="" Icon="@Icons.Material.Filled.Home">Home / Search</MudNavLink>
-    <MudNavGroup Title="Films" Icon="@Icons.Material.Filled.Movie" Expanded="false">
+    <MudNavGroup Title="Films" Icon="@Icons.Material.Filled.Movie" Expanded="true">
         <MudNavLink Href="/films/listfilms" Icon="@Icons.Material.Outlined.VideoLibrary">Films</MudNavLink>
         <MudNavLink Href="/film/create" Icon="@Icons.Material.Outlined.AddCircleOutline">Create Film</MudNavLink>
     </MudNavGroup>
-    <MudNavGroup Title="People" Icon="@Icons.Material.Filled.People" Expanded="false">
+    <MudNavGroup Title="People" Icon="@Icons.Material.Filled.People" Expanded="true">
         <MudNavLink OnClick="@(() => DoNavigation(RoleEnum.CastMembers))" Icon="@Icons.Material.Outlined.TheaterComedy">Cast Members</MudNavLink>
         <MudNavLink OnClick="@(() => DoNavigation(RoleEnum.Directors))" Icon="@Icons.Material.Outlined.VideoCameraBack">Directors</MudNavLink>
         <MudNavLink Href="/person/create" Icon="@Icons.Material.Outlined.PersonAdd">Create Person</MudNavLink>

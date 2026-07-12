@@ -10,6 +10,8 @@ public abstract class StudiosBasePageClass : BasePageClass
 
     protected StudioDisplayModel StudioDisplayModel { get; set; } = new();
 
+    protected string StudioNotFoundMessage = "Studio not found";
+
     protected async Task CopyDisplayModelToModel()
     {
         StudioModel.Name = StudioDisplayModel.Name;
