@@ -1,6 +1,4 @@
-﻿using FilmReferenceDataAccess.Enums;
-
-namespace FilmReferenceUI.Components.Pages.Films;
+﻿namespace FilmReferenceUI.Components.Pages.Films;
 
 public partial class ViewFilm
 {
@@ -13,6 +11,7 @@ public partial class ViewFilm
         if (FilmModel.FilmId == 0)
         {
             MainLayout.SetHeaderValue(FilmNotFoundMessage);
+            _entityNotFound = true;
             return;
         }
 

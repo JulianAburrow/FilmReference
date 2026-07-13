@@ -9,6 +9,7 @@ public partial class DeletePerson
         if (PersonModel.PersonId == 0)
         {
             MainLayout.SetHeaderValue(PersonNotFoundMessage);
+            _entityNotFound = true;
             return;
         }
 

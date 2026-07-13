@@ -15,6 +15,8 @@ public abstract class FilmsBasePageClass : BasePageClass
 
     protected string FilmNotFoundMessage = "Film not found";
 
+    protected string LoadingFilmMessage = "Loading film...";
+
     protected FilmModel FilmModel { get; set; } = new FilmModel
     {
         Genre = new GenreModel(),

@@ -12,6 +12,8 @@ public abstract class PeopleBasePageClass : BasePageClass
 
     protected string PersonNotFoundMessage = "Person not found";
 
+    protected string LoadingPersonMessage = "Loading person...";
+
     protected async Task CopyDisplayModelToModel()
     {
         PersonModel.FirstName = PersonDisplayModel.FirstName;

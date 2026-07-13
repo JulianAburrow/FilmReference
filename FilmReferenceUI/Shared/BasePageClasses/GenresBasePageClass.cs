@@ -10,7 +10,9 @@ public abstract class GenresBasePageClass : BasePageClass
 
     protected GenreDisplayModel GenreDisplayModel { get; set; } = new();
 
-    protected string GenreNotFoundMessage { get; set; } = "Genre not found.";
+    protected string GenreNotFoundMessage = "Genre not found.";
+
+    protected string LoadingGenreMessage = "Loading genre...";
 
     protected void CopyDisplayModelToModel()
     {

@@ -9,6 +9,7 @@ public partial class DeleteGenre
         if (GenreModel.GenreId == 0)
         {
             MainLayout.SetHeaderValue(GenreNotFoundMessage);
+            _entityNotFound = true;
             return;
         }
 
