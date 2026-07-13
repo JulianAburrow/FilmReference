@@ -9,6 +9,7 @@ public partial class EditStudio
         if (StudioModel.StudioId == 0)
         {
             MainLayout.SetHeaderValue(StudioNotFoundMessage);
+            _entityNotFound = true;
             return;
         }
 

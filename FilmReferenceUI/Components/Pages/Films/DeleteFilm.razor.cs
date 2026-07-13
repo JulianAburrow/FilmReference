@@ -9,6 +9,7 @@ public partial class DeleteFilm
         if (FilmModel.FilmId == 0)
         {
             MainLayout.SetHeaderValue(FilmNotFoundMessage);
+            _entityNotFound = true;
             return;
         }
             

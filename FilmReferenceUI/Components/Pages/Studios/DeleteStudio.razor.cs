@@ -9,6 +9,7 @@ public partial class DeleteStudio
         if (StudioModel.StudioId == 0)
         {
             MainLayout.SetHeaderValue(StudioNotFoundMessage);
+            _entityNotFound = true;
             return;
         }
 

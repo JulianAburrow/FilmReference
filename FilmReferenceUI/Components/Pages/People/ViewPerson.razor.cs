@@ -1,6 +1,4 @@
-﻿using FilmReferenceDataAccess.Enums;
-
-namespace FilmReferenceUI.Components.Pages.People;
+﻿namespace FilmReferenceUI.Components.Pages.People;
 
 public partial class ViewPerson
 {
@@ -21,6 +19,7 @@ public partial class ViewPerson
         if (PersonModel.PersonId == 0)
         {
             MainLayout.SetHeaderValue(PersonNotFoundMessage);
+            _entityNotFound = true;
             return;
         }
 

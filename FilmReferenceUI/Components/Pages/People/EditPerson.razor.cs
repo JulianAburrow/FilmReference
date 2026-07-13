@@ -11,6 +11,7 @@ public partial class EditPerson
         if (PersonModel.PersonId == 0)
         {
             MainLayout.SetHeaderValue(PersonNotFoundMessage);
+            _entityNotFound = true;
             return;
         }
 

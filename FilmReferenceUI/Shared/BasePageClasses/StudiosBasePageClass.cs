@@ -12,6 +12,8 @@ public abstract class StudiosBasePageClass : BasePageClass
 
     protected string StudioNotFoundMessage = "Studio not found";
 
+    protected string LoadingStudioMessage = "Loading studio...";
+
     protected async Task CopyDisplayModelToModel()
     {
         StudioModel.Name = StudioDisplayModel.Name;

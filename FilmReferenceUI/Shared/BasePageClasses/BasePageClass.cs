@@ -18,6 +18,8 @@ public abstract class BasePageClass : ComponentBase
 
     protected bool _isLoaded;
 
+    protected bool _entityNotFound;
+
     protected string? ImageName = null;
 
     protected byte[]? ImageForDisplay = null;

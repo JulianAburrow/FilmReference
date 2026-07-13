@@ -5,7 +5,10 @@
 
 @if (!_isLoaded)
 {
-    <LoadingComponent DisplayValue=@(GenreModel.GenreId == 0 ? GenreNotFoundMessage : "Loading genre...") IsLoading="@_isLoaded" />
+    <LoadingComponent DisplayValue="@(_entityNotFound
+                                        ? GenreNotFoundMessage
+                                        : LoadingGenreMessage)"
+                      IsLoading="@(GenreModel.GenreId != 0)" />
     return;
 }
 

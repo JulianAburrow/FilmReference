@@ -5,7 +5,10 @@
 
 @if (!_isLoaded)
 {
-    <LoadingComponent DisplayValue=@(PersonModel.PersonId == 0 ? PersonNotFoundMessage : "Loading person...") IsLoading="@_isLoaded" />
+    <LoadingComponent DisplayValue="@(_entityNotFound
+                                        ? PersonNotFoundMessage
+                                        : LoadingPersonMessage)"
+                      IsLoading="@(PersonModel.PersonId != 0)" />
     return;
 }
 

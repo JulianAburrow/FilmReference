@@ -5,7 +5,10 @@
 
 @if (!_isLoaded)
 {
-    <LoadingComponent DisplayValue=@(StudioModel.StudioId == 0 ? StudioNotFoundMessage : "Loading studio...") IsLoading="@_isLoaded" />
+    <LoadingComponent DisplayValue="@(_entityNotFound
+                                        ? StudioNotFoundMessage
+                                        : LoadingStudioMessage)"
+                      IsLoading="@(StudioModel.StudioId != 0)" />
     return;
 }
 
