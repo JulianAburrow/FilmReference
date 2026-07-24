@@ -30,14 +30,5 @@
                    Href="@($"/studio/edit/{Studio.StudioId}")">
             Edit
         </MudButton>
-        @if (Studio.Films.Count == 0)
-        {
-            <MudButton Variant="Variant.Outlined"
-                       Color="Color.Error"
-                       Size="Size.Small"
-                       Href="@($"/studio/delete/{Studio.StudioId}")">
-                Delete
-            </MudButton>
-        }
     </MudCardActions>
 </MudCard>
