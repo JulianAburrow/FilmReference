@@ -61,6 +61,16 @@ public class FilmHandler(IDbContextFactory<FilmReferenceContext> factory) : IFil
                 context.Remove(filmPerson);
             }
         }
+
+        var favourite = await context.Favourites
+            .FirstOrDefaultAsync(f =>
+                                    f.EntityTypeId == (int)FavouriteEntityEnum.Film &&
+                                    f.EntityId == filmId);
+        if (favourite is not null)
+        {
+            context.Remove(favourite);
+        }
+
         context.Films.Remove(filmToDelete);
         
         await context.SaveChangesAsync();

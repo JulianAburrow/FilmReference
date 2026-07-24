@@ -1,4 +1,6 @@
-﻿namespace FilmReferenceDataAccess.Handlers;
+﻿using System.Net.WebSockets;
+
+namespace FilmReferenceDataAccess.Handlers;
 
 public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IPersonHandler
 {
@@ -24,8 +26,21 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
             return;
         }
 
+        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
+        var favourite = await context.Favourites
+            .FirstOrDefaultAsync(f =>
+                                    f.EntityTypeId == (int)FavouriteEntityEnum.Person &&
+                                    f.EntityId == personId);
+        if (favourite is not null)
+        {
+            context.Remove(favourite);
+        }
+
         context.People.Remove(personToDelete);
         await context.SaveChangesAsync();
+
+        scope.Complete();
     }
 
     public async Task<RandomPersonModel> GetRandomPersonAsync()
@@ -70,8 +85,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
             .ThenBy(p => p.LastName)
             .AsNoTracking()
             .ToListAsync();
-    }
-        
+    }        
 
     public async Task<List<PersonModel>> GetDirectorsAsync()
     {
