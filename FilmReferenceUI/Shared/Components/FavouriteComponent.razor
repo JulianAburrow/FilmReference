@@ -11,9 +11,17 @@
         </MudLink>
     </MudCardContent>
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href=@($"/{Favourite.EntityTypeName}/view/{Favourite.EntityId}")>
+        <MudButton
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            Size="Size.Small"
+            Href=@($"/{Favourite.EntityTypeName}/view/{Favourite.EntityId}")>
             View
         </MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="RemoveFavourite">Unfavourite</MudButton>
+        <MudButton
+            Variant="Variant.Filled"
+            Color="Color.Error"
+            Size="Size.Small"
+            OnClick="RemoveFavourite">Unfavourite</MudButton>
     </MudCardActions>
 </MudCard>
