@@ -19,8 +19,21 @@ public class StudioHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
         if (studioToDelete is null)
             return;
 
+        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
+        var favourite = await context.Favourites
+            .FirstOrDefaultAsync(f =>
+                                    f.EntityTypeId == (int)FavouriteEntityEnum.Studio &&
+                                    f.EntityId == studioId);
+        if (favourite is not null)
+        {
+            context.Remove(favourite);
+        }
+
         context.Studios.Remove(studioToDelete);
         await context.SaveChangesAsync();
+
+        scope.Complete();
     }
 
     public async Task<StudioModel> GetStudioAsync(int studioId)

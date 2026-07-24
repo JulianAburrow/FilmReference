@@ -20,8 +20,23 @@ public class GenreHandler(IDbContextFactory<FilmReferenceContext> factory) : IGe
         {
             return;
         }
+
+        using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
         context.Genres.Remove(genreToDelete);
+
+        var favourite = await context.Favourites
+            .FirstOrDefaultAsync(f =>
+                                    f.EntityTypeId == (int)FavouriteEntityEnum.Genre &&
+                                    f.EntityId == genreId);
+        if (favourite is not null)
+        {
+            context.Remove(favourite);
+        }
+
         await context.SaveChangesAsync();
+
+        scope.Complete();
     }
 
     public async Task<GenreModel> GetGenreAsync(int genreId)

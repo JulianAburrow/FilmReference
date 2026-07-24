@@ -12,8 +12,6 @@ public partial class MainLayout
 
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
 
-    private MudThemeProvider _mudThemeProvider = null!;
-
     private bool _isDarkMode;
 
     bool _drawerOpen = true;
