@@ -173,4 +173,27 @@ public class StudioTests
         result.Should().NotBeNull();
         result.Should().BeEmpty();
     }
+
+    [Fact]
+    public async Task DeleteStudio_AlsoDeletesFavourite_WhenStudioIsFavourite()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+
+        context.Studios.Add(new StudioModel { StudioId = 300, Name = "Studio", Description = "Description" });
+        context.Favourites.Add(new FavouriteModel { EntityId = 300, EntityTypeId = (int)FavouriteEntityEnum.Studio });
+        context.Favourites.Add(new FavouriteModel { EntityId = 999, EntityTypeId = (int)FavouriteEntityEnum.Studio });
+    
+        await context.SaveChangesAsync();
+        context.ChangeTracker.Clear();
+
+        var handler = new StudioHandler(factory);
+
+        await handler.DeleteStudioAsync(300);
+
+        await using var verify = await factory.CreateDbContextAsync();
+        verify.Studios.Should().BeEmpty();
+        verify.Favourites.Where(f => f.EntityId == 300 && f.EntityTypeId == (int)FavouriteEntityEnum.Studio).Should().BeEmpty();
+        verify.Favourites.Where(f => f.EntityId == 999 && f.EntityTypeId == (int)FavouriteEntityEnum.Studio).Should().HaveCount(1);
+    }
 }

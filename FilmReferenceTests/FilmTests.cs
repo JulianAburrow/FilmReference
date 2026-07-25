@@ -1,4 +1,6 @@
-﻿namespace FilmReferenceTests;
+﻿using System.ComponentModel;
+
+namespace FilmReferenceTests;
 
 public class FilmTests
 {
@@ -287,5 +289,29 @@ public class FilmTests
         await using var verify = await factory.CreateDbContextAsync();
 
         verify.FilmPeople.Where(fp => fp.FilmId == 300).Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task DeleteFilm_AlsoDeletesFavourite_WhenFilmIsFavourite()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+
+        context.Films.Add(new FilmModel { FilmId = 300, Name = "Film" });
+        context.Favourites.Add(new FavouriteModel { EntityId = 300, EntityTypeId = (int)FavouriteEntityEnum.Film });
+        context.Favourites.Add(new FavouriteModel { EntityId = 999, EntityTypeId = (int)FavouriteEntityEnum.Film });
+
+        await context.SaveChangesAsync();
+        context.ChangeTracker.Clear();
+
+        var handler = new FilmHandler(factory);
+
+        await handler.DeleteFilmAsync(300);
+
+        await using var verify = await factory.CreateDbContextAsync();
+
+        verify.Films.Should().BeEmpty();
+        verify.Favourites.Where(f => f.EntityId == 300 && f.EntityTypeId == (int)FavouriteEntityEnum.Film).Should().BeEmpty();
+        verify.Favourites.Where(f => f.EntityId == 999 && f.EntityTypeId == (int)FavouriteEntityEnum.Film).Should().HaveCount(1);
     }
 }
