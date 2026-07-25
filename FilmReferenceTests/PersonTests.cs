@@ -581,4 +581,28 @@ public class PersonTests
         director.FirstName.Should().Be("Ridley");
         director.LastName.Should().Be("Scott");
     }
+
+    [Fact]
+    public async Task DeletePerson_AlsoDeletesFavourite_WhenPersonIsFavourite()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+
+        context.People.Add(new PersonModel { PersonId = 300, FirstName = "John" });
+        context.Favourites.Add(new FavouriteModel { EntityId = 300, EntityTypeId = (int)FavouriteEntityEnum.Person });
+        context.Favourites.Add(new FavouriteModel { EntityId = 999, EntityTypeId = (int)FavouriteEntityEnum.Person });
+
+        await context.SaveChangesAsync();
+        context.ChangeTracker.Clear();
+
+        var handler = new PersonHandler(factory);
+
+        await handler.DeletePersonAsync(300);
+
+        await using var verify = await factory.CreateDbContextAsync();
+
+        verify.People.Should().BeEmpty();
+        verify.Favourites.Where(f => f.EntityId == 300 && f.EntityTypeId == (int)FavouriteEntityEnum.Person).Should().BeEmpty();
+        verify.Favourites.Where(f => f.EntityId == 999 && f.EntityTypeId == (int)FavouriteEntityEnum.Person).Should().HaveCount(1);
+    }
 }

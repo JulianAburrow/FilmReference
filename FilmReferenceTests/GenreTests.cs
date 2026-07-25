@@ -182,4 +182,26 @@ public class GenreTests
         result.Should().BeEmpty();
     }
 
+    [Fact]
+    public async Task DeleteGenre_AlsoDeletesFavourite_WhenGenreIsFavourite()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync();
+
+        context.Genres.Add(new GenreModel { GenreId = 300, Name = "Genre", Description = "Description" });
+        context.Favourites.Add(new FavouriteModel { EntityId = 300, EntityTypeId = (int)FavouriteEntityEnum.Genre });
+        context.Favourites.Add(new FavouriteModel { EntityId = 999, EntityTypeId = (int)FavouriteEntityEnum.Genre });
+
+        await context.SaveChangesAsync();
+        context.ChangeTracker.Clear();
+
+        var handler = new GenreHandler(factory);
+
+        await handler.DeleteGenreAsync(300);
+
+        await using var verify = await factory.CreateDbContextAsync();
+        verify.Genres.Should().BeEmpty();
+        verify.Favourites.Where(f => f.EntityId == 300 && f.EntityTypeId == (int)FavouriteEntityEnum.Genre).Should().BeEmpty();
+        verify.Favourites.Where(f => f.EntityId == 999 && f.EntityTypeId == (int)FavouriteEntityEnum.Genre).Should().HaveCount(1);
+    }
 }
