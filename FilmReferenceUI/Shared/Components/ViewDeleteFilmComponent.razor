@@ -5,18 +5,10 @@
         <!-- LEFT COLUMN: Film details -->
         <MudItem xs="12" md="8">
 
-            <!-- Description -->
-            @if (!string.IsNullOrWhiteSpace(FilmModel.Description))
-            {
-                <MudText Typo="Typo.body1" Class="mb-3">
-                    @FilmModel.Description
-                </MudText>
-            }
-
-            <MudStack Spacing="4">
+            <MudStack Spacing="1">
 
                 <!-- GENRE -->
-                <MudStack Spacing="1">
+                
                     <MudLink Href="@($"/genre/view/{FilmModel.GenreId}")"
                              Class="no-underline">
                         <ViewImageThumbnailComponent
@@ -31,10 +23,8 @@
                             @FilmModel.Genre.Name
                         </MudLink>
                     </MudText>
-                </MudStack>
 
                 <!-- STUDIO -->
-                <MudStack Spacing="1">
                     <MudLink Href="@($"/studio/view/{FilmModel.StudioId}")"
                              Class="no-underline">
                         <ViewImageThumbnailComponent
@@ -49,10 +39,8 @@
                             @FilmModel.Studio.Name
                         </MudLink>
                     </MudText>
-                </MudStack>
 
                 <!-- DIRECTOR (text only, no image) -->
-                <MudStack Spacing="1">
                     <MudText>
                         <b>Director:</b>
                         <MudLink Href="@($"/person/view/{FilmModel.Director.PersonId}")"
@@ -60,7 +48,16 @@
                             @FilmModel.Director.FirstName @FilmModel.Director.LastName
                         </MudLink>
                     </MudText>
-                </MudStack>
+
+                <MudDivider Class="my-4" />
+
+                <!-- Description -->
+                @if (!string.IsNullOrWhiteSpace(FilmModel.Description))
+                {
+                    <MudText Typo="Typo.body1" Class="mb-3">
+                        @FilmModel.Description
+                    </MudText>
+                }
 
             </MudStack>
 

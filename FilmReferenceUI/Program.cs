@@ -6,7 +6,10 @@ var configuration = builder.Configuration;
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddMudServices();
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
+});
 builder.Services.ConfigureSqlConnections(configuration);
 builder.Services.AddDependencies();
 
