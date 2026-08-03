@@ -26,7 +26,13 @@
         [Display(Name = "Studio")]
         public int StudioId { get; set; }
 
-        public IEnumerable<int> SelectedCastMemberIds { get; set; } = [];
+        private List<int> _selectedCastMemberIds = new();
+
+        public IReadOnlyCollection<int> SelectedCastMemberIds
+        {
+            get => _selectedCastMemberIds;
+            set => _selectedCastMemberIds = value?.ToList() ?? new List<int>();
+        }
 
         public GenreModel Genre { get; set; } = null!;
 

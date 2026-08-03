@@ -34,7 +34,7 @@ public partial class CreateUpdateFilmComponent
         FilmDisplayModel.BoxCover = ImageForDisplay;
     }
 
-    private string GetMultiSelectionText(List<string> selectedValues)
+    private string GetMultiSelectionText(IReadOnlyList<string> selectedValues)
     {
         if (selectedValues is null || selectedValues.Count == 0)
         {

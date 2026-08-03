@@ -43,24 +43,27 @@
 
             <MudFileUpload T="IBrowserFile"
                            FilesChanged="LocalUploadImage"
-                           Accept="image/*">
-                <ActivatorContent>
+                           Accept="image/*"
+                           Class="file-upload-button">
                     <MudButton HtmlTag="label"
                                Variant="Variant.Filled"
                                Color="Color.Primary"
                                StartIcon="@Icons.Material.Filled.FileUpload">
                         Upload File
                     </MudButton>
-                </ActivatorContent>
             </MudFileUpload>
 
             @if (PersonDisplayModel.Picture is not null)
             {
-                <MudText Class="mt-2 mb-1">@ImageName</MudText>
+                <MudText Class="file-name-display">@ImageName</MudText>
+
+                <div class="my-4" />
 
                 <MudButton Variant="Variant.Filled"
                            Color="Color.Error"
-                           OnClick="LocalRemoveImage">
+                           OnClick="LocalRemoveImage"
+                           Class="file-upload-button"
+                           StartIcon="@Icons.Material.Filled.Delete">
                     Remove Image
                 </MudButton>
             }

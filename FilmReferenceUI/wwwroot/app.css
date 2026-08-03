@@ -75,3 +75,35 @@ h1:focus {
         padding: 0 !important;
     }
 }
+
+.mud-file-upload .mud-chip {
+    display: none;
+}
+
+.file-name-display {
+    display: inline-block;
+    background-color: var(--mud-palette-primary-lighten);
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    margin-top: 8px;
+    width: 250px;
+    color: white;
+}
+
+/* Hide the default text */
+.mud-file-upload .mud-button-label {
+    font-size: 0;
+}
+
+    /* Replace it with your own */
+    .mud-file-upload .mud-button-label::after {
+        content: "Upload Image";
+        font-size: 0.875rem;
+    }
+
+    .file-upload-button {
+        width: 250px;
+    }
+
+

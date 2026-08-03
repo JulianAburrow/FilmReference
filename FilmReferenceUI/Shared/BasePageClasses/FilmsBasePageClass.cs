@@ -71,7 +71,7 @@ public abstract class FilmsBasePageClass : BasePageClass
         FilmDisplayModel.BoxCover = FilmModel.BoxCover;
         foreach (var filmPerson in FilmModel.FilmPerson ?? [])
         {
-            FilmDisplayModel.SelectedCastMemberIds = FilmDisplayModel.SelectedCastMemberIds.Append(filmPerson.PersonId);
+            FilmDisplayModel.SelectedCastMemberIds = FilmDisplayModel.SelectedCastMemberIds.Append(filmPerson.PersonId).ToList();
         }
     }
 }
