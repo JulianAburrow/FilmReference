@@ -10,14 +10,14 @@ public class PersonTests
     public async Task CreatePersonAsync_ShouldAddPerson()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new PersonHandler(factory);
 
         var person = new PersonModel { PersonId = 1, FirstName = "John", LastName = "Doe" };
 
         await handler.CreatePersonAsync(person);
 
-        var result = await context.People.FindAsync(1);
+        var result = await context.People.FindAsync(new object[] { 1 }, CT.Token);
         result.Should().NotBeNull();
         result.FirstName.Should().Be("John");
         result.LastName.Should().Be("Doe");
@@ -27,7 +27,7 @@ public class PersonTests
     public async Task CreatePersonAsync_ShouldPersistDobAndDod()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new PersonHandler(factory);
 
         var person = new PersonModel
@@ -41,7 +41,7 @@ public class PersonTests
 
         await handler.CreatePersonAsync(person);
 
-        var result = await context.People.FindAsync(1);
+        var result = await context.People.FindAsync(new object[] { 1 }, CT.Token);
 
         result.Should().NotBeNull();
         result.DateOfBirth.Should().Be(new DateTime(1975, 5, 20));
@@ -56,11 +56,11 @@ public class PersonTests
     public async Task DeletePersonAsync_ShouldRemovePerson_WhenExists()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var person = new PersonModel { PersonId = 1, FirstName = "Alice", LastName = "Brown" };
         context.People.Add(person);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
 
@@ -68,7 +68,7 @@ public class PersonTests
 
         context.ChangeTracker.Clear();
 
-        var result = await context.People.FindAsync(1);
+        var result = await context.People.FindAsync(new object[] { 1 }, CT.Token);
         result.Should().BeNull();
     }
 
@@ -76,7 +76,7 @@ public class PersonTests
     public async Task DeletePersonAsync_ShouldDoNothing_WhenPersonDoesNotExist()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new PersonHandler(factory);
 
         await handler.DeletePersonAsync(99);
@@ -92,11 +92,11 @@ public class PersonTests
     public async Task UpdatePersonAsync_ShouldModifyPerson_WhenExists()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var person = new PersonModel { PersonId = 1, FirstName = "Bob", LastName = "Marley" };
         context.People.Add(person);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
 
@@ -105,7 +105,7 @@ public class PersonTests
 
         context.ChangeTracker.Clear();
 
-        var result = await context.People.FindAsync(1);
+        var result = await context.People.FindAsync(new object[] { 1 }, CT.Token);
         result?.FirstName.Should().Be("Robert");
         result?.LastName.Should().Be("Marley");
     }
@@ -114,7 +114,7 @@ public class PersonTests
     public async Task UpdatePersonAsync_ShouldDoNothing_WhenPersonDoesNotExist()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new PersonHandler(factory);
 
         var updated = new PersonModel { PersonId = 99, FirstName = "Ghost", LastName = "User" };
@@ -127,7 +127,7 @@ public class PersonTests
     public async Task UpdatePersonAsync_ShouldUpdateDobAndDod()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var person = new PersonModel
         {
@@ -139,7 +139,7 @@ public class PersonTests
         };
 
         context.People.Add(person);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         context.ChangeTracker.Clear();
 
@@ -156,7 +156,7 @@ public class PersonTests
 
         await handler.UpdatePersonAsync(updated);
 
-        var result = await context.People.FindAsync(1);
+        var result = await context.People.FindAsync(new object[] { 1 }, CT.Token);
 
         result.Should().NotBeNull();
         result.DateOfBirth.Should().Be(new DateTime(1980, 2, 2));
@@ -171,13 +171,13 @@ public class PersonTests
     public async Task GetCastMembersAsync_ShouldReturnOrderedList()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { PersonId = 1, FirstName = "Alice", LastName = "Zulu", IsCastMember = true },
             new PersonModel { PersonId = 2, FirstName = "Alice", LastName = "Alpha", IsCastMember = true }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
 
@@ -192,13 +192,13 @@ public class PersonTests
     public async Task GetCastMembersAsync_ShouldIncludePeopleWhoAreBothDirectorAndCastMember()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { FirstName = "Greta", LastName = "Gerwig", IsDirector = true, IsCastMember = true },
             new PersonModel { FirstName = "Gordon", LastName = "Scott", IsDirector = false, IsCastMember = true }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
 
@@ -213,13 +213,13 @@ public class PersonTests
     public async Task GetCastMembersAsync_ShouldExcludeDirectors()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { FirstName = "Cast", LastName = "Only", IsCastMember = true, IsDirector = false },
             new PersonModel { FirstName = "Director", LastName = "Only", IsCastMember = false, IsDirector = true }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
         var result = await handler.GetCastMembersAsync();
@@ -236,13 +236,13 @@ public class PersonTests
     public async Task GetDirectorsAsync_ShouldReturnOrderedList()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { PersonId = 1, FirstName = "Alice", LastName = "Zulu", IsDirector = true },
             new PersonModel { PersonId = 2, FirstName = "Alice", LastName = "Alpha", IsDirector = true }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
         var result = await handler.GetDirectorsAsync();
@@ -256,13 +256,13 @@ public class PersonTests
     public async Task GetDirectorsAsync_ShouldIncludePeopleWhoAreBothDirectorAndCastMember()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { FirstName = "Greta", LastName = "Gerwig", IsDirector = true, IsCastMember = true },
             new PersonModel { FirstName = "Gordon", LastName = "Scott", IsDirector = true, IsCastMember = false }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
         var result = await handler.GetDirectorsAsync();
@@ -276,13 +276,13 @@ public class PersonTests
     public async Task GetDirectorsAsync_ShouldReturnEmptyList_WhenNoDirectorsExist()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { FirstName = "Alice", LastName = "Smith", IsCastMember = true },
             new PersonModel { FirstName = "Bob", LastName = "Jones", IsCastMember = true }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
         var result = await handler.GetDirectorsAsync();
@@ -294,13 +294,13 @@ public class PersonTests
     public async Task GetDirectorsAsync_ShouldExcludeNonDirectors()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { FirstName = "Director", LastName = "One", IsDirector = true },
             new PersonModel { FirstName = "Actor", LastName = "Two", IsDirector = false }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
         var result = await handler.GetDirectorsAsync();
@@ -317,7 +317,7 @@ public class PersonTests
     public async Task GetPersonAsync_ShouldReturnPersonWithFilms_WhenExists()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var genre = new GenreModel { Name = "Drama" };
         var studio = new StudioModel { Name = "A24" };
@@ -327,7 +327,7 @@ public class PersonTests
         var fp = new FilmPersonModel { Film = film, Person = person };
 
         context.AddRange(genre, studio, film, person, fp);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
 
@@ -342,7 +342,7 @@ public class PersonTests
     public async Task GetPersonAsync_ShouldReturnPersonWithMultipleFilms_OrderedByName()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var genre1 = new GenreModel { Name = "Drama" };
         var genre2 = new GenreModel { Name = "Comedy" };
@@ -358,7 +358,7 @@ public class PersonTests
         var fp2 = new FilmPersonModel { Film = filmB, Person = person };
 
         context.AddRange(genre1, genre2, studio1, studio2, filmA, filmB, person, fp1, fp2);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
 
@@ -374,7 +374,7 @@ public class PersonTests
     public async Task GetPersonAsync_ShouldReturnEmptyPerson_WhenNotFound()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new PersonHandler(factory);
 
         var result = await handler.GetPersonAsync(99);
@@ -387,7 +387,7 @@ public class PersonTests
     public async Task GetPersonAsync_ShouldReturnDobAndDod()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var person = new PersonModel
         {
@@ -398,7 +398,7 @@ public class PersonTests
         };
 
         context.People.Add(person);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
         var result = await handler.GetPersonAsync(person.PersonId);
@@ -415,7 +415,7 @@ public class PersonTests
     public async Task GetRandomPersonAsync_ShouldReturnNewPersonModel_WhenNoCastMembersExist()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new PersonHandler(factory);
 
         var result = await handler.GetRandomPersonAsync();
@@ -427,7 +427,7 @@ public class PersonTests
     public async Task GetRandomPersonAsync_ShouldReturnNewPersonModel_WhenCastMembersHaveNoPictures()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.Add(new PersonModel
         {
@@ -436,7 +436,7 @@ public class PersonTests
             IsCastMember = true,
             Picture = null
         });
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
         var result = await handler.GetRandomPersonAsync();
@@ -448,7 +448,7 @@ public class PersonTests
     public async Task GetRandomPersonAsync_ShouldReturnCastMemberWithPicture()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var pic = new byte[] { 1, 2, 3 };
 
@@ -456,7 +456,7 @@ public class PersonTests
             new PersonModel { PersonId = 1, FirstName = "A", LastName = "One", IsCastMember = true, Picture = pic },
             new PersonModel { PersonId = 2, FirstName = "B", LastName = "Two", IsCastMember = true, Picture = pic }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
         var result = await handler.GetRandomPersonAsync();
@@ -469,7 +469,7 @@ public class PersonTests
     public async Task GetRandomPersonAsync_ShouldExcludeNonCastMembersAndPicturelessPeople()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var pic = new byte[] { 9, 9, 9 };
 
@@ -478,7 +478,7 @@ public class PersonTests
             new PersonModel { PersonId = 2, FirstName = "Director", LastName = "Only", IsDirector = true, Picture = pic },
             new PersonModel { PersonId = 3, FirstName = "Cast", LastName = "NoPic", IsCastMember = true, Picture = null }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
         var result = await handler.GetRandomPersonAsync();
@@ -536,14 +536,14 @@ public class PersonTests
     public async Task GetCastMembersLightweightAsync_ShouldReturnOnlyCastMembers()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new PersonHandler(factory);
 
         context.People.AddRange(
             new PersonModel { PersonId = 1, FirstName = "Tom", LastName = "Hardy", IsCastMember = true },
             new PersonModel { PersonId = 2, FirstName = "Ridley", LastName = "Scott", IsCastMember = false }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var result = await handler.GetCastMembersLightweightAsync();
 
@@ -563,14 +563,14 @@ public class PersonTests
     public async Task GetDirectorsLightweightAsync_ShouldReturnOnlyDirectors()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new PersonHandler(factory);
 
         context.People.AddRange(
             new PersonModel { PersonId = 1, FirstName = "Tom", LastName = "Hardy", IsDirector = false },
             new PersonModel { PersonId = 2, FirstName = "Ridley", LastName = "Scott", IsDirector = true }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var result = await handler.GetDirectorsLightweightAsync();
 
@@ -586,20 +586,20 @@ public class PersonTests
     public async Task DeletePerson_AlsoDeletesFavourite_WhenPersonIsFavourite()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.Add(new PersonModel { PersonId = 300, FirstName = "John" });
         context.Favourites.Add(new FavouriteModel { EntityId = 300, EntityTypeId = (int)FavouriteEntityEnum.Person });
         context.Favourites.Add(new FavouriteModel { EntityId = 999, EntityTypeId = (int)FavouriteEntityEnum.Person });
 
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
         context.ChangeTracker.Clear();
 
         var handler = new PersonHandler(factory);
 
         await handler.DeletePersonAsync(300);
 
-        await using var verify = await factory.CreateDbContextAsync();
+        await using var verify = await factory.CreateDbContextAsync(CT.Token);
 
         verify.People.Should().BeEmpty();
         verify.Favourites.Where(f => f.EntityId == 300 && f.EntityTypeId == (int)FavouriteEntityEnum.Person).Should().BeEmpty();

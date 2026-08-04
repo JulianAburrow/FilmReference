@@ -8,14 +8,14 @@ public class FilmTests
     public async Task CreateFilmAsync_ShouldAddFilmWithoutActors()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new FilmHandler(factory);
 
         var film = new FilmModel { Name = "Test Film", Description = "Desc", GenreId = 1, StudioId = 1 };
 
         await handler.CreateFilmAsync(film, []);
 
-        var result = await context.Films.SingleOrDefaultAsync();
+        var result = await context.Films.SingleOrDefaultAsync(CT.Token);
         result.Should().NotBeNull();
         result.Name.Should().Be("Test Film");
         result.Description.Should().Be("Desc");
@@ -25,18 +25,18 @@ public class FilmTests
     public async Task CreateFilmAsync_ShouldAddFilmWithActors_WhenActorIdsProvided()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new FilmHandler(factory);
 
         var person = new PersonModel { FirstName = "David" };
         context.People.Add(person);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var film = new FilmModel { Name = "Film With Actor", GenreId = 1, StudioId = 1 };
 
         await handler.CreateFilmAsync(film, new[] { person.PersonId });
 
-        var filmWithActor = await context.Films.Include(f => f.FilmPerson).SingleAsync();
+        var filmWithActor = await context.Films.Include(f => f.FilmPerson).SingleAsync(CT.Token);
         filmWithActor.FilmPerson.Should().ContainSingle(fp => fp.PersonId == person.PersonId);
     }
 
@@ -44,27 +44,27 @@ public class FilmTests
     public async Task DeleteFilmAsync_ShouldRemoveFilmAndJunctions()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var film = new FilmModel { Name = "Delete Me" };
         var person = new PersonModel { FirstName = "Actor" };
         var fp = new FilmPersonModel { Film = film, Person = person };
 
         context.AddRange(film, person, fp);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new FilmHandler(factory);
         await handler.DeleteFilmAsync(film.FilmId);
 
-        (await context.Films.AnyAsync()).Should().BeFalse();
-        (await context.FilmPeople.AnyAsync()).Should().BeFalse();
+        (await context.Films.AnyAsync(CT.Token)).Should().BeFalse();
+        (await context.FilmPeople.AnyAsync(CT.Token)).Should().BeFalse();
     }
 
     [Fact]
     public async Task GetFilmAsync_ShouldReturnFilmWithOrderedActors()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var genre = TestDataFactory.CreateGenre();
         var studio = TestDataFactory.CreateStudio();
@@ -77,7 +77,7 @@ public class FilmTests
         var fpB = new FilmPersonModel { Film = film, Person = personB };
 
         context.AddRange(genre, studio, director, film, personA, personB, fpA, fpB);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new FilmHandler(factory);
         var result = await handler.GetFilmAsync(film.FilmId);
@@ -96,7 +96,7 @@ public class FilmTests
     public async Task GetFilmAsync_ShouldReturnEmptyFilm_WhenNotFound()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new FilmHandler(factory);
 
         var result = await handler.GetFilmAsync(999);
@@ -109,7 +109,7 @@ public class FilmTests
     public async Task GetAllFilmsAsync_ShouldReturnFilmsOrderedByName()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var genre = new GenreModel { GenreId = 1, Name = "Action" };
         context.Genres.Add(genre);
@@ -118,7 +118,7 @@ public class FilmTests
         var filmB = new FilmModel { Name = "Alpha", GenreId = 1, StudioId = 1 };
 
         context.AddRange(filmA, filmB);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new FilmHandler(factory);
         var result = await handler.GetAllFilmsAsync();
@@ -130,12 +130,12 @@ public class FilmTests
     public async Task UpdateFilmAsync_ShouldUpdateFilmAndActors()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var film = new FilmModel { Name = "Old Name", GenreId = 1, StudioId = 1 };
         var person = new PersonModel { FirstName = "Actor" };
         context.AddRange(film, person);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         context.ChangeTracker.Clear(); // Clear the change tracker to simulate a fresh context
 
@@ -144,7 +144,7 @@ public class FilmTests
 
         await handler.UpdateFilmAsync(updatedFilm, new[] { person.PersonId });
 
-        var result = await context.Films.Include(f => f.FilmPerson).SingleAsync();
+        var result = await context.Films.Include(f => f.FilmPerson).SingleAsync(CT.Token);
         result.Name.Should().Be("New Name");
         result.FilmPerson.Should().ContainSingle(fp => fp.PersonId == person.PersonId);
     }
@@ -154,7 +154,7 @@ public class FilmTests
     {
         // Arrange
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         // Create film with existing cast members
         var film = new FilmModel
@@ -175,7 +175,7 @@ public class FilmTests
             new FilmPersonModel { FilmId = 100, PersonId = 20 }
         );
 
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         context.ChangeTracker.Clear();
 
@@ -198,9 +198,9 @@ public class FilmTests
         );
 
         // Assert
-        await using var verifyContext = await factory.CreateDbContextAsync();
+        await using var verifyContext = await factory.CreateDbContextAsync(CT.Token);
 
-        var updatedFilm = await verifyContext.Films.FindAsync(100);
+        var updatedFilm = await verifyContext.Films.FindAsync(new object[] { 100 }, CT.Token);
         updatedFilm.Should().NotBeNull();
         updatedFilm!.Name.Should().Be("Updated Name");
         updatedFilm.Description.Should().Be("Updated Desc");
@@ -223,7 +223,7 @@ public class FilmTests
     public async Task UpdateFilmAsync_ShouldReplaceCastMembers_WhenNewOnesSelected()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Films.Add(new FilmModel { FilmId = 200, Name = "Film" });
 
@@ -232,7 +232,7 @@ public class FilmTests
             new FilmPersonModel { FilmId = 200, PersonId = 2 }
         );
 
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
         context.ChangeTracker.Clear();
 
         var handler = new FilmHandler(factory);
@@ -242,7 +242,7 @@ public class FilmTests
             new[] { 3, 4 } // new cast
         );
 
-        await using var verify = await factory.CreateDbContextAsync();
+        await using var verify = await factory.CreateDbContextAsync(CT.Token);
 
         var cast = verify.FilmPeople.Where(fp => fp.FilmId == 200).ToList();
 
@@ -254,7 +254,7 @@ public class FilmTests
     public async Task UpdateFilmAsync_ShouldDoNothing_WhenFilmDoesNotExist()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var handler = new FilmHandler(factory);
 
@@ -271,12 +271,12 @@ public class FilmTests
     public async Task UpdateFilmAsync_ShouldHandleNullSelectedCastMembers()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Films.Add(new FilmModel { FilmId = 300, Name = "Film" });
         context.FilmPeople.Add(new FilmPersonModel { FilmId = 300, PersonId = 10 });
 
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
         context.ChangeTracker.Clear();
 
         var handler = new FilmHandler(factory);
@@ -286,7 +286,7 @@ public class FilmTests
             Enumerable.Empty<int>()
         );
 
-        await using var verify = await factory.CreateDbContextAsync();
+        await using var verify = await factory.CreateDbContextAsync(CT.Token);
 
         verify.FilmPeople.Where(fp => fp.FilmId == 300).Should().BeEmpty();
     }
@@ -295,20 +295,20 @@ public class FilmTests
     public async Task DeleteFilm_AlsoDeletesFavourite_WhenFilmIsFavourite()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Films.Add(new FilmModel { FilmId = 300, Name = "Film" });
         context.Favourites.Add(new FavouriteModel { EntityId = 300, EntityTypeId = (int)FavouriteEntityEnum.Film });
         context.Favourites.Add(new FavouriteModel { EntityId = 999, EntityTypeId = (int)FavouriteEntityEnum.Film });
 
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
         context.ChangeTracker.Clear();
 
         var handler = new FilmHandler(factory);
 
         await handler.DeleteFilmAsync(300);
 
-        await using var verify = await factory.CreateDbContextAsync();
+        await using var verify = await factory.CreateDbContextAsync(CT.Token);
 
         verify.Films.Should().BeEmpty();
         verify.Favourites.Where(f => f.EntityId == 300 && f.EntityTypeId == (int)FavouriteEntityEnum.Film).Should().BeEmpty();

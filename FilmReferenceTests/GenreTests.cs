@@ -6,14 +6,14 @@ public class GenreTests
     public async Task CreateGenreAsync_ShouldAddGenre()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new GenreHandler(factory);
 
         var genre = new GenreModel { GenreId = 1, Name = "Action", Logo = [1,2,3] };
 
         await handler.CreateGenreAsync(genre);
 
-        var result = await context.Genres.FindAsync(1);
+        var result = await context.Genres.FindAsync(new object[] { 1 }, CT.Token);
         result.Should().NotBeNull();
         result.Name.Should().Be("Action");
         result.Logo.Should().Equal([1,2,3]);
@@ -23,18 +23,18 @@ public class GenreTests
     public async Task DeleteGenreAsync_ShouldRemoveGenre_WhenExists()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var genre = new GenreModel { GenreId = 2, Name = "Comedy" };
         context.Genres.Add(genre);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         context.ChangeTracker.Clear(); // Clear the change tracker to simulate a fresh context
 
         var handler = new GenreHandler(factory);
         await handler.DeleteGenreAsync(2);
         
-        var result = await context.Genres.FindAsync(2);
+        var result = await context.Genres.FindAsync(new object[] { 2 }, CT.Token);
         result.Should().BeNull();
     }
 
@@ -42,7 +42,7 @@ public class GenreTests
     public async Task DeleteGenreAsync_ShouldDoNothing_WhenNotFound()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new GenreHandler(factory);
 
         await handler.DeleteGenreAsync(99);
@@ -54,7 +54,7 @@ public class GenreTests
     public async Task GetGenreAsync_ShouldReturnGenreWithFilmsOrdered()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new GenreHandler(factory);
 
         var genre = new GenreModel
@@ -68,7 +68,7 @@ public class GenreTests
             ]
         };
         context.Genres.Add(genre);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var result = await handler.GetGenreAsync(3);
 
@@ -81,7 +81,7 @@ public class GenreTests
     public async Task GetGenreAsync_ShouldReturnEmptyGenre_WhenNotFound()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new GenreHandler(factory);
 
         var result = await handler.GetGenreAsync(123);
@@ -94,14 +94,14 @@ public class GenreTests
     public async Task GetGenresAsync_ShouldReturnGenresOrderedByName()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new GenreHandler(factory);
 
         context.Genres.AddRange(
             new GenreModel { GenreId = 10, Name = "Zeta" },
             new GenreModel { GenreId = 11, Name = "Alpha" }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var result = await handler.GetGenresAsync();
 
@@ -113,11 +113,11 @@ public class GenreTests
     public async Task UpdateGenreAsync_ShouldModifyProperties_WhenGenreExists()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var genre = new GenreModel { GenreId = 20, Name = "Old Name", Description = "Old Desc", Logo = [1,2,3] };
         context.Genres.Add(genre);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         context.ChangeTracker.Clear();
 
@@ -125,7 +125,7 @@ public class GenreTests
         var updated = new GenreModel { GenreId = 20, Name = "New Name", Description = "New Desc", Logo = [3,2,1] };
         await handler.UpdateGenreAsync(updated);
 
-        var result = await context.Genres.FindAsync(20);
+        var result = await context.Genres.FindAsync(new object[] { 20 }, CT.Token);
         result!.Name.Should().Be("New Name");
         result.Description.Should().Be("New Desc");
         result.Logo.Should().Equal([3, 2, 1]);
@@ -135,7 +135,7 @@ public class GenreTests
     public async Task UpdateGenreAsync_ShouldDoNothing_WhenStudioGenreNotFound()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new GenreHandler(factory);
 
         var updated = new GenreModel { GenreId = 999, Name = "Does Not Exist" };
@@ -148,14 +148,14 @@ public class GenreTests
     public async Task GetGenresLightweightAsync_ShouldReturnProjectedGenresOrdered()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new GenreHandler(factory);
 
         context.Genres.AddRange(
             new GenreModel { GenreId = 10, Name = "Zeta" },
             new GenreModel { GenreId = 11, Name = "Alpha" }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var result = await handler.GetGenresLightweightAsync();
 
@@ -173,7 +173,7 @@ public class GenreTests
     public async Task GetGenresLightweightAsync_ShouldReturnEmptyList_WhenNoGenresExist()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new GenreHandler(factory);
 
         var result = await handler.GetGenresLightweightAsync();
@@ -186,20 +186,20 @@ public class GenreTests
     public async Task DeleteGenre_AlsoDeletesFavourite_WhenGenreIsFavourite()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Genres.Add(new GenreModel { GenreId = 300, Name = "Genre", Description = "Description" });
         context.Favourites.Add(new FavouriteModel { EntityId = 300, EntityTypeId = (int)FavouriteEntityEnum.Genre });
         context.Favourites.Add(new FavouriteModel { EntityId = 999, EntityTypeId = (int)FavouriteEntityEnum.Genre });
 
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
         context.ChangeTracker.Clear();
 
         var handler = new GenreHandler(factory);
 
         await handler.DeleteGenreAsync(300);
 
-        await using var verify = await factory.CreateDbContextAsync();
+        await using var verify = await factory.CreateDbContextAsync(CT.Token);
         verify.Genres.Should().BeEmpty();
         verify.Favourites.Where(f => f.EntityId == 300 && f.EntityTypeId == (int)FavouriteEntityEnum.Genre).Should().BeEmpty();
         verify.Favourites.Where(f => f.EntityId == 999 && f.EntityTypeId == (int)FavouriteEntityEnum.Genre).Should().HaveCount(1);
