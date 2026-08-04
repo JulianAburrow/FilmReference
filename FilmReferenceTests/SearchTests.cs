@@ -14,7 +14,7 @@ public class SearchTests
     public async Task SearchFilmsAsync_ShouldReturnEmpty_WhenSearchTextIsNull()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new SearchHandler(factory);
 
         var result = await handler.SearchFilmsAsync(null!);
@@ -26,10 +26,10 @@ public class SearchTests
     public async Task SearchFilmsAsync_ShouldReturnEmpty_WhenSearchTextIsWhitespace()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Films.Add(new FilmModel { Name = "Star Wars" });
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchFilmsAsync("   ");
@@ -41,14 +41,14 @@ public class SearchTests
     public async Task SearchFilmsAsync_ShouldReturnMatchingFilms_OrderedByName()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Films.AddRange(
             new FilmModel { Name = "Star Wars" },
             new FilmModel { Name = "Star Trek" },
             new FilmModel { Name = "Alien" }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchFilmsAsync("Star");
@@ -61,10 +61,10 @@ public class SearchTests
     public async Task SearchFilmsAsync_ShouldReturnEmpty_WhenNoMatch()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Films.Add(new FilmModel { Name = "Alien" });
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchFilmsAsync("xyz");
@@ -78,10 +78,10 @@ public class SearchTests
     public async Task SearchGenresAsync_ShouldReturnEmpty_WhenSearchTextIsEmpty()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Genres.Add(new GenreModel { Name = "Action" });
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchGenresAsync(string.Empty);
@@ -93,14 +93,14 @@ public class SearchTests
     public async Task SearchGenresAsync_ShouldReturnMatchingGenres_OrderedByName()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Genres.AddRange(
             new GenreModel { Name = "Science Fiction" },
             new GenreModel { Name = "Fiction" },
             new GenreModel { Name = "Action" }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchGenresAsync("Fiction");
@@ -115,10 +115,10 @@ public class SearchTests
     public async Task SearchStudiosAsync_ShouldReturnEmpty_WhenSearchTextIsEmpty()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Studios.Add(new StudioModel { Name = "Warner Bros" });
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchStudiosAsync(string.Empty);
@@ -130,14 +130,14 @@ public class SearchTests
     public async Task SearchStudiosAsync_ShouldReturnMatchingStudios_OrderedByName()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.Studios.AddRange(
             new StudioModel { Name = "Warner Bros" },
             new StudioModel { Name = "Warner Independent" },
             new StudioModel { Name = "Paramount" }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchStudiosAsync("Warner");
@@ -152,7 +152,7 @@ public class SearchTests
     public async Task SearchPeopleAsync_ShouldReturnEmpty_WhenSearchTextIsNull()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new SearchHandler(factory);
 
         var result = await handler.SearchPeopleAsync(null!);
@@ -164,10 +164,10 @@ public class SearchTests
     public async Task SearchPeopleAsync_ShouldReturnEmpty_WhenSearchTextIsWhitespace()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.Add(new PersonModel { FirstName = "John", LastName = "Smith" });
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchPeopleAsync("   ");
@@ -179,13 +179,13 @@ public class SearchTests
     public async Task SearchPeopleAsync_ShouldMatchOnFirstName()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { FirstName = "John", LastName = "Smith" },
             new PersonModel { FirstName = "Jane", LastName = "Doe" }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchPeopleAsync("John");
@@ -197,13 +197,13 @@ public class SearchTests
     public async Task SearchPeopleAsync_ShouldMatchOnLastName()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { FirstName = "John", LastName = "Smith" },
             new PersonModel { FirstName = "Jane", LastName = "Doe" }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchPeopleAsync("Smith");
@@ -215,14 +215,14 @@ public class SearchTests
     public async Task SearchPeopleAsync_ShouldMatchMultipleWordsAcrossFirstAndLastName()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { FirstName = "John", LastName = "Smith" },
             new PersonModel { FirstName = "John", LastName = "Doe" },
             new PersonModel { FirstName = "Jane", LastName = "Smith" }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
 
@@ -236,13 +236,13 @@ public class SearchTests
     public async Task SearchPeopleAsync_ShouldReturnResultsOrderedByFirstNameThenLastName()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.AddRange(
             new PersonModel { FirstName = "Alice", LastName = "Zulu" },
             new PersonModel { FirstName = "Alice", LastName = "Alpha" }
         );
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchPeopleAsync("Alice");
@@ -254,10 +254,10 @@ public class SearchTests
     public async Task SearchPeopleAsync_ShouldReturnEmpty_WhenNoMatch()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
-        await using var context = await factory.CreateDbContextAsync();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         context.People.Add(new PersonModel { FirstName = "John", LastName = "Smith" });
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CT.Token);
 
         var handler = new SearchHandler(factory);
         var result = await handler.SearchPeopleAsync("xyz");

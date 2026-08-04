@@ -71,15 +71,17 @@
                            FilesChanged="LocalUploadImage"
                            Accept="image/*"
                            Class="file-upload-button">
+                <MudPaper>
                     <MudButton HtmlTag="label"
                                Variant="Variant.Filled"
                                Color="Color.Primary"
                                StartIcon="@Icons.Material.Filled.FileUpload">
                         Upload File
                     </MudButton>
+                </MudPaper>
             </MudFileUpload>
 
-            @if (FilmDisplayModel.BoxCover is not null)
+            @if (FilmDisplayModel.BoxCover is not null && !string.IsNullOrWhiteSpace(ImageName))
             {
                 <MudText Class="file-name-display">@ImageName</MudText>
 
