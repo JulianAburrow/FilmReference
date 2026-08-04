@@ -1,0 +1,202 @@
+﻿@page "/"
+
+@inherits HomeBasePageClass
+
+<PageTitle>Film Reference</PageTitle>
+
+<MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
+    <MudStack Spacing="4">
+
+        @if (BirthdaysToShow && ShowBirthdays)
+        {
+            <MudText Typo="Typo.h5">Born On This Day</MudText>
+            <ListPeopleComponent
+                PersonModels="BirthdayPeople"
+                PersonRole="@RoleEnum.CastMembers.ToString()"
+                ShowEditButton="false" />
+        }
+        else if (!BirthdaysToShow && FeaturedPersonToShow)
+        {
+            <MudText Typo="Typo.h5">Featured Person</MudText>
+            <ViewFeaturedPersonComponent FeaturedPerson="FeaturedPerson" />
+        }
+        else if (BirthdaysToShow && !ShowBirthdays)
+        {
+            <MudText Typo="Typo.h5">Featured Person</MudText>
+            <ViewFeaturedPersonComponent FeaturedPerson="FeaturedPerson" />
+        }
+        
+        @if (BirthdaysToShow)
+        {
+            <span>
+                <MudButton Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.SwapHoriz"
+                        OnClick="SwitchBirthdaysFeaturedPersonDisplay">
+                    @(ShowBirthdays ? "Show Featured Person" : "Show Birthdays")
+                </MudButton>
+            </span>
+        }
+
+        <MudText Typo="Typo.h5">Search</MudText>
+
+        <EditForm Model="@SearchModel" OnValidSubmit="DoSearch">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <MudGrid>
+                <MudItem xs="12" sm="7">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudSelect Label="Search For"
+                                       T="int"
+                                       @bind-Value="SearchModel.SearchType"
+                                       @bind-Value:after="ClearSearchText">
+                                <MudSelectItem T="int" Value="SharedValues.PleaseSelectValue">
+                                    @SharedValues.PleaseSelectText
+                                </MudSelectItem>
+                                @foreach (var searchOption in Enum.GetValues<SearchTypeEnum>())
+                                {
+                                    <MudSelectItem T="int" Value="@((int)searchOption)">
+                                        @searchOption
+                                    </MudSelectItem>
+                                }
+                            </MudSelect>
+                            <MudTextField @ref="SearchTextBox"
+                                          Label="Search Term"
+                                          @bind-Value="SearchModel.SearchText" />
+                        </MudCardContent>
+                        <MudCardActions Class="gap-2">
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.Search"
+                                       ButtonType="ButtonType.Submit">
+                                Search
+                            </MudButton>
+                            <MudButton Variant="Variant.Outlined"
+                                       Color="Color.Default"
+                                       StartIcon="@Icons.Material.Filled.Clear"
+                                       OnClick="ClearSearch">
+                                Clear
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+
+        @if (SubmitClicked)
+        {
+            @if (SearchModel.SearchType == (int)SearchTypeEnum.Film)
+            {
+                <MudStack Spacing="2">
+                    <div>
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Add"
+                                   Href="/film/create">
+                            Create Film
+                        </MudButton>
+                    </div>
+
+                    @if (FilmsFound.Count == 0)
+                    {
+                        <LoadingComponent DisplayValue="@($"No films found matching '{SearchModel.SearchText}'")"
+                                          IsLoading="false" />
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.subtitle1">
+                            @FilmsFound.Count @(FilmsFound.Count == 1 ? "film" : "films") found matching '@SearchModel.SearchText'
+                        </MudText>
+                        <ListFilmsComponent FilmModels="FilmsFound" />
+                    }
+                </MudStack>
+            }
+
+            @if (SearchModel.SearchType == (int)SearchTypeEnum.Genre)
+            {
+                <MudStack Spacing="2">
+                    <div>
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Add"
+                                   Href="/genre/create">
+                            Create Genre
+                        </MudButton>
+                    </div>
+
+                    @if (GenresFound.Count == 0)
+                    {
+                        <LoadingComponent DisplayValue="@($"No genres found matching '{SearchModel.SearchText}'")"
+                                          IsLoading="false" />
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.subtitle1">
+                            @GenresFound.Count @(GenresFound.Count == 1 ? "genre" : "genres") found matching '@SearchModel.SearchText'
+                        </MudText>
+                        <ListGenresComponent GenreModels="GenresFound" />
+                    }
+                </MudStack>
+            }
+
+            @if (SearchModel.SearchType == (int)SearchTypeEnum.Person)
+            {
+                <MudStack Spacing="2">
+                    <div>
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Add"
+                                   Href="/person/create">
+                            Create Person
+                        </MudButton>
+                    </div>
+
+                    @if (PeopleFound.Count == 0)
+                    {
+                        <LoadingComponent DisplayValue="@($"No people found matching '{SearchModel.SearchText}'")"
+                                          IsLoading="false" />
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.subtitle1">
+                            @PeopleFound.Count @(PeopleFound.Count == 1 ? "person" : "people") found matching '@SearchModel.SearchText'
+                        </MudText>
+                        <ListPeopleComponent PersonModels="PeopleFound" />
+                    }
+                </MudStack>
+            }
+
+            @if (SearchModel.SearchType == (int)SearchTypeEnum.Studio)
+            {
+                <MudStack Spacing="2">
+                    <div>
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Add"
+                                   Href="/studio/create">
+                            Create Studio
+                        </MudButton>
+                    </div>
+
+                    @if (StudiosFound.Count == 0)
+                    {
+                        <LoadingComponent DisplayValue="@($"No studios found matching '{SearchModel.SearchText}'")"
+                                          IsLoading="false" />
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.subtitle1">
+                            @StudiosFound.Count @(StudiosFound.Count == 1 ? "studio" : "studios") found matching '@SearchModel.SearchText'
+                        </MudText>
+                        <ListStudiosComponent StudioModels="StudiosFound" />
+                    }
+                </MudStack>
+            }
+        }
+
+    </MudStack>
+</MudContainer>
+
+@* PR reset *@
