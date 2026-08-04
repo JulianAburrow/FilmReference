@@ -2,7 +2,7 @@
 	@foreach (var personModel in PersonModels)
 	{
 		<MudItem xs="12" sm="6" md="4" lg="3" Class="equal-height-item">
-			<PersonComponent Person="personModel" PersonRole="@PersonRole" />
+			<PersonComponent Person="personModel" PersonRole="@PersonRole" ShowEditButton="@ShowEditButton" />
 		</MudItem>
 	}
 </MudGrid>

@@ -1,22 +1,21 @@
 ﻿<MudCard Class="ma-2 pa-2" Style="width: 100%; max-width: 100%;">
     <MudCardHeader>
-        <MudText Typo="Typo.h6">@Person.FirstName @Person.LastName</MudText>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">@Person.FirstName @Person.LastName</MudText>
+            <MudText Typo="Typo.caption" Color="Color.Secondary">
+                @if (PersonRole == RoleEnum.CastMembers.ToString())
+                {
+                    @Person.FilmPerson.Count @(Person.FilmPerson.Count == 1 ? " film" : " films")
+                }
+                @if (PersonRole == RoleEnum.Directors.ToString())
+                {
+                    @Person.Films.Count @(Person.Films.Count == 1 ? " film" : " films")
+                }
+            </MudText>
+        </CardHeaderContent>
     </MudCardHeader>
 
-    <MudCardContent>
-        <MudText>
-            @if (PersonRole == RoleEnum.CastMembers.ToString())
-            {
-                @Person.FilmPerson.Count @(Person.FilmPerson.Count == 1 ? " film" : " films")
-            }
-            @if (PersonRole == RoleEnum.Directors.ToString())
-            {
-                @Person.Films.Count @(Person.Films.Count == 1 ? " film" : " films")
-            }
-        </MudText>
-        
-        <div class="my-4"></div>
-
+    <MudCardContent Class="pt-0">
         @{
             var ImageTitle = Person.LastName is null
                 ? Person.FirstName
@@ -33,17 +32,20 @@
 
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">
         <MudButton
-            Variant="Variant.Filled"
-            Color="Color.Primary"
-            Size="Size.Small"
-            Href=@($"/person/view/{Person.PersonId}")>
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                Size="Size.Small"
+                Href=@($"/person/view/{Person.PersonId}")>
             View
         </MudButton>
-        <MudButton Variant="Variant.Outlined"
-            Color="Color.Primary"
-            Size="Size.Small"
-            Href=@($"/person/edit/{Person.PersonId}")>
-            Edit
-        </MudButton>
+        @if (ShowEditButton)
+        {
+            <MudButton Variant="Variant.Outlined"
+                    Color="Color.Primary"
+                    Size="Size.Small"
+                    Href=@($"/person/edit/{Person.PersonId}")>
+                Edit
+            </MudButton>
+        }        
     </MudCardActions>
 </MudCard>

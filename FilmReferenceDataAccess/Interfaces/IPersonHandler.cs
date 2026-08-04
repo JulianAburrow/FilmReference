@@ -18,5 +18,7 @@ public interface IPersonHandler
 
     Task DeletePersonAsync(int personId);
 
-    Task<RandomPersonModel> GetRandomPersonAsync();
+    Task<FeaturedPersonModel> GetFeaturedPersonAsync();
+
+    Task<List<PersonModel>> GetTodaysBirthdays(DateTime today);
 }
