@@ -10,6 +10,8 @@ public partial class Home
 
     private List<PersonModel> PeopleFound = [];
 
+    private bool TodayButtonVisible => SelectedDay != DateTime.Today.Day || SelectedMonth != DateTime.Today.Month;
+
     private bool IsLoadingBirthdays = true;
 
     private bool ShowBirthdays = true;
@@ -136,7 +138,19 @@ public partial class Home
 
         BirthdayPeople = await PersonHandler.GetBirthdaysForDateAsync(SelectedDay, SelectedMonth);
         BirthdaysToShow = BirthdayPeople.Count > 0;
-
+        var monthWord = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(SelectedMonth);
+        if (BirthdayPeople.Count == 0)
+        {
+            Snackbar.Add(
+                $"No birthdays found for {SelectedDay} {monthWord}.",
+                Severity.Warning);
+        }
+        else
+        {
+            Snackbar.Add(
+                $"{BirthdayPeople.Count} birthday{(BirthdayPeople.Count != 1 ? "s" : "")} found for {SelectedDay} {monthWord}.",
+                Severity.Info);
+        }
         IsLoadingBirthdays = false;
     }
 
@@ -152,5 +166,13 @@ public partial class Home
         BirthdaysToShow = BirthdayPeople.Count > 0;
 
         StateHasChanged();
+    }
+
+    private async Task SetSelectedDatesToToday()
+    {
+        SelectedDay = DateTime.Today.Day;
+        SelectedMonth = DateTime.Today.Month;
+
+        await SelectedDateChanged();
     }
 }
