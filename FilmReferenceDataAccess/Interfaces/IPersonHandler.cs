@@ -20,5 +20,5 @@ public interface IPersonHandler
 
     Task<FeaturedPersonModel> GetFeaturedPersonAsync();
 
-    Task<List<PersonModel>> GetTodaysBirthdays(DateTime today);
+    Task<List<PersonModel>> GetBirthdaysForDateAsync(int day, int month);
 }

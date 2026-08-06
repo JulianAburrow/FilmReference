@@ -7,32 +7,73 @@
 <MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
     <MudStack Spacing="4">
 
-        @if (BirthdaysToShow && ShowBirthdays)
+        @if (ShowBirthdays)
         {
-            <MudText Typo="Typo.h5">Born On This Day</MudText>
-            <ListPeopleComponent
-                PersonModels="BirthdayPeople"
-                PersonRole="@RoleEnum.CastMembers.ToString()"
-                ShowEditButton="false" />
+            <!-- ALWAYS SHOW SELECTORS -->
+            <MudStack Row="true" Spacing="2">
+                <MudText Typo="Typo.h5">Born On This Day - </MudText>
+
+                <span style="display:inline-flex; gap:6px; align-items:center;">
+                    <MudSelect T="int"
+                               @bind-Value="SelectedDay"
+                               @bind-Value:after="SelectedDateChanged"
+                               FullWidth="false"
+                               Style="width:64px;">
+                        @foreach (var d in Enumerable.Range(1, GetDaysInMonth(SelectedMonth)))
+                        {
+                            <MudSelectItem Value="@d">@d</MudSelectItem>
+                        }
+                    </MudSelect>
+
+                    <MudSelect T="int"
+                               @bind-Value="SelectedMonth"
+                               @bind-Value:after="SelectedDateChanged"
+                               FullWidth="false"
+                               Style="width:140px;">
+                        @foreach (var m in Enumerable.Range(1, 12))
+                        {
+                            <MudSelectItem Value="@m">
+                                @CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </span>
+            </MudStack>
+
+            <!-- RESULTS OR EMPTY MESSAGE -->
+            @if (IsLoadingBirthdays)
+            {
+                <MudProgressCircular Color="Color.Primary" Size="MudBlazor.Size.Large" Indeterminate="true" />
+            }
+            else if (BirthdaysToShow)
+            {
+                <ListPeopleComponent
+                    PersonModels="BirthdayPeople"
+                    PersonRole="@RoleEnum.CastMembers.ToString()"
+                    ShowEditButton="false" />
+            }
+            else
+            {
+                <MudText Typo="Typo.h6">
+                    No birthdays for @SelectedDay / @SelectedMonth. Choose another date.
+                </MudText>
+            }
         }
-        else if (!BirthdaysToShow && FeaturedPersonToShow)
+        else
         {
+            <!-- FEATURED PERSON -->
             <MudText Typo="Typo.h5">Featured Person</MudText>
             <ViewFeaturedPersonComponent FeaturedPerson="FeaturedPerson" />
         }
-        else if (BirthdaysToShow && !ShowBirthdays)
-        {
-            <MudText Typo="Typo.h5">Featured Person</MudText>
-            <ViewFeaturedPersonComponent FeaturedPerson="FeaturedPerson" />
-        }
-        
-        @if (BirthdaysToShow)
+
+        <!-- TOGGLE BUTTON ALWAYS AVAILABLE WHEN FEATURED PERSON EXISTS -->
+        @if (FeaturedPersonToShow)
         {
             <span>
                 <MudButton Variant="Variant.Filled"
-                        Color="Color.Primary"
-                        StartIcon="@Icons.Material.Filled.SwapHoriz"
-                        OnClick="SwitchBirthdaysFeaturedPersonDisplay">
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.SwapHoriz"
+                           OnClick="SwitchBirthdaysFeaturedPersonDisplay">
                     @(ShowBirthdays ? "Show Featured Person" : "Show Birthdays")
                 </MudButton>
             </span>
@@ -198,5 +239,3 @@
 
     </MudStack>
 </MudContainer>
-
-@* PR reset *@

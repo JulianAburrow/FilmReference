@@ -96,14 +96,12 @@ h1:focus {
     font-size: 0;
 }
 
-    /* Replace it with your own */
-    .mud-file-upload .mud-button-label::after {
-        content: "Upload Image";
-        font-size: 0.875rem;
-    }
+/* Replace it with your own */
+.mud-file-upload .mud-button-label::after {
+    content: "Upload Image";
+    font-size: 0.875rem;
+}
 
-    .file-upload-button {
-        width: 250px;
-    }
-
-
+.file-upload-button {
+    width: 250px;
+}

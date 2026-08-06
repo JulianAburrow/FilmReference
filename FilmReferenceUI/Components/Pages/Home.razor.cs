@@ -10,7 +10,13 @@ public partial class Home
 
     private List<PersonModel> PeopleFound = [];
 
+    private bool IsLoadingBirthdays = true;
+
     private bool ShowBirthdays = true;
+
+    private int SelectedDay = DateTime.Today.Day;
+
+    private int SelectedMonth = DateTime.Today.Month;
 
     List<PersonModel> BirthdayPeople = [];
 
@@ -19,6 +25,8 @@ public partial class Home
     private FeaturedPersonModel? FeaturedPerson = null!;
 
     private bool FeaturedPersonToShow;
+
+    private bool FirstLoad = true;
 
     private List<StudioModel> StudiosFound = [];
 
@@ -40,10 +48,18 @@ public partial class Home
         if (!firstRender)
             return;
 
-        BirthdayPeople = await PersonHandler.GetTodaysBirthdays(DateTime.Today);
-        BirthdaysToShow = BirthdayPeople is not null && BirthdayPeople.Count > 0;
+        await GetBirthdayPeople();
+
         FeaturedPerson = await PersonHandler.GetFeaturedPersonAsync();
         FeaturedPersonToShow = FeaturedPerson is not null && FeaturedPerson.PersonId != 0;
+
+        // NEW LOGIC: if no birthdays on first load, show featured person instead
+        if (FirstLoad && !BirthdaysToShow)
+        {
+            ShowBirthdays = false;
+        }
+
+        FirstLoad = false;
 
         StateHasChanged();
     }
@@ -92,5 +108,49 @@ public partial class Home
     private void SwitchBirthdaysFeaturedPersonDisplay()
     {
         ShowBirthdays = !ShowBirthdays;
+    }
+
+    private int GetDaysInMonth(int month)
+    {
+        return month switch
+        {
+            1 => 31,
+            2 => 29, // year-agnostic February
+            3 => 31,
+            4 => 30,
+            5 => 31,
+            6 => 30,
+            7 => 31,
+            8 => 31,
+            9 => 30,
+            10 => 31,
+            11 => 30,
+            12 => 31,
+            _ => 31
+        };
+    }
+
+    private async Task GetBirthdayPeople()
+    {
+        IsLoadingBirthdays = true;
+
+        BirthdayPeople = await PersonHandler.GetBirthdaysForDateAsync(SelectedDay, SelectedMonth);
+        BirthdaysToShow = BirthdayPeople.Count > 0;
+
+        IsLoadingBirthdays = false;
+    }
+
+    private async Task SelectedDateChanged()
+    {
+        // Clamp the selected day to the max valid day for the new month
+        int maxDays = GetDaysInMonth(SelectedMonth);
+
+        if (SelectedDay > maxDays)
+            SelectedDay = maxDays;
+
+        await GetBirthdayPeople();
+        BirthdaysToShow = BirthdayPeople.Count > 0;
+
+        StateHasChanged();
     }
 }
