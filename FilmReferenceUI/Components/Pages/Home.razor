@@ -37,6 +37,16 @@
                             </MudSelectItem>
                         }
                     </MudSelect>
+                    @if (TodayButtonVisible)
+                    {
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Today"
+                                   Size="Size.Small"
+                                   OnClick="SetSelectedDatesToToday">
+                            Today
+                        </MudButton>
+                    }                    
                 </span>
             </MudStack>
 
