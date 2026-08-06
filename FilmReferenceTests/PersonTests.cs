@@ -617,6 +617,9 @@ public class PersonTests
         await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         var today = DateTime.Today;
+        var todayDay = today.Day;
+        var todayMonth = today.Month;
+
         context.People.AddRange(
             new PersonModel
             {
@@ -646,19 +649,22 @@ public class PersonTests
         await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
-        var result = await handler.GetTodaysBirthdays(today);
+        var result = await handler.GetBirthdaysForDateAsync(todayDay, todayMonth);
+
         result.Should().HaveCount(1);
         result.First().PersonId.Should().Be(1);
     }
 
     [Fact]
-    public async Task GetTodaysBirthdays_ShouldReturnLeapDayBirthdaysOnFeb28_InNonLeapYears()
+    public async Task GetTodaysBirthdays_ShouldReturnOnlyActualFeb28Birthdays_InNonLeapYears()
     {
         var factory = DbContextHelper.GetInMemoryFactory();
         await using var context = await factory.CreateDbContextAsync(CT.Token);
 
         // Simulate a non-leap year Feb 28
         var today = new DateTime(2025, 2, 28); // 2025 is not a leap year
+        var todayDay = today.Day;
+        var todayMonth = today.Month;
 
         context.People.AddRange(
             new PersonModel
@@ -689,10 +695,10 @@ public class PersonTests
         await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
-        var result = await handler.GetTodaysBirthdays(today);
+        var result = await handler.GetBirthdaysForDateAsync(todayDay, todayMonth);
 
-        result.Should().HaveCount(2);
-        result.Select(p => p.PersonId).Should().Contain(new[] { 1, 2 });
+        result.Should().HaveCount(1);
+        result.First().PersonId.Should().Be(2);
     }
 
     [Fact]
@@ -701,7 +707,8 @@ public class PersonTests
         var factory = DbContextHelper.GetInMemoryFactory();
         await using var context = await factory.CreateDbContextAsync(CT.Token);
 
-        var today = new DateTime(2024, 2, 29); // leap year
+        var todayDay = 29;
+        var todayMonth = 2;
 
         context.People.AddRange(
             new PersonModel
@@ -732,10 +739,135 @@ public class PersonTests
         await context.SaveChangesAsync(CT.Token);
 
         var handler = new PersonHandler(factory);
-        var result = await handler.GetTodaysBirthdays(today);
+        var result = await handler.GetBirthdaysForDateAsync(todayDay, todayMonth);
 
         result.Should().HaveCount(1);
         result.First().PersonId.Should().Be(1);
     }
 
+    [Fact]
+    public async Task GetBirthdaysForDate_ShouldReturnEmptyList_WhenNoBirthdaysMatch()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
+
+        // Choose a date unlikely to match anything
+        var targetDay = 15;
+        var targetMonth = 7;
+
+        context.People.AddRange(
+            new PersonModel
+            {
+                PersonId = 1,
+                FirstName = "Alice",
+                LastName = "Example",
+                IsCastMember = true,
+                DateOfBirth = new DateTime(1990, 1, 1)
+            },
+            new PersonModel
+            {
+                PersonId = 2,
+                FirstName = "Bob",
+                LastName = "Example",
+                IsCastMember = true,
+                DateOfBirth = new DateTime(1985, 12, 31)
+            },
+            new PersonModel
+            {
+                PersonId = 3,
+                FirstName = "Charlie",
+                LastName = "Director",
+                IsCastMember = false,
+                DateOfBirth = new DateTime(1970, 5, 20)
+            }
+        );
+
+        await context.SaveChangesAsync(CT.Token);
+
+        var handler = new PersonHandler(factory);
+        var result = await handler.GetBirthdaysForDateAsync(targetDay, targetMonth);
+
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetBirthdaysForDate_ShouldIgnorePeopleWithNullDateOfBirth()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
+
+        var targetDay = 10;
+        var targetMonth = 5;
+
+        context.People.AddRange(
+            new PersonModel
+            {
+                PersonId = 1,
+                FirstName = "Null",
+                LastName = "Dob",
+                IsCastMember = true,
+                DateOfBirth = null
+            },
+            new PersonModel
+            {
+                PersonId = 2,
+                FirstName = "Valid",
+                LastName = "Birthday",
+                IsCastMember = true,
+                DateOfBirth = new DateTime(1990, targetMonth, targetDay)
+            }
+        );
+
+        await context.SaveChangesAsync(CT.Token);
+
+        var handler = new PersonHandler(factory);
+        var result = await handler.GetBirthdaysForDateAsync(targetDay, targetMonth);
+
+        result.Should().HaveCount(1);
+        result.First().PersonId.Should().Be(2);
+    }
+
+    [Fact]
+    public async Task GetBirthdaysForDate_ShouldReturnResultsOrderedByFirstNameThenLastName()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+        await using var context = await factory.CreateDbContextAsync(CT.Token);
+
+        var targetDay = 20;
+        var targetMonth = 8;
+
+        context.People.AddRange(
+            new PersonModel
+            {
+                PersonId = 1,
+                FirstName = "Charlie",
+                LastName = "Zulu",
+                IsCastMember = true,
+                DateOfBirth = new DateTime(1990, targetMonth, targetDay)
+            },
+            new PersonModel
+            {
+                PersonId = 2,
+                FirstName = "Alice",
+                LastName = "Bravo",
+                IsCastMember = true,
+                DateOfBirth = new DateTime(1980, targetMonth, targetDay)
+            },
+            new PersonModel
+            {
+                PersonId = 3,
+                FirstName = "Alice",
+                LastName = "Alpha",
+                IsCastMember = true,
+                DateOfBirth = new DateTime(1970, targetMonth, targetDay)
+            }
+        );
+
+        await context.SaveChangesAsync(CT.Token);
+
+        var handler = new PersonHandler(factory);
+        var result = await handler.GetBirthdaysForDateAsync(targetDay, targetMonth);
+
+        result.Select(p => p.PersonId).Should().ContainInOrder(3, 2, 1);
+    }
 }

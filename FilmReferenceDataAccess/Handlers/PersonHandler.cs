@@ -179,24 +179,16 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
             .ToListAsync();
     }
 
-    public async Task<List<PersonModel>> GetTodaysBirthdays(DateTime today)
+    public async Task<List<PersonModel>> GetBirthdaysForDateAsync(int day, int month)
     {
         await using var context = await factory.CreateDbContextAsync();
-        var isLeapYear = DateTime.IsLeapYear(today.Year);
-
         return await context.People
             .Where(p =>
                 p.IsCastMember &&
                 p.DateOfBirth.HasValue &&
                 (
-                    (p.DateOfBirth.Value.Month == today.Month &&
-                     p.DateOfBirth.Value.Day == today.Day)
-                    ||
-                    (!isLeapYear &&
-                     p.DateOfBirth.Value.Month == 2 &&
-                     p.DateOfBirth.Value.Day == 29 &&
-                     today.Month == 2 &&
-                     today.Day == 28)
+                    (p.DateOfBirth.Value.Month == month &&
+                     p.DateOfBirth.Value.Day == day)
                 )
             )
             .Include(p => p.FilmPerson)
