@@ -36,7 +36,9 @@
                 <MudText Class="file-name-display">@ImageName</MudText>
 
                 <div class="my-4" />
-
+            }
+            @if (GenreDisplayModel.Logo is not null)
+            {
                 <MudButton Variant="Variant.Filled"
                            Color="Color.Error"
                            OnClick="LocalRemoveImage"
