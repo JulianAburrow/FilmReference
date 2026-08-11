@@ -60,7 +60,9 @@
                 <MudText Class="file-name-display">@ImageName</MudText>
 
                 <div class="my-4" />
-
+            }
+            @if (PersonDisplayModel.Picture is not null)
+            {
                 <MudButton Variant="Variant.Filled"
                            Color="Color.Error"
                            OnClick="LocalRemoveImage"
