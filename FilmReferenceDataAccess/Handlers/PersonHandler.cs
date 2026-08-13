@@ -113,6 +113,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
                 .ThenInclude(f => f.Studio)
             .Include(p => p.Films)
                 .ThenInclude(f => f.Genre)
+            .AsSplitQuery()
             .AsNoTracking()
             .SingleOrDefaultAsync(p => p.PersonId == personId);
 
