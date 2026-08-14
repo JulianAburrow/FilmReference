@@ -45,6 +45,7 @@ public class StudioHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
                 .ThenInclude(f => f.Director)
             .Include(s => s.Films)
                 .ThenInclude(f => f.Genre)
+            .AsSplitQuery()
             .AsNoTracking()
             .SingleOrDefaultAsync(s => s.StudioId == studioId);
 

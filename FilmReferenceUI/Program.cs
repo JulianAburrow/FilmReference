@@ -8,7 +8,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddMudServices(config =>
 {
-    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
 });
 builder.Services.ConfigureSqlConnections(configuration);
 builder.Services.AddDependencies();
