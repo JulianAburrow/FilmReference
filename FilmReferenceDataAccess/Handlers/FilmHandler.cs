@@ -88,6 +88,7 @@ public class FilmHandler(IDbContextFactory<FilmReferenceContext> factory) : IFil
             .Include(f => f.Genre)
             .Include(f => f.FilmPerson)
                 .ThenInclude(fp => fp.Person)
+            .AsSplitQuery()
             .AsNoTracking()
             .SingleOrDefaultAsync(f => f.FilmId == filmId);
 

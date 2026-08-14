@@ -21,7 +21,7 @@
                                Style="width:64px;">
                         @foreach (var d in Enumerable.Range(1, GetDaysInMonth(SelectedMonth)))
                         {
-                            <MudSelectItem Value="@d">@d</MudSelectItem>
+                            <MudSelectItem Value="@d">@d.ToDayOrdinal()</MudSelectItem>
                         }
                     </MudSelect>
 
@@ -65,7 +65,7 @@
             else
             {
                 <MudText Typo="Typo.h6">
-                    No birthdays for @SelectedDay / @SelectedMonth. Choose another date.
+                    No birthdays for @SelectedDay.ToDayOrdinal() @CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(SelectedMonth). Choose another date.
                 </MudText>
             }
         }

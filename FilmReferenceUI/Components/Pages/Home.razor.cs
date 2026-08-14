@@ -142,13 +142,13 @@ public partial class Home
         if (BirthdayPeople.Count == 0)
         {
             Snackbar.Add(
-                $"No birthdays found for {SelectedDay} {monthWord}.",
+                $"No birthdays found for {SelectedDay.ToDayOrdinal()} {monthWord}.",
                 Severity.Warning);
         }
         else
         {
             Snackbar.Add(
-                $"{BirthdayPeople.Count} birthday{(BirthdayPeople.Count != 1 ? "s" : "")} found for {SelectedDay} {monthWord}.",
+                $"{BirthdayPeople.Count} birthday{(BirthdayPeople.Count != 1 ? "s" : "")} found for {SelectedDay.ToDayOrdinal()} {monthWord}.",
                 Severity.Info);
         }
         IsLoadingBirthdays = false;
