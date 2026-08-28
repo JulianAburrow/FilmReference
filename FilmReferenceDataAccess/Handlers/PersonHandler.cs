@@ -77,6 +77,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
     {
         await using var context = await factory.CreateDbContextAsync();
         return await context.People
+            .Include(p => p.Nationality)
             .Include(p => p.Films)
             .Include(p => p.FilmPerson)
             .Where(p => p.IsCastMember)
@@ -90,6 +91,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
     {
         await using var context = await factory.CreateDbContextAsync();
         return await context.People
+            .Include(p => p.Nationality)
             .Include(p => p.Films)
             .Include(p => p.FilmPerson)
             .Where(p => p.IsDirector)
@@ -103,6 +105,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
     {
         await using var context = await factory.CreateDbContextAsync();
         var person = await context.People
+            .Include(p => p.Nationality)
             .Include(p => p.FilmPerson)
                 .ThenInclude(fp => fp.Film)
                     .ThenInclude(f => f.Genre)
@@ -139,6 +142,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
         personToUpdate.Description = person.Description;
         personToUpdate.IsCastMember = person.IsCastMember;
         personToUpdate.IsDirector = person.IsDirector;
+        personToUpdate.NationalityId = person.NationalityId;
         personToUpdate.DateOfBirth = person.DateOfBirth;
         personToUpdate.DateOfDeath = person.DateOfDeath;
         personToUpdate.Picture = person.Picture;

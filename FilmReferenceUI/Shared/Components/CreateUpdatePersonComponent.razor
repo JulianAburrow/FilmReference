@@ -19,6 +19,17 @@
                           @bind-Value="PersonDisplayModel.Description"
                           Lines="3" />
 
+            <MudSelect T="int?"
+                        Label="Nationality"
+                        @bind-Value="PersonDisplayModel.NationalityId">
+                @foreach (var nationalityModel in NationalityModels)
+                {
+                    <MudSelectItem T="int?" Value="@nationalityModel.NationalityId">
+                        @nationalityModel.Name
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
             <MudGrid>
                 <MudItem xs="6">
                     <MudCheckBox Label="Cast Member"
