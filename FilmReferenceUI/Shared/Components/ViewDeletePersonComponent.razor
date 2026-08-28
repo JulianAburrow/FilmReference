@@ -19,6 +19,11 @@
                 }
                 <MudText Style="font-weight: bold;">@textToShow</MudText>
 
+                @if (PersonModel.Nationality is not null)
+                {
+                    <MudText><b>Nationality:</b> @PersonModel.Nationality.Name</MudText>
+                }
+
                 @if (PersonModel.DateOfBirth is not null)
                 {
                     <MudText><b>Date of Birth:</b> @PersonModel.DateOfBirth?.ToString("dd/MM/yyyy")</MudText>

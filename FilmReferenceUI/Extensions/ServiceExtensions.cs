@@ -13,6 +13,7 @@ public static class ServiceExtensions
         services.AddTransient<IFavouriteHandler, FavouriteHandler>();
         services.AddTransient<IFilmHandler, FilmHandler>();
         services.AddTransient<IGenreHandler, GenreHandler>();
+        services.AddTransient<INationalityHandler, NationalityHandler>();
         services.AddTransient<IPersonHandler, PersonHandler>();
         services.AddTransient<IStudioHandler, StudioHandler>();
         services.AddTransient<ISearchHandler, SearchHandler>();

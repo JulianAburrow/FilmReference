@@ -57,6 +57,7 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="SeedData" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Studio.sql" />
@@ -64,10 +65,15 @@
     <Build Include="Tables\FilmPerson.sql" />
     <Build Include="Tables\Genre.sql" />
     <Build Include="Tables\Film.sql" />
+    <Build Include="Tables\Nationality.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FilmReferenceDatabase.publish.xml" />
     <Build Include="Tables\Favourite.sql" />
+    <None Include="SeedData\SeedNationality.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <PostDeploy Include="PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="FilmReferenceDatabase.refactorlog" />

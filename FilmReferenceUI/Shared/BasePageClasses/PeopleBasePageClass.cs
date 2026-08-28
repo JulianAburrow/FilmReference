@@ -4,11 +4,15 @@ public abstract class PeopleBasePageClass : BasePageClass
 {
     [Inject] protected IPersonHandler PersonHandler { get; set; } = null!;
 
+    [Inject] protected INationalityHandler NationalityHandler { get; set; } = null!;
+
     [Parameter] public int PersonId { get; set; }
 
     protected PersonModel PersonModel { get; set; } = new();
 
     protected PersonDisplayModel PersonDisplayModel { get; set; } = new();
+
+    protected List<NationalityModel> NationalityModels { get; set; } = [];
 
     protected string PersonNotFoundMessage = "Person not found";
 
@@ -19,6 +23,7 @@ public abstract class PeopleBasePageClass : BasePageClass
         PersonModel.FirstName = PersonDisplayModel.FirstName;
         PersonModel.LastName = PersonDisplayModel.LastName;
         PersonModel.Description = PersonDisplayModel.Description;
+        PersonModel.NationalityId = PersonDisplayModel.NationalityId;
         PersonModel.IsCastMember = PersonDisplayModel.IsCastMember;
         PersonModel.IsDirector = PersonDisplayModel.IsDirector;
         PersonModel.DateOfBirth = PersonDisplayModel.DateOfBirth;
@@ -41,6 +46,7 @@ public abstract class PeopleBasePageClass : BasePageClass
         PersonDisplayModel.Description = PersonModel.Description;
         PersonDisplayModel.IsCastMember = PersonModel.IsCastMember;
         PersonDisplayModel.IsDirector = PersonModel.IsDirector;
+        PersonDisplayModel.NationalityId = PersonModel.NationalityId;
         PersonDisplayModel.DateOfBirth = PersonModel.DateOfBirth;
         PersonDisplayModel.DateOfDeath = PersonModel.DateOfDeath;
         PersonDisplayModel.Age = PersonModel.Age;

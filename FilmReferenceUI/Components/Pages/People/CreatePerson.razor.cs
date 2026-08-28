@@ -4,8 +4,18 @@ public partial class CreatePerson
 {
     private bool ShowRoleError { get; set; }
 
-    protected override async Task OnInitializedAsync() =>
+    protected override async Task OnInitializedAsync()
+    {
         MainLayout.SetHeaderValue("Create Person");
+        NationalityModels = await NationalityHandler.GetNationalitiesAsync();
+        NationalityModels.Insert(0, new NationalityModel
+        {
+            NationalityId = SharedValues.PleaseSelectValue,
+            Name = SharedValues.PleaseSelectText
+        });
+        PersonDisplayModel.NationalityId = SharedValues.PleaseSelectValue;
+    }
+        
 
     private async Task CreatePersonAsync()
     {
@@ -21,6 +31,10 @@ public partial class CreatePerson
             {
                 ShowRoleError = true;
                 return;
+            }
+            if (PersonModel.NationalityId == SharedValues.PleaseSelectValue)
+            {
+                PersonModel.NationalityId = null;
             }
             await PersonHandler.CreatePersonAsync(PersonModel);
             Snackbar.Add($"{personName} successfully created.", Severity.Success);

@@ -16,6 +16,10 @@ public class PersonModel
 
     public bool IsDirector { get; set; }
 
+    public int? NationalityId { get; set; }
+
+    public NationalityModel Nationality { get; set; }
+
     public DateTime? DateOfBirth { get; set; }
 
     public DateTime? DateOfDeath { get; set; }

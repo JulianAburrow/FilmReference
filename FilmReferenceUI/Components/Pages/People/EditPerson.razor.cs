@@ -15,6 +15,18 @@ public partial class EditPerson
             return;
         }
 
+        if (PersonModel.NationalityId is null)
+        {
+            PersonModel.NationalityId = SharedValues.PleaseSelectValue;
+        }
+
+        NationalityModels = await NationalityHandler.GetNationalitiesAsync();
+        NationalityModels.Insert(0, new NationalityModel
+        {
+            NationalityId = SharedValues.PleaseSelectValue,
+            Name = SharedValues.PleaseSelectText,
+        });
+
         CopyModelToDisplayModel();
         MainLayout.SetHeaderValue($"Edit {PersonModel.FirstName} {PersonModel.LastName}");
 
@@ -35,6 +47,10 @@ public partial class EditPerson
             {
                 ShowRoleError = true;
                 return;
+            }
+            if (PersonModel.NationalityId == SharedValues.PleaseSelectValue)
+            {
+                PersonModel.NationalityId = null;
             }
             await PersonHandler.UpdatePersonAsync(PersonModel);
             Snackbar.Add($"{personName} successfully updated.", Severity.Success);

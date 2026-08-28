@@ -6,6 +6,7 @@ public class FilmReferenceContext(DbContextOptions<FilmReferenceContext> options
     public DbSet<FilmModel> Films { get; set; }
     public DbSet<FilmPersonModel> FilmPeople { get; set; }
     public DbSet<GenreModel> Genres { get; set; }
+    public DbSet<NationalityModel> Nationalities { get; set; }
     public DbSet<PersonModel> People { get; set; }
     public DbSet<StudioModel> Studios { get; set; }
 
@@ -22,6 +23,7 @@ public class FilmReferenceContext(DbContextOptions<FilmReferenceContext> options
         builder.ApplyConfiguration(new FilmConfiguration());
         builder.ApplyConfiguration(new FilmPersonConfiguration());
         builder.ApplyConfiguration(new GenreConfiguration());
+        builder.ApplyConfiguration(new NationalityConfiguration());
         builder.ApplyConfiguration(new PersonConfiguration());
         builder.ApplyConfiguration(new StudioConfiguration());
     }

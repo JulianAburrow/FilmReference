@@ -20,6 +20,8 @@ public class PersonDisplayModel
 
     public bool IsDirector { get; set; }
 
+    public int? NationalityId { get; set; }
+
     public DateTime? DateOfBirth { get; set; }
 
     public DateTime? DateOfDeath { get; set; }
@@ -27,6 +29,8 @@ public class PersonDisplayModel
     public int? Age { get; set; }
 
     public byte[]? Picture { get; set; }
+
+    public NationalityModel? Nationality { get; set; }
 
     public ICollection<FilmModel> Films { get; set; } = [];
 
