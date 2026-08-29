@@ -12,5 +12,7 @@ public class FavouriteDisplayModel
 
     public string EntityName { get; set; } = string.Empty;
 
+    public string? EntityDescription { get; set; } = null!;
+
     public byte[]? EntityImage { get; set; }
 }

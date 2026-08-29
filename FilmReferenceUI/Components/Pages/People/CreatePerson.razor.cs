@@ -14,6 +14,8 @@ public partial class CreatePerson
             Name = SharedValues.PleaseSelectText
         });
         PersonDisplayModel.NationalityId = SharedValues.PleaseSelectValue;
+
+        _isLoaded = true;
     }
         
 

@@ -5,7 +5,8 @@
 
 @if (AllPersonModels is null || FilteredPersonModels is null)
 {
-    <LoadingComponent />
+    var displayValue = PersonRole == RoleEnum.CastMembers.ToString() ? "cast members..." : "directors...";
+    <LoadingComponent DisplayValue=@($"Loading {displayValue}") />
     return;
 }
 

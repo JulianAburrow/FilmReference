@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace FilmReferenceDataAccess.Models;
+﻿namespace FilmReferenceDataAccess.Models;
 
 public class PersonModel
 {
@@ -18,7 +16,7 @@ public class PersonModel
 
     public int? NationalityId { get; set; }
 
-    public NationalityModel Nationality { get; set; }
+    public NationalityModel? Nationality { get; set; }
 
     public DateTime? DateOfBirth { get; set; }
 
