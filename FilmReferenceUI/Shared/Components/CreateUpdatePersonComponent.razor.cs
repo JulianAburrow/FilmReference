@@ -4,7 +4,7 @@ public partial class CreateUpdatePersonComponent
 {
     [Parameter] public new PersonDisplayModel PersonDisplayModel { get; set; } = new();
 
-    [Parameter] public List<NationalityModel> NationalityModels { get; set; } = [];
+    [Parameter] public new List<NationalityModel> NationalityModels { get; set; } = [];
 
     protected async Task LocalUploadImage(IBrowserFile file)
     {

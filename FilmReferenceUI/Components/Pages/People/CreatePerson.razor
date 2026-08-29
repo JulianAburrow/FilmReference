@@ -3,6 +3,12 @@
 
 <PageTitle>Create Person</PageTitle>
 
+@if (!_isLoaded)
+{
+    <LoadingComponent DisplayValue="@LoadingPersonMessage" />
+    return;
+}
+
 <MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
     @if (ShowRoleError)
     {

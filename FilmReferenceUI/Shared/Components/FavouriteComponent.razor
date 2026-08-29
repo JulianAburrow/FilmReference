@@ -6,8 +6,13 @@
         <MudLink
             Href="@($"/{Favourite.EntityTypeName}/View/{Favourite.EntityId}")"
             Class="no-underline d-block">
+            @{
+                var imageTitle = Favourite.EntityDescription is null
+                    ? Favourite.EntityName
+                    : $"{Favourite.EntityName} - {Favourite.EntityDescription}";
+            }
             <ViewImageComponent ImageData="Favourite.EntityImage"
-                                ImageTitle="@Favourite.EntityName" />
+                                ImageTitle="@imageTitle" />
         </MudLink>
     </MudCardContent>
     <MudCardActions Class="d-flex flex-wrap" Style="gap: 8px;">

@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel;
+
 namespace FilmReferenceDataAccess.Handlers;
 
 public class FavouriteHandler(IDbContextFactory<FilmReferenceContext> filmReferenceContextFactory) : IFavouriteHandler
@@ -50,7 +52,7 @@ public class FavouriteHandler(IDbContextFactory<FilmReferenceContext> filmRefere
             var entityTypeId = group.Key;
             var entityIds = group.Select(f => f.EntityId).ToList();
 
-            Dictionary<int, (string Name, byte[]? Image)> lookup;
+            Dictionary<int, (string Name, string EntityDescription, byte[]? Image)> lookup;
 
             switch (entityTypeId)
             {
@@ -59,7 +61,7 @@ public class FavouriteHandler(IDbContextFactory<FilmReferenceContext> filmRefere
                         .Where(f => entityIds.Contains(f.FilmId))
                         .ToDictionaryAsync(
                             f => f.FilmId,
-                            f => (Name: f.Name, Image: f.BoxCover)
+                            f => (Name: f.Name, EntityDescription: f.Description, Image: f.BoxCover)
                         );
                     break;
 
@@ -68,7 +70,7 @@ public class FavouriteHandler(IDbContextFactory<FilmReferenceContext> filmRefere
                         .Where(g => entityIds.Contains(g.GenreId))
                         .ToDictionaryAsync(
                             g => g.GenreId,
-                            g => (Name: g.Name, Image: g.Logo)
+                            g => (Name: g.Name, EntityDescription: g.Description, Image: g.Logo)
                         );
                     break;
 
@@ -77,7 +79,7 @@ public class FavouriteHandler(IDbContextFactory<FilmReferenceContext> filmRefere
                         .Where(p => entityIds.Contains(p.PersonId))
                         .ToDictionaryAsync(
                             p => p.PersonId,
-                            p => (Name: p.FirstName + " " + p.LastName, Image: p.Picture)
+                            p => (Name: p.FirstName + " " + p.LastName, EntityDescription: p.Description, Image: p.Picture)
                         );
                     break;
 
@@ -86,7 +88,7 @@ public class FavouriteHandler(IDbContextFactory<FilmReferenceContext> filmRefere
                         .Where(s => entityIds.Contains(s.StudioId))
                         .ToDictionaryAsync(
                             s => s.StudioId,
-                            s => (Name: s.Name, Image: s.Logo)
+                            s => (Name: s.Name, EntityDescription: s.Description, Image: s.Logo)
                         );
                     break;
 
@@ -108,6 +110,7 @@ public class FavouriteHandler(IDbContextFactory<FilmReferenceContext> filmRefere
                     EntityTypeName = Enum.GetName(typeof(FavouriteEntityEnum), favourite.EntityTypeId) ?? "Unknown",
                     EntityId = favourite.EntityId,
                     EntityName = details.Name,
+                    EntityDescription = details.EntityDescription,
                     EntityImage = details.Image
                 });
             }
