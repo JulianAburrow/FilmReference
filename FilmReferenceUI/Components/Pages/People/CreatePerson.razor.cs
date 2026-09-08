@@ -10,10 +10,10 @@ public partial class CreatePerson
         NationalityModels = await NationalityHandler.GetNationalitiesAsync();
         NationalityModels.Insert(0, new NationalityModel
         {
-            NationalityId = SharedValues.PleaseSelectValue,
-            Name = SharedValues.PleaseSelectText
+            NationalityId = SharedValues.UnknownNotSelectedValue,
+            Name = SharedValues.UnknownNotSelectedText
         });
-        PersonDisplayModel.NationalityId = SharedValues.PleaseSelectValue;
+        PersonDisplayModel.NationalityId = SharedValues.UnknownNotSelectedValue;
 
         _isLoaded = true;
     }

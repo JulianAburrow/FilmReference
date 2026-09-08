@@ -6,5 +6,7 @@ public class NationalityModel
 
     public string Name { get; set; } = string.Empty;
 
+    public string IsoCode { get; set; } = string.Empty;
+
     public ICollection<PersonModel> People { get; set; } = [];
 }

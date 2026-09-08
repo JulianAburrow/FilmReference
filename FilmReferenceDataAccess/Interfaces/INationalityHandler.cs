@@ -3,4 +3,6 @@
 public interface INationalityHandler
 {
     Task<List<NationalityModel>> GetNationalitiesAsync();
+
+    Task<List<NationalityListModel>> GetNationalitiesInUseAsync();
 }
