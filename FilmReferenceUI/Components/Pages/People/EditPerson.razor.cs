@@ -23,8 +23,8 @@ public partial class EditPerson
         NationalityModels = await NationalityHandler.GetNationalitiesAsync();
         NationalityModels.Insert(0, new NationalityModel
         {
-            NationalityId = SharedValues.PleaseSelectValue,
-            Name = SharedValues.PleaseSelectText,
+            NationalityId = SharedValues.UnknownNotSelectedValue,
+            Name = SharedValues.UnknownNotSelectedText,
         });
 
         CopyModelToDisplayModel();
