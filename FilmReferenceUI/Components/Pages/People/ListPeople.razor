@@ -29,36 +29,51 @@
     <MudStack Spacing="3">
 
         <!-- FILTER BAR (Unified) -->
-        <div class="d-flex flex-wrap gap-3">
+        <MudStack Row="true" Spacing="2">
 
-            <!-- ALL BUTTON -->
-            <MudButton Variant="@(CurrentFilterMode == FilterMode.Initials
-                                                    ? (NormaliseHelper.Normalised(Initial) == "all" ? Variant.Filled : Variant.Outlined)
-                                                    : (NormaliseHelper.Normalised(Country) == "all" ? Variant.Filled : Variant.Outlined))"
-                       Color="@(CurrentFilterMode == FilterMode.Initials
-                                                    ? (NormaliseHelper.Normalised(Initial) == "all" ? Color.Secondary : Color.Default)
-                                                    : (NormaliseHelper.Normalised(Country) == "all" ? Color.Secondary : Color.Default))"
-                       OnClick="@(() => ApplyFilter("All"))"
-                       Size="Size.Small">
-                All (@AllPersonModels.Count)
-            </MudButton>
-
-            <!-- FILTER OPTIONS -->
-            @foreach (var option in FilterOptions.Keys.OrderBy(k => k))
+            @if (CurrentFilterMode == FilterMode.Initials)
             {
-                <MudButton Variant="@(CurrentFilterMode == FilterMode.Initials
-                                                            ? (NormaliseHelper.Normalised(Initial) == NormaliseHelper.Normalised(option) ? Variant.Filled : Variant.Outlined)
-                                                            : (NormaliseHelper.Normalised(Country) == NormaliseHelper.Normalised(option) ? Variant.Filled : Variant.Outlined))"
-                           Color="@(CurrentFilterMode == FilterMode.Initials
-                                                            ? (NormaliseHelper.Normalised(Initial) == NormaliseHelper.Normalised(option) ? Color.Secondary : Color.Default)
-                                                            : (NormaliseHelper.Normalised(Country) == NormaliseHelper.Normalised(option) ? Color.Secondary : Color.Default))"
-                           OnClick="@(() => ApplyFilter(option))"
-                           Size="Size.Small">
-                    @option (@FilterOptions[option])
-                </MudButton>
-            }
-        </div>
+                <MudSelect T="string"
+                        @bind-Value="Initial"
+                        @bind-Value:after="(() => ApplyFilter(Initial))"
+                        Label="Select First Initial"
+                        FullWidth="false"
+                        Style="width:250px;">
+                <MudSelectItem T="string">
+                    All
+                </MudSelectItem>
 
+                @foreach (var initial in Initials)
+                {
+                    <MudSelectItem T="string" Value="@initial">
+                        @initial
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
+            }
+            else
+            {
+               <MudSelect T="string"
+                            @bind-Value="Country"
+                            @bind-Value:after="(() => ApplyFilter(Country))"
+                            Label="Select Nationality"
+                            FullWidth="false"
+                            Style="width:250px;">
+                    <MudSelectItem T="string">
+                        All
+                    </MudSelectItem>
+
+                    @foreach (var nationality in Nationalities)
+                    {
+                        <MudSelectItem T="string" Value="@nationality.Name">
+                            @nationality.Name
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            }
+
+        </MudStack>
 
         <!-- RESULTS -->
         @if (!FilteredPersonModels.Any())

@@ -25,24 +25,27 @@
 
     <MudStack Spacing="3">
 
-        <div class="d-flex flex-wrap gap-1">
-            <MudButton Variant="@(NormaliseHelper.Normalised(Genre) == "all" ? Variant.Filled : Variant.Outlined)"
-                       Color="@(NormaliseHelper.Normalised(Genre) == "all" ? Color.Secondary : Color.Default)"
-                       OnClick="@(() => FilterFilms("All"))"
-                       Size="Size.Small">
-                All (@AllFilmModels.Count)
-            </MudButton>
+        <MudStack Row="true" Spacing="2">
 
-            @foreach (var genreModel in GenreModels)
-            {
-                <MudButton Variant="@(NormaliseHelper.Normalised(Genre) == NormaliseHelper.Normalised(genreModel.Name) ? Variant.Filled : Variant.Outlined)"
-                           Color="@(NormaliseHelper.Normalised(Genre) == NormaliseHelper.Normalised(genreModel.Name) ? Color.Secondary : Color.Default)"
-                           OnClick="@(() => FilterFilms(genreModel.Name))"
-                           Size="Size.Small">
-                    @genreModel.Name (@genreModel.Films.Count)
-                </MudButton>
-            }
-        </div>
+            <MudSelect T="string"
+                       @bind-Value="Genre"
+                       @bind-Value:after="(() => FilterFilms(Genre))"
+                       Label="Select Genre"
+                       FullWidth="false"
+                       Style="width:250px;">
+                <MudSelectItem T="string">
+                    All (@AllFilmModels.Count)
+                </MudSelectItem>
+
+                @foreach (var genreModel in GenreModels)
+                {
+                    <MudSelectItem T="string" Value="@genreModel.Name">
+                        @genreModel.Name (@genreModel.Films.Count)
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
+        </MudStack>
 
         @if (!FilteredFilmModels.Any())
         {
