@@ -6,7 +6,7 @@ public partial class ListFilms
 
     private List<FilmModel> FilteredFilmModels { get; set; } = null!;
 
-    private string Genre { get; set;} = "All";
+    private string Genre { get; set; } = "All";
 
     protected override async Task OnInitializedAsync()
     {
@@ -19,6 +19,11 @@ public partial class ListFilms
 
     private void FilterFilms(string genreName)
     {
+        if (genreName is null)
+        {
+            genreName = "All";
+        }
+
         Genre = genreName;
 
         if (string.IsNullOrWhiteSpace(genreName) || genreName == "All")

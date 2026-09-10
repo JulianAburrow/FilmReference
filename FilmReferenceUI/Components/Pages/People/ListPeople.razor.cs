@@ -12,11 +12,15 @@ public partial class ListPeople
 
     private List<NationalityListModel> Nationalities { get; set; } = null!;
 
+    private List<string> Initials { get; set; } = [];
+
     private Dictionary<string, int> FilterOptions { get; set; } = new();
 
     private string Initial { get; set; } = "All";
 
     private string Country { get; set; } = "All";
+
+    public string? SelectedFilter { get; set; }
 
     private string InitialsOrNationalities = "Nationalities";
 
@@ -39,21 +43,45 @@ public partial class ListPeople
 
         _lastRole = role;
 
-        if (role == RoleEnum.CastMembers)
+        MainLayout.SetHeaderValue(role switch
         {
-            MainLayout.SetHeaderValue("Cast Members");
-            AllPersonModels = await PersonHandler.GetCastMembersAsync();
-        }
-        else if (role == RoleEnum.Directors)
+            RoleEnum.CastMembers => "Cast Members",
+            RoleEnum.Directors => "Directors",
+            _ => "People"
+        });
+
+        AllPersonModels = role switch
         {
-            MainLayout.SetHeaderValue("Directors");
-            AllPersonModels = await PersonHandler.GetDirectorsAsync();
-        }
+            RoleEnum.CastMembers => await PersonHandler.GetCastMembersAsync(),
+            RoleEnum.Directors => await PersonHandler.GetDirectorsAsync(),
+            _ => []
+        };
+
+        Nationalities = role switch
+        {
+            RoleEnum.CastMembers => await NationalityHandler.GetNationalitiesInUseForCastMembersAsync(),
+            RoleEnum.Directors => await NationalityHandler.GetNationalitiesInUseForDirectorsAsync(),
+            _ => []
+        };
+
+
+        Nationalities.Add(new NationalityListModel
+        {
+            Name = "Unknown",
+        });
+        Nationalities = Nationalities.OrderBy(n => n.Name).ToList();
+
+        Initials = AllPersonModels
+            .Where(p => !string.IsNullOrWhiteSpace(p.FirstName))
+            .Select(p => p.FirstName[0].ToString().ToUpper())
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
 
         BuildFilterOptions();
         ApplyFilter("All");
 
-        Nationalities = await NationalityHandler.GetNationalitiesInUseAsync();
+        
 
         _isLoaded = true;
     }
@@ -64,72 +92,83 @@ public partial class ListPeople
     // ------------------------------------------------------------
     private void BuildFilterOptions()
     {
-        if (CurrentFilterMode == FilterMode.Initials)
+        FilterOptions = CurrentFilterMode switch
         {
-            FilterOptions = AllPersonModels
-                .GroupBy(p => p.FirstName[0].ToString().ToUpper())
-                .ToDictionary(g => g.Key, g => g.Count());
-        }
-        else
-        {
-            FilterOptions = AllPersonModels
-                .Where(p => p.Nationality is not null)
-                .GroupBy(p => p.Nationality!.Name)
-                .ToDictionary(g => g.Key, g => g.Count());
+            FilterMode.Initials =>
+                AllPersonModels
+                    .Where(p => !string.IsNullOrWhiteSpace(p.FirstName))
+                    .GroupBy(p => p.FirstName[0].ToString().ToUpper())
+                    .ToDictionary(g => g.Key, g => g.Count()),
 
-            // Add unknown nationality count
-            var unknownCount = AllPersonModels.Count(p => p.Nationality is null);
-
-            if (unknownCount > 0)
-            {
-                FilterOptions.Add("Unknown", unknownCount);
-            }
-        }
+            FilterMode.Nationalities =>
+                AllPersonModels
+                    .GroupBy(p => p.Nationality?.Name ?? "Unknown")
+                    .ToDictionary(g => g.Key, g => g.Count())
+        };
     }
-
 
     // ------------------------------------------------------------
     // APPLY FILTER (Unified)
     // ------------------------------------------------------------
     private void ApplyFilter(string value)
     {
+        value ??= "All";   // null → "All"
+
         NextSortDirection = SortDirection.Ascending;
 
-        if (CurrentFilterMode == FilterMode.Initials)
+        // Apply the correct filter based on mode
+        FilteredPersonModels = CurrentFilterMode switch
         {
-            Initial = value;
+            FilterMode.Initials => ApplyInitialFilter(value),
+            FilterMode.Nationalities => ApplyNationalityFilter(value),
+            _ => AllPersonModels
+        };
 
-            FilteredPersonModels =
-                value == "All"
-                    ? AllPersonModels
-                    : AllPersonModels.Where(p =>
-                        p.FirstName.StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToList();
-
-            Snackbar.Add(
-                $"{FilteredPersonModels.Count} {(FilteredPersonModels.Count == 1 ? "person" : "people")} found{(value == "All" ? "" : $" with initial {value}")}.",
-                FilteredPersonModels.Count > 0 ? Severity.Info : Severity.Warning);
-        }
-        else
-        {
-            Country = value;
-
-            FilteredPersonModels =
-                value == "All"
-                    ? AllPersonModels
-                    : value == "Unknown"
-                        ? AllPersonModels.Where(p => p.Nationality is null).ToList()
-                        : AllPersonModels.Where(p => p.Nationality?.Name == value).ToList();
-
-            Snackbar.Add(
-                value == "All"
-                ? $"{FilteredPersonModels.Count} people found."
-                : $"{FilteredPersonModels.Count} {value} {(FilteredPersonModels.Count == 1 ? "person" : "people")} found.",
-                FilteredPersonModels.Count > 0 ? Severity.Info : Severity.Warning);
-        }
+        ShowSnackbar(value);
 
         NextSortDirection = SortDirection.Descending;
     }
 
+    private List<PersonModel> ApplyInitialFilter(string value)
+    {
+        Initial = value;
+
+        return value == "All"
+            ? AllPersonModels
+            : AllPersonModels.Where(p =>
+                p.FirstName.StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    private List<PersonModel> ApplyNationalityFilter(string value)
+    {
+        Country = value;
+
+        return value switch
+        {
+            "All" => AllPersonModels,
+            "Unknown" => AllPersonModels.Where(p => p.Nationality is null).ToList(),
+            _ => AllPersonModels.Where(p => p.Nationality?.Name == value).ToList()
+        };
+    }
+
+    private void ShowSnackbar(string value)
+    {
+        var count = FilteredPersonModels.Count;
+        var plural = count == 1 ? "person" : "people";
+
+        var message = CurrentFilterMode switch
+        {
+            FilterMode.Initials => value == "All"
+                ? $"{count} {plural} found."
+                : $"{count} {plural} found with initial {value}.",
+
+            FilterMode.Nationalities => value == "All"
+                ? $"{count} {plural} found."
+                : $"{count} {value} {plural} found."
+        };
+
+        Snackbar.Add(message, count > 0 ? Severity.Info : Severity.Warning);
+    }
 
     // ------------------------------------------------------------
     // SORTING
@@ -155,19 +194,24 @@ public partial class ListPeople
         }
     }
 
-
     // ------------------------------------------------------------
     // SWAP FILTER MODE
     // ------------------------------------------------------------
     private void SwapInitialsForNationalities()
     {
-        CurrentFilterMode = CurrentFilterMode == FilterMode.Initials
-            ? FilterMode.Nationalities
-            : FilterMode.Initials;
+        // Toggle mode
+        CurrentFilterMode = CurrentFilterMode switch
+        {
+            FilterMode.Initials => FilterMode.Nationalities,
+            FilterMode.Nationalities => FilterMode.Initials,
+        };
 
-        InitialsOrNationalities = CurrentFilterMode == FilterMode.Initials
-            ? "Nationalities"
-            : "Initials";
+        // Update UI label
+        InitialsOrNationalities = CurrentFilterMode switch
+        {
+            FilterMode.Initials => FilterMode.Nationalities.ToString(),
+            FilterMode.Nationalities => FilterMode.Initials.ToString(),
+        };
 
         BuildFilterOptions();
         ApplyFilter("All");
