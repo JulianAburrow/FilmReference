@@ -79,9 +79,7 @@ public partial class ListPeople
             .ToList();
 
         BuildFilterOptions();
-        ApplyFilter("All");
-
-        
+        ApplyFilter("All");        
 
         _isLoaded = true;
     }
@@ -199,7 +197,6 @@ public partial class ListPeople
     // ------------------------------------------------------------
     private void SwapInitialsForNationalities()
     {
-        // Toggle mode
         CurrentFilterMode = CurrentFilterMode switch
         {
             FilterMode.Initials => FilterMode.Nationalities,
