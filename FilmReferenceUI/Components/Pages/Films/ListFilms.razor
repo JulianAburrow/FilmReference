@@ -34,13 +34,13 @@
                        FullWidth="false"
                        Style="width:250px;">
                 <MudSelectItem T="string">
-                    All (@AllFilmModels.Count)
+                    All
                 </MudSelectItem>
 
                 @foreach (var genreModel in GenreModels)
                 {
                     <MudSelectItem T="string" Value="@genreModel.Name">
-                        @genreModel.Name (@genreModel.Films.Count)
+                        @genreModel.Name
                     </MudSelectItem>
                 }
             </MudSelect>
@@ -55,7 +55,7 @@
         {
             <div class="d-flex align-center gap-3">
                 <MudText Typo="Typo.subtitle1">
-                    @FilteredFilmModels.Count @(FilteredFilmModels.Count == 1 ? "film" : "films") in @(Genre == "All" ? "all genres" : $"genre {Genre}")
+                    @FilteredFilmModels.Count @(FilteredFilmModels.Count == 1 ? "film" : "films") found
                 </MudText>
                 @if (FilteredFilmModels.Count > 1)
                 {

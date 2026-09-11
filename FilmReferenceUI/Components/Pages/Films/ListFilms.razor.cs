@@ -49,19 +49,17 @@ public partial class ListFilms
 
     private void ResortList()
     {
+        // do the work
         switch (NextSortDirection)
         {
             case SortDirection.Ascending:
                 FilteredFilmModels = [.. FilteredFilmModels.OrderBy(f => f.Name)];
                 NextSortDirection = SortDirection.Descending;
                 break;
+
             case SortDirection.Descending:
                 FilteredFilmModels = [.. FilteredFilmModels.OrderByDescending(f => f.Name)];
                 NextSortDirection = SortDirection.Ascending;
-                break;
-            default:
-                FilteredFilmModels = [.. FilteredFilmModels.OrderBy(f => f.Name)];
-                NextSortDirection = SortDirection.Descending;
                 break;
         }
     }
