@@ -11,6 +11,7 @@ public class FilmHandler(IDbContextFactory<FilmReferenceContext> factory) : IFil
         {
             Name = film.Name,
             Description = film.Description,
+            Notes = film.Notes,
             StudioId = film.StudioId,
             DirectorId = film.DirectorId,
             GenreId = film.GenreId,
@@ -114,6 +115,7 @@ public class FilmHandler(IDbContextFactory<FilmReferenceContext> factory) : IFil
                 FilmId = f.FilmId,
                 Name = f.Name,
                 Description = f.Description,
+                Notes = f.Notes,
                 BoxCover = f.BoxCover,
                 GenreId = f.GenreId,
                 StudioId = f.StudioId,
@@ -137,6 +139,7 @@ public class FilmHandler(IDbContextFactory<FilmReferenceContext> factory) : IFil
         
         filmToUpdate.Name = film.Name;
         filmToUpdate.Description = film.Description;
+        filmToUpdate.Notes = film.Notes;
         filmToUpdate.StudioId = film.StudioId;
         filmToUpdate.DirectorId = film.DirectorId;
         filmToUpdate.GenreId = film.GenreId;
