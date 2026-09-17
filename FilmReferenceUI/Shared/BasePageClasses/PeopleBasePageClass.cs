@@ -23,6 +23,7 @@ public abstract class PeopleBasePageClass : BasePageClass
         PersonModel.FirstName = PersonDisplayModel.FirstName;
         PersonModel.LastName = PersonDisplayModel.LastName;
         PersonModel.Description = PersonDisplayModel.Description;
+        PersonModel.Notes = PersonDisplayModel.Notes;
         PersonModel.NationalityId = PersonDisplayModel.NationalityId;
         PersonModel.IsCastMember = PersonDisplayModel.IsCastMember;
         PersonModel.IsDirector = PersonDisplayModel.IsDirector;
@@ -44,6 +45,7 @@ public abstract class PeopleBasePageClass : BasePageClass
         PersonDisplayModel.FirstName = PersonModel.FirstName;
         PersonDisplayModel.LastName = PersonModel.LastName;
         PersonDisplayModel.Description = PersonModel.Description;
+        PersonDisplayModel.Notes = PersonModel.Notes;
         PersonDisplayModel.IsCastMember = PersonModel.IsCastMember;
         PersonDisplayModel.IsDirector = PersonModel.IsDirector;
         PersonDisplayModel.NationalityId = PersonModel.NationalityId;

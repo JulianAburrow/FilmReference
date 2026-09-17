@@ -46,8 +46,16 @@
                 <!-- Description -->
                 @if (!string.IsNullOrWhiteSpace(PersonModel.Description))
                 {
-                    <MudText Typo="Typo.body1" Class="mb-3">
+                    <MudText Typo="Typo.h6" Class="mb-3">
                         @PersonModel.Description
+                    </MudText>
+                }
+
+                <!-- Notes -->
+                @if (!string.IsNullOrWhiteSpace(PersonModel.Notes))
+                {
+                    <MudText Typo="Typo.body1" Class="mb-3">
+                        @PersonModel.Notes
                     </MudText>
                 }
 
