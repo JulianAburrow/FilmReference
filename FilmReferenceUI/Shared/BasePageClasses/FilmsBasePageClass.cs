@@ -46,6 +46,7 @@ public abstract class FilmsBasePageClass : BasePageClass
     {
         FilmModel.Name = FilmDisplayModel.Name;
         FilmModel.Description = FilmDisplayModel.Description;
+        FilmModel.Notes = FilmDisplayModel.Notes;
         FilmModel.GenreId = FilmDisplayModel.GenreId;
         FilmModel.StudioId = FilmDisplayModel.StudioId;
         FilmModel.DirectorId = FilmDisplayModel.DirectorId;
@@ -65,6 +66,7 @@ public abstract class FilmsBasePageClass : BasePageClass
     {
         FilmDisplayModel.Name = FilmModel.Name;
         FilmDisplayModel.Description = FilmModel.Description;
+        FilmDisplayModel.Notes = FilmModel.Notes;
         FilmDisplayModel.GenreId = FilmModel.GenreId;
         FilmDisplayModel.StudioId = FilmModel.StudioId;
         FilmDisplayModel.DirectorId = FilmModel.DirectorId;

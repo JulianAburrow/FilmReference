@@ -13,7 +13,10 @@
                           OnlyValidateIfDirty="true" />
 
             <MudTextField Label="Description"
-                          @bind-Value="FilmDisplayModel.Description"
+                          @bind-Value="FilmDisplayModel.Description" />
+
+            <MudTextField Label="Notes"
+                          @bind-Value="FilmDisplayModel.Notes"
                           Lines="3" />
 
             <MudSelect T="int"

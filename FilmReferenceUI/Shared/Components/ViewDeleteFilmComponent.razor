@@ -54,8 +54,16 @@
                 <!-- Description -->
                 @if (!string.IsNullOrWhiteSpace(FilmModel.Description))
                 {
-                    <MudText Typo="Typo.body1" Class="mb-3">
+                    <MudText Typo="Typo.h6" Class="mb-3">
                         @FilmModel.Description
+                    </MudText>
+                }
+
+                <!-- Notes -->
+                @if (!string.IsNullOrWhiteSpace(FilmModel.Notes))
+                {
+                    <MudText Typo="Typo.body1" Class="mb-3">
+                        @FilmModel.Notes
                     </MudText>
                 }
 
