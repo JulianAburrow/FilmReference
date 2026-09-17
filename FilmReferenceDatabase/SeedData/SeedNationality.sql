@@ -77,7 +77,8 @@ USING (VALUES
     ('Venezuelan', 'VE'),
     ('Vietnamese', 'VN'),
     ('Welsh', 'WL'),
-    ('Panamanian', 'PA')
+    ('Panamanian', 'PA'),
+    ('Cuban', 'CU')
 ) AS source (Name, IsoCode)
 ON target.Name = source.Name
 WHEN MATCHED THEN

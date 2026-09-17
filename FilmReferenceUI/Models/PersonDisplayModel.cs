@@ -13,8 +13,11 @@ public class PersonDisplayModel
     [Display(Name = "Last Name")]
     public string? LastName { get; set; }
 
-    [StringLength(500, ErrorMessage = "{0} cannot be more than {1} characters")]
+    [StringLength(50, ErrorMessage = "{0} cannot be more than {1} characters")]
     public string? Description { get; set; }
+
+    [StringLength(500, ErrorMessage = "{0} cannot be more than {1} characters")]
+    public string? Notes { get; set; }
 
     public bool IsCastMember { get; set; }
 

@@ -140,6 +140,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
         personToUpdate.FirstName = person.FirstName;
         personToUpdate.LastName = person.LastName;
         personToUpdate.Description = person.Description;
+        personToUpdate.Notes = person.Notes;
         personToUpdate.IsCastMember = person.IsCastMember;
         personToUpdate.IsDirector = person.IsDirector;
         personToUpdate.NationalityId = person.NationalityId;
