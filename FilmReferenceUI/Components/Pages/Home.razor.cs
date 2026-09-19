@@ -45,7 +45,6 @@ public partial class Home
         FeaturedPerson = await PersonHandler.GetFeaturedPersonAsync();
         FeaturedPersonToShow = FeaturedPerson is not null && FeaturedPerson.PersonId != 0;
 
-
         StateHasChanged();
     }
 
