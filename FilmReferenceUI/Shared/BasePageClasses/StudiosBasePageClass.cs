@@ -18,6 +18,7 @@ public abstract class StudiosBasePageClass : BasePageClass
     {
         StudioModel.Name = StudioDisplayModel.Name;
         StudioModel.Description = StudioDisplayModel.Description;
+        StudioModel.Notes = StudioDisplayModel.Notes;
         StudioModel.Logo = StudioDisplayModel.Logo;
         StudioModel.Films = StudioDisplayModel.Films;
     }
@@ -26,6 +27,7 @@ public abstract class StudiosBasePageClass : BasePageClass
     {
         StudioDisplayModel.Name = StudioModel.Name;
         StudioDisplayModel.Description = StudioModel.Description;
+        StudioDisplayModel.Notes = StudioModel.Notes;
         StudioDisplayModel.Logo = StudioModel.Logo;
         StudioDisplayModel.Films = StudioModel.Films;
     }

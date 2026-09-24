@@ -93,6 +93,7 @@ public class StudioHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
 
         studioToUpdate.Name = studio.Name;
         studioToUpdate.Description = studio.Description;
+        studioToUpdate.Notes = studio.Notes;
         studioToUpdate.Logo = studio.Logo;
 
         await context.SaveChangesAsync();
