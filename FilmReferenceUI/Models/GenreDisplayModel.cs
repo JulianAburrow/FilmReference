@@ -8,8 +8,11 @@
         [StringLength(50, ErrorMessage = "{0} cannot be more than {1} characters")]
         public string Name { get; set; } = string.Empty;
 
-        [StringLength(500, ErrorMessage = "{0} cannot be more than {1} characters")]
+        [StringLength(50, ErrorMessage = "{0} cannot be more than {1} characters")]
         public string? Description { get; set; } = string.Empty;
+
+        [StringLength(1000, ErrorMessage = "{0} cannot be more than {1} characters")]
+        public string? Notes { get; set; } = string.Empty;
 
         public byte[]? Logo { get; set; }
 
