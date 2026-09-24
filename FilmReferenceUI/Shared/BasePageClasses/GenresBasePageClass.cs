@@ -18,6 +18,7 @@ public abstract class GenresBasePageClass : BasePageClass
     {
         GenreModel.Name = GenreDisplayModel.Name;
         GenreModel.Description = GenreDisplayModel.Description;
+        GenreModel.Notes = GenreDisplayModel.Notes;
         GenreModel.Logo = GenreDisplayModel.Logo;
     }
 
@@ -25,6 +26,7 @@ public abstract class GenresBasePageClass : BasePageClass
     {
         GenreDisplayModel.Name = GenreModel.Name;
         GenreDisplayModel.Description = GenreModel.Description;
+        GenreDisplayModel.Notes = GenreModel.Notes;
         GenreDisplayModel.Logo = GenreModel.Logo;
     }
 }

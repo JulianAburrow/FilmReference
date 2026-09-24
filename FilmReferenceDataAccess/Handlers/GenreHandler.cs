@@ -94,6 +94,7 @@ public class GenreHandler(IDbContextFactory<FilmReferenceContext> factory) : IGe
         }
         genreToUpdate.Name = genre.Name;
         genreToUpdate.Description = genre.Description;
+        genreToUpdate.Notes = genre.Notes;
         genreToUpdate.Logo = genre.Logo;
 
         await context.SaveChangesAsync();
