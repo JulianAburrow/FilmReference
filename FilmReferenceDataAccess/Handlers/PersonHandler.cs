@@ -53,10 +53,11 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
         if (castCount == 0)
             return new FeaturedPersonModel();
 
-        var randomIndex = _random.Next(castCount);
+        var seed = DateTime.Today.GetHashCode();
+        var personToFeature = Math.Abs(seed % castCount);
 
         var person = await castQuery
-            .Skip(randomIndex)
+            .Skip(personToFeature)
             .FirstOrDefaultAsync();
 
         if (person is null)
