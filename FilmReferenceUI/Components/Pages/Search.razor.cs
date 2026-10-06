@@ -21,6 +21,8 @@ public partial class Search
         if (SearchState.LastSearchValue > SharedValues.PleaseSelectValue)
         {
             SearchModel.SearchType = SearchState.LastSearchValue;
+            SearchModel.SearchText = SearchState.LastSearchText;
+            await DoSearch();
         }
         MainLayout.SetHeaderValue("Search");
     }
@@ -29,6 +31,7 @@ public partial class Search
     {
         SubmitClicked = true;
         SearchState.LastSearchValue = SearchModel.SearchType;
+        SearchState.LastSearchText = SearchModel.SearchText;
 
         switch ((SearchTypeEnum)SearchModel.SearchType)
         {
