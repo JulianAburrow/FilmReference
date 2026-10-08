@@ -3,7 +3,7 @@
 	FirstName NVARCHAR(50) NOT NULL,
 	LastName NVARCHAR(50) NULL,
 	Description NVARCHAR(50) NULL,
-	Notes NVARCHAR(1000) NULL,
+	Notes NVARCHAR(MAX) NULL,
 	IsCastMember BIT NOT NULL,
 	IsDirector BIT NOT NULL,
 	NationalityId INT NULL,
