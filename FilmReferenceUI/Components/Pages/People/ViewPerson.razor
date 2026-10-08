@@ -25,14 +25,11 @@
                                    Href="@($"/person/edit/{PersonModel.PersonId}")">
                             Edit
                         </MudButton>
-                        @if (!PreventDeleting)
-                        {
-                            <MudButton Variant="Variant.Outlined"
-                                       Color="Color.Error"
-                                       Href="@($"/person/delete/{PersonModel.PersonId}")">
-                                Delete
-                            </MudButton>
-                        }
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Error"
+                                   Href="@($"/person/delete/{PersonModel.PersonId}")">
+                            Delete
+                        </MudButton>
                         @if (PersonModel.IsCastMember)
                         {
                             <MudButton Variant="Variant.Outlined"

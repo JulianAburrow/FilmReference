@@ -14,22 +14,6 @@
 
 <MudContainer Class="mt-1 px-8" MaxWidth="MaxWidth.False">
     <MudStack Spacing="3">
-
-        @if (PreventDeleting)
-        {
-            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">
-                This person cannot be deleted as they have films associated with them.
-            </MudAlert>
-            <div>
-                <MudButton Variant="Variant.Outlined"
-                           Color="Color.Default"
-                           Href="@($"/person/view/{PersonId}")">
-                    Back
-                </MudButton>
-            </div>
-        }
-        else
-        {
             <MudAlert Severity="Severity.Warning" ContentAlignment="HorizontalAlignment.Center">
                 Are you sure you want to delete this person?
             </MudAlert>
@@ -54,7 +38,6 @@
                     </MudCard>
                 </MudItem>
             </MudGrid>
-        }
 
     </MudStack>
 </MudContainer>

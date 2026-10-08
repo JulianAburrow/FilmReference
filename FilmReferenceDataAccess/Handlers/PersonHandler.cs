@@ -30,6 +30,9 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
             .FirstOrDefaultAsync(f =>
                                     f.EntityTypeId == (int)FavouriteEntityEnum.Person &&
                                     f.EntityId == personId);
+
+        context.FilmPeople.RemoveRange(context.FilmPeople.Where(fp => fp.PersonId == personId));
+
         if (favourite is not null)
         {
             context.Remove(favourite);
