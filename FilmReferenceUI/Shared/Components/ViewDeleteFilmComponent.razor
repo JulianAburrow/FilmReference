@@ -64,11 +64,10 @@
                 {
                     <MudText Typo="Typo.body1"
                              Class="mb-3"
-                             Style="max-height:150px; overflow-y:auto;">
-                        @FilmModel.Notes
+                             Style="max-height:200px; overflow-y:auto;">
+                        @((MarkupString)FilmModel.Notes)
                     </MudText>
                 }
-
 
             </MudStack>
 

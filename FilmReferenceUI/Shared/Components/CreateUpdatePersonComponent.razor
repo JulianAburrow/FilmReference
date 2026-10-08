@@ -18,9 +18,15 @@
             <MudTextField Label="Description"
                           @bind-Value="PersonDisplayModel.Description" />
 
-            <MudTextField Label="Notes"
-                          @bind-Value="PersonDisplayModel.Notes"
-                          Lines="10" />
+            <MudItem xs="12">
+
+                <MudText Typo="Typo.caption" Class="mb-1">Notes</MudText>
+                
+                <div class="mb-3" style="height:240px;">
+                    <CKEditorComponent @bind-Value="PersonDisplayModel.Notes" />
+                </div>
+
+            </MudItem>
 
             <MudSelect T="int?"
                         Label="Nationality"
