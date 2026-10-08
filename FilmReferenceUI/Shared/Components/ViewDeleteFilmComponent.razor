@@ -62,10 +62,13 @@
                 <!-- Notes -->
                 @if (!string.IsNullOrWhiteSpace(FilmModel.Notes))
                 {
-                    <MudText Typo="Typo.body1" Class="mb-3">
+                    <MudText Typo="Typo.body1"
+                             Class="mb-3"
+                             Style="max-height:150px; overflow-y:auto;">
                         @FilmModel.Notes
                     </MudText>
                 }
+
 
             </MudStack>
 
