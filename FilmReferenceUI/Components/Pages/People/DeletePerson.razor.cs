@@ -13,7 +13,6 @@ public partial class DeletePerson
             return;
         }
 
-        PreventDeleting = PersonModel.FilmPerson.Count != 0 || PersonModel.Films.Count != 0;
         MainLayout.SetHeaderValue($"Delete {PersonModel.FirstName} {PersonModel.LastName}");
 
         _isLoaded = true;
