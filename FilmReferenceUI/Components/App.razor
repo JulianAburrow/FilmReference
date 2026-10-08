@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="@Assets["FilmReferenceUI.styles.css"]" />
     <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32">
 
+    <!-- CKEditor CSS preload + stylesheet -->
+    <link rel="preload" href="https://cdn.ckeditor.com/ckeditor5/41.0.0/super-build/styles.css" as="style">
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/41.0.0/super-build/styles.css">
+
+    <!-- CKEditor JS -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/super-build/ckeditor.js"></script>
+    <script src="js/ckeditorInterop.js"></script>
+
     <ImportMap />
     <HeadOutlet @rendermode="InteractiveServer" />
 </head>

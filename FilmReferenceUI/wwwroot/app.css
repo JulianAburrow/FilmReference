@@ -105,3 +105,39 @@ h1:focus {
 .file-upload-button {
     width: 250px;
 }
+
+/* CKEditor editable area — fixed height + scroll */
+.ck-editor__editable_inline {
+    max-height: 190px !important;
+    overflow-y: auto !important;
+}
+
+/* Optional: remove CKEditor's built-in min-height */
+.ck-editor__editable {
+    min-height: 190px !important;
+}
+
+/* Reduce toolbar button size */
+.ck.ck-toolbar .ck.ck-button {
+    padding: 2px 4px !important;
+    min-height: 24px !important;
+}
+
+/* Reduce icon size */
+.ck.ck-toolbar .ck.ck-button .ck-icon {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.ck.ck-color-grid {
+    grid-template-columns: repeat(5, 1fr) !important;
+}
+
+.ck-powered-by {
+    display: none !important;
+}
+
+.ck-placeholder {
+    font-size: 1rem !important; /* matches MudTextField placeholder */
+    opacity: 0.8 !important; /* matches MudBlazor’s subtle placeholder tone */
+}
