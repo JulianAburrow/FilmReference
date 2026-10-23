@@ -16,8 +16,10 @@
 
                 @if (!string.IsNullOrWhiteSpace(StudioModel.Notes))
                 {
-                    <MudText Typo="Typo.body1" class="mb-3">
-                        @StudioModel.Notes
+                    <MudText Typo="Typo.body1"
+                             Class="mb-3"
+                             Style="max-height:200px; overflow-y:auto;">
+                        @((MarkupString)StudioModel.Notes)
                     </MudText>
                 }
 

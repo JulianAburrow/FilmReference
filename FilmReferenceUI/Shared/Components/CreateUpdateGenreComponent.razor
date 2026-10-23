@@ -15,11 +15,15 @@
             <MudTextField Label="Description"
                           @bind-Value="GenreDisplayModel.Description" />
 
-            <MudTextField Label="Notes"
-                          @bind-Value="GenreDisplayModel.Notes"
-                          Lines="3" />
+            <MudItem xs="12">
 
-            <div class="my-4"></div>
+                <MudText Typo="Typo.caption" Class="mb-1">Notes</MudText>
+                
+                    <div class="mb-3" style="height:240px;">
+                        <CKEditorComponent @bind-Value="GenreDisplayModel.Notes" />
+                    </div>
+
+                </MudItem>
 
             <MudFileUpload T="IBrowserFile"
                            FilesChanged="LocalUploadImage"
