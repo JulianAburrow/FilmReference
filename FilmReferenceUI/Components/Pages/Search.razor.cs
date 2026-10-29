@@ -52,6 +52,7 @@ public partial class Search
             default:
                 throw new ArgumentOutOfRangeException(nameof(SearchModel.SearchType), SearchModel.SearchType, "Invalid search type");
         }
+        NextSortDirection = SortDirection.Descending;
     }
 
     private void ClearSearch()
@@ -74,4 +75,30 @@ public partial class Search
             await SearchTextBox.FocusAsync();
         }
     }
+
+    private void ResortList()
+    {
+        var ascending = NextSortDirection == SortDirection.Ascending;
+
+        switch ((SearchTypeEnum)SearchModel.SearchType)
+        {
+            case SearchTypeEnum.Film:
+                FilmsFound = Sort(FilmsFound, f => f.Name, ascending);
+                break;
+            case SearchTypeEnum.Genre:
+                GenresFound = Sort(GenresFound, g => g.Name, ascending);
+                break;
+            case SearchTypeEnum.Person:
+                PeopleFound = Sort(PeopleFound, p => p.FirstName, ascending);
+                break;
+            case SearchTypeEnum.Studio:
+                StudiosFound = Sort(StudiosFound, s => s.Name, ascending);
+                break;
+        }
+
+        NextSortDirection = ascending ? SortDirection.Descending : SortDirection.Ascending;
+    }
+
+    private static List<T> Sort<T, TKey>(IEnumerable<T> items, Func<T, TKey> key, bool ascending) =>
+        [.. ascending ? items.OrderBy(key) : items.OrderByDescending(key)];
 }
