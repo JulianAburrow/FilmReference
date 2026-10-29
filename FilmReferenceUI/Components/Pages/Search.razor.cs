@@ -22,6 +22,7 @@ public partial class Search
         {
             SearchModel.SearchType = SearchState.LastSearchValue;
             SearchModel.SearchText = SearchState.LastSearchText;
+            SearchModel.IncludeDescriptionAndNotes = SearchState.IncludeDescriptionAndNotes;
             await DoSearch();
         }
         MainLayout.SetHeaderValue("Search");
@@ -32,20 +33,21 @@ public partial class Search
         SubmitClicked = true;
         SearchState.LastSearchValue = SearchModel.SearchType;
         SearchState.LastSearchText = SearchModel.SearchText;
+        SearchState.IncludeDescriptionAndNotes = SearchModel.IncludeDescriptionAndNotes;
 
         switch ((SearchTypeEnum)SearchModel.SearchType)
         {
             case SearchTypeEnum.Film:
-                FilmsFound = await SearchHandler.SearchFilmsAsync(SearchModel.SearchText);
+                FilmsFound = await SearchHandler.SearchFilmsAsync(SearchModel.SearchText, SearchModel.IncludeDescriptionAndNotes);
                 break;
             case SearchTypeEnum.Genre:
-                GenresFound = await SearchHandler.SearchGenresAsync(SearchModel.SearchText);
+                GenresFound = await SearchHandler.SearchGenresAsync(SearchModel.SearchText, SearchModel.IncludeDescriptionAndNotes);
                 break;
             case SearchTypeEnum.Person:
-                PeopleFound = await SearchHandler.SearchPeopleAsync(SearchModel.SearchText);
+                PeopleFound = await SearchHandler.SearchPeopleAsync(SearchModel.SearchText, SearchModel.IncludeDescriptionAndNotes);
                 break;
             case SearchTypeEnum.Studio:
-                StudiosFound = await SearchHandler.SearchStudiosAsync(SearchModel.SearchText);
+                StudiosFound = await SearchHandler.SearchStudiosAsync(SearchModel.SearchText, SearchModel.IncludeDescriptionAndNotes);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(SearchModel.SearchType), SearchModel.SearchType, "Invalid search type");
@@ -58,11 +60,15 @@ public partial class Search
         SearchModel.SearchType = SharedValues.PleaseSelectValue;
         SearchState.LastSearchValue = SharedValues.PleaseSelectValue;
         SearchModel.SearchText = string.Empty;
+        SearchState.LastSearchText = string.Empty;
+        SearchModel.IncludeDescriptionAndNotes = false;
+        SearchState.IncludeDescriptionAndNotes = false;
     }
 
     private async Task ClearSearchText()
     {
         SearchModel.SearchText = string.Empty;
+        SearchModel.IncludeDescriptionAndNotes = false;
         if (SearchTextBox is not null)
         {
             await SearchTextBox.FocusAsync();

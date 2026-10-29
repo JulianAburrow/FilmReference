@@ -12,7 +12,7 @@ public class SearchHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
     // ----------------------------------------------------------------------
     // FILMS
     // ----------------------------------------------------------------------
-    public async Task<List<FilmModel>> SearchFilmsAsync(string searchText)
+    public async Task<List<FilmModel>> SearchFilmsAsync(string searchText, bool includeDescriptionAndNotes)
     {
         if (string.IsNullOrWhiteSpace(searchText))
             return [];
@@ -28,12 +28,22 @@ public class SearchHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
         if (!IsInMemory(_context.Database))
         {
             query = query.Where(f =>
-                EF.Functions.Collate(f.Name, collation).Contains(term));
+                EF.Functions.Collate(f.Name, collation).Contains(term) ||
+                (includeDescriptionAndNotes &&
+                 ((f.Description != null &&
+                   EF.Functions.Collate(f.Description, collation).Contains(term)) ||
+                  (f.Notes != null &&
+                   EF.Functions.Collate(f.Notes, collation).Contains(term)))));
         }
         else
         {
             query = query.Where(f =>
-                f.Name.Contains(term, StringComparison.OrdinalIgnoreCase));
+                f.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                (includeDescriptionAndNotes &&
+                 ((f.Description != null &&
+                   f.Description.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
+                  (f.Notes != null &&
+                   f.Notes.Contains(term, StringComparison.OrdinalIgnoreCase)))));
         }
 
         return await query
@@ -45,7 +55,7 @@ public class SearchHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
     // ----------------------------------------------------------------------
     // GENRES
     // ----------------------------------------------------------------------
-    public async Task<List<GenreModel>> SearchGenresAsync(string searchText)
+    public async Task<List<GenreModel>> SearchGenresAsync(string searchText, bool includeDescriptionAndNotes)
     {
         if (string.IsNullOrWhiteSpace(searchText))
             return [];
@@ -60,12 +70,22 @@ public class SearchHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
         if (!IsInMemory(_context.Database))
         {
             query = query.Where(g =>
-                EF.Functions.Collate(g.Name, collation).Contains(term));
+                EF.Functions.Collate(g.Name, collation).Contains(term) ||
+                (includeDescriptionAndNotes &&
+                 ((g.Description != null &&
+                   EF.Functions.Collate(g.Description, collation).Contains(term)) ||
+                  (g.Notes != null &&
+                   EF.Functions.Collate(g.Notes, collation).Contains(term)))));
         }
         else
         {
             query = query.Where(g =>
-                g.Name.Contains(term, StringComparison.OrdinalIgnoreCase));
+                g.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                (includeDescriptionAndNotes &&
+                 ((g.Description != null &&
+                   g.Description.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
+                  (g.Notes != null &&
+                   g.Notes.Contains(term, StringComparison.OrdinalIgnoreCase)))));
         }
 
         return await query
@@ -77,7 +97,7 @@ public class SearchHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
     // ----------------------------------------------------------------------
     // PEOPLE
     // ----------------------------------------------------------------------
-    public async Task<List<PersonModel>> SearchPeopleAsync(string searchText)
+    public async Task<List<PersonModel>> SearchPeopleAsync(string searchText, bool includeDescriptionAndNotes)
     {
         if (string.IsNullOrWhiteSpace(searchText))
             return [];
@@ -100,14 +120,24 @@ public class SearchHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
                 query = query.Where(person =>
                     EF.Functions.Collate(person.FirstName, collation).Contains(p) ||
                     (person.LastName != null &&
-                     EF.Functions.Collate(person.LastName, collation).Contains(p)));
+                     EF.Functions.Collate(person.LastName, collation).Contains(p)) ||
+                    (includeDescriptionAndNotes &&
+                     ((person.Description != null &&
+                       EF.Functions.Collate(person.Description, collation).Contains(p)) ||
+                      (person.Notes != null &&
+                       EF.Functions.Collate(person.Notes, collation).Contains(p)))));
             }
             else
             {
                 query = query.Where(person =>
                     person.FirstName.Contains(p, StringComparison.OrdinalIgnoreCase) ||
                     (person.LastName != null &&
-                     person.LastName.Contains(p, StringComparison.OrdinalIgnoreCase)));
+                     person.LastName.Contains(p, StringComparison.OrdinalIgnoreCase)) ||
+                    (includeDescriptionAndNotes &&
+                     ((person.Description != null &&
+                       person.Description.Contains(p, StringComparison.OrdinalIgnoreCase)) ||
+                      (person.Notes != null &&
+                       person.Notes.Contains(p, StringComparison.OrdinalIgnoreCase)))));
             }
         }
 
@@ -123,7 +153,7 @@ public class SearchHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
     // ----------------------------------------------------------------------
     // STUDIOS
     // ----------------------------------------------------------------------
-    public async Task<List<StudioModel>> SearchStudiosAsync(string searchText)
+    public async Task<List<StudioModel>> SearchStudiosAsync(string searchText, bool includeDescriptionAndNotes)
     {
         if (string.IsNullOrWhiteSpace(searchText))
             return [];
@@ -138,12 +168,22 @@ public class SearchHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
         if (!IsInMemory(_context.Database))
         {
             query = query.Where(s =>
-                EF.Functions.Collate(s.Name, collation).Contains(term));
+                EF.Functions.Collate(s.Name, collation).Contains(term) ||
+                (includeDescriptionAndNotes &&
+                 ((s.Description != null &&
+                   EF.Functions.Collate(s.Description, collation).Contains(term)) ||
+                  (s.Notes != null &&
+                   EF.Functions.Collate(s.Notes, collation).Contains(term)))));
         }
         else
         {
             query = query.Where(s =>
-                s.Name.Contains(term, StringComparison.OrdinalIgnoreCase));
+                s.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                (includeDescriptionAndNotes &&
+                 ((s.Description != null &&
+                   s.Description.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
+                  (s.Notes != null &&
+                   s.Notes.Contains(term, StringComparison.OrdinalIgnoreCase)))));
         }
 
         return await query
