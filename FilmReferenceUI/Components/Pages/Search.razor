@@ -60,9 +60,9 @@
                 <MudStack Spacing="2">
                     <div>
                         <MudButton Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.Add"
-                                   Href="/film/create">
+                        Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.Add"
+                        Href="/film/create">
                             Create Film
                         </MudButton>
                     </div>
@@ -70,13 +70,25 @@
                     @if (FilmsFound.Count == 0)
                     {
                         <LoadingComponent DisplayValue="@($"No films found matching '{SearchModel.SearchText}'")"
-                                          IsLoading="false" />
+                        IsLoading="false" />
                     }
                     else
                     {
-                        <MudText Typo="Typo.subtitle1">
-                            @FilmsFound.Count @(FilmsFound.Count == 1 ? "film" : "films") found matching '@SearchModel.SearchText'
-                        </MudText>
+                        <div class="d-flex align-center gap-3">
+                            <MudText Typo="Typo.subtitle1">
+                                @FilmsFound.Count @(FilmsFound.Count == 1 ? "film" : "films") found matching '@SearchModel.SearchText'
+                            </MudText>
+                            @if (FilmsFound.Count > 1)
+                            {
+                                <MudButton Variant="Variant.Outlined"
+                                        Color="Color.Default"
+                                        Size="Size.Small"
+                                        StartIcon="@Icons.Material.Filled.SwapVert"
+                                        OnClick="ResortList">
+                                    Reverse Sort
+                                </MudButton>
+                            }
+                        </div>
                         <ListFilmsComponent FilmModels="FilmsFound" />
                     }
                 </MudStack>
@@ -87,9 +99,9 @@
                 <MudStack Spacing="2">
                     <div>
                         <MudButton Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.Add"
-                                   Href="/genre/create">
+                        Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.Add"
+                        Href="/genre/create">
                             Create Genre
                         </MudButton>
                     </div>
@@ -97,13 +109,25 @@
                     @if (GenresFound.Count == 0)
                     {
                         <LoadingComponent DisplayValue="@($"No genres found matching '{SearchModel.SearchText}'")"
-                                          IsLoading="false" />
+                        IsLoading="false" />
                     }
                     else
                     {
-                        <MudText Typo="Typo.subtitle1">
-                            @GenresFound.Count @(GenresFound.Count == 1 ? "genre" : "genres") found matching '@SearchModel.SearchText'
-                        </MudText>
+                        <div class="d-flex align-center gap-3">
+                            <MudText Typo="Typo.subtitle1">
+                                @GenresFound.Count @(GenresFound.Count == 1 ? "genre" : "genres") found matching '@SearchModel.SearchText'
+                            </MudText>
+                            @if (GenresFound.Count > 1)
+                            {
+                                <MudButton Variant="Variant.Outlined"
+                                        Color="Color.Default"
+                                        Size="Size.Small"
+                                        StartIcon="@Icons.Material.Filled.SwapVert"
+                                        OnClick="ResortList">
+                                    Reverse Sort
+                                </MudButton>
+                            }
+                        </div>
                         <ListGenresComponent GenreModels="GenresFound" />
                     }
                 </MudStack>
@@ -114,9 +138,9 @@
                 <MudStack Spacing="2">
                     <div>
                         <MudButton Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.Add"
-                                   Href="/person/create">
+                        Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.Add"
+                        Href="/person/create">
                             Create Person
                         </MudButton>
                     </div>
@@ -124,13 +148,25 @@
                     @if (PeopleFound.Count == 0)
                     {
                         <LoadingComponent DisplayValue="@($"No people found matching '{SearchModel.SearchText}'")"
-                                          IsLoading="false" />
+                        IsLoading="false" />
                     }
                     else
                     {
-                        <MudText Typo="Typo.subtitle1">
-                            @PeopleFound.Count @(PeopleFound.Count == 1 ? "person" : "people") found matching '@SearchModel.SearchText'
-                        </MudText>
+                        <div class="d-flex align-center gap-3">
+                            <MudText Typo="Typo.subtitle1">
+                                @PeopleFound.Count @(PeopleFound.Count == 1 ? "person" : "people") found matching '@SearchModel.SearchText'
+                            </MudText> 
+                            @if (PeopleFound.Count > 1)
+                            {
+                                <MudButton Variant="Variant.Outlined"
+                                        Color="Color.Default"
+                                        Size="Size.Small"
+                                        StartIcon="@Icons.Material.Filled.SwapVert"
+                                        OnClick="ResortList">
+                                    Reverse Sort
+                                </MudButton>
+                            }
+                        </div>
                         <ListPeopleComponent PersonModels="PeopleFound" />
                     }
                 </MudStack>
@@ -141,9 +177,9 @@
                 <MudStack Spacing="2">
                     <div>
                         <MudButton Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.Add"
-                                   Href="/studio/create">
+                        Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.Add"
+                        Href="/studio/create">
                             Create Studio
                         </MudButton>
                     </div>
@@ -151,13 +187,25 @@
                     @if (StudiosFound.Count == 0)
                     {
                         <LoadingComponent DisplayValue="@($"No studios found matching '{SearchModel.SearchText}'")"
-                                          IsLoading="false" />
+                        IsLoading="false" />
                     }
                     else
                     {
-                        <MudText Typo="Typo.subtitle1">
-                            @StudiosFound.Count @(StudiosFound.Count == 1 ? "studio" : "studios") found matching '@SearchModel.SearchText'
-                        </MudText>
+                        <div class="d-flex align-center gap-3">
+                            <MudText Typo="Typo.subtitle1">
+                                @StudiosFound.Count @(StudiosFound.Count == 1 ? "studio" : "studios") found matching '@SearchModel.SearchText'
+                            </MudText>
+                            @if (StudiosFound.Count > 1)
+                            {
+                                <MudButton Variant="Variant.Outlined"
+                                        Color="Color.Default"
+                                        Size="Size.Small"
+                                        StartIcon="@Icons.Material.Filled.SwapVert"
+                                        OnClick="ResortList">
+                                    Reverse Sort
+                                </MudButton>
+                            }
+                        </div>
                         <ListStudiosComponent StudioModels="StudiosFound" />
                     }
                 </MudStack>
