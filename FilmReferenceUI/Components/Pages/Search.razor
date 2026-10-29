@@ -31,6 +31,8 @@
                             <MudTextField @ref="SearchTextBox"
                                           Label="Search Term"
                                           @bind-Value="SearchModel.SearchText" />
+                            <MudCheckBox Label="Include Description and Notes"
+                                         @bind-Value="SearchModel.IncludeDescriptionAndNotes" />
                         </MudCardContent>
                         <MudCardActions Class="gap-2">
                             <MudButton Variant="Variant.Filled"

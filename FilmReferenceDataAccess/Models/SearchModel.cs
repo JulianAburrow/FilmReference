@@ -11,4 +11,7 @@ public class SearchModel
     [Required(ErrorMessage = "{0} is required")]
     [Display(Name = "Search Text")]
     public string SearchText { get; set; } = string.Empty;
+
+    [Display(Name = "Include Description and Notes")]
+    public bool IncludeDescriptionAndNotes { get; set; }
 }
