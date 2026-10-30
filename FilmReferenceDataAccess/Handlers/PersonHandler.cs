@@ -84,6 +84,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
             .Include(p => p.Nationality)
             .Include(p => p.Films)
             .Include(p => p.FilmPerson)
+            .AsSplitQuery()
             .Where(p => p.IsCastMember)
             .OrderBy(p => p.FirstName)
             .ThenBy(p => p.LastName)
@@ -98,6 +99,7 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
             .Include(p => p.Nationality)
             .Include(p => p.Films)
             .Include(p => p.FilmPerson)
+            .AsSplitQuery()
             .Where(p => p.IsDirector)
             .OrderBy(p => p.FirstName)
             .ThenBy(p => p.LastName)
@@ -196,10 +198,8 @@ public class PersonHandler(IDbContextFactory<FilmReferenceContext> factory) : IP
             .Where(p =>
                 p.IsCastMember &&
                 p.DateOfBirth.HasValue &&
-                (
-                    (p.DateOfBirth.Value.Month == month &&
-                     p.DateOfBirth.Value.Day == day)
-                )
+                p.DateOfBirth.Value.Month == month &&
+                p.DateOfBirth.Value.Day == day
             )
             .Include(p => p.FilmPerson)
             .OrderBy(p => p.FirstName)

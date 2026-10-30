@@ -104,10 +104,7 @@ public class SearchHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
 
         using var _context = await factory.CreateDbContextAsync();
 
-        var parts = searchText
-            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-            .Select(p => p.Trim())
-            .ToArray();
+        var parts = searchText.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         IQueryable<PersonModel> query = _context.People;
 
@@ -144,6 +141,7 @@ public class SearchHandler(IDbContextFactory<FilmReferenceContext> factory) : IS
         return await query
             .Include(p => p.Films)
             .Include(p => p.FilmPerson)
+            .AsSplitQuery()
             .OrderBy(p => p.FirstName)
             .ThenBy(p => p.LastName)
             .AsNoTracking()
