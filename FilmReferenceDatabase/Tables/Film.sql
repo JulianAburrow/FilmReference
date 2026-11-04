@@ -7,6 +7,7 @@
 	GenreId INT NOT NULL,
 	DirectorId INT NOT NULL,
 	StudioId INT NOT NULL,
+	ReleaseDate DATE NULL,
 	CONSTRAINT PK_Film PRIMARY KEY (FilmId),
 	CONSTRAINT FK_Film_Genre FOREIGN KEY (GenreId)
 		REFERENCES Genre (GenreId),

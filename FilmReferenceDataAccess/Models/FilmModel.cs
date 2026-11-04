@@ -16,6 +16,8 @@ public class FilmModel
 
     public int StudioId { get; set; }
 
+    public DateOnly? ReleaseDate { get; set; }
+
     public byte[]? BoxCover { get; set; }
 
     public GenreModel Genre { get; set; } = null!;

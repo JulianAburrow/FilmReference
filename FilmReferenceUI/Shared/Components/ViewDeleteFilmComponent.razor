@@ -49,6 +49,16 @@
                         </MudLink>
                     </MudText>
 
+                @if (FilmModel.ReleaseDate is { } releaseDate)
+                {
+                    var dayOfRelease = IntExtensions.ToDayOrdinal(releaseDate.Day);
+                    var monthOfRelease = MonthHelper.GetMonthName(releaseDate.Month);
+
+                    <MudText>
+                        <b>Release date:</b> @dayOfRelease @monthOfRelease @releaseDate.Year
+                    </MudText>
+                }
+
                 <MudDivider Class="my-4" />
 
                 <!-- Description -->

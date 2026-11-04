@@ -51,6 +51,7 @@ public abstract class FilmsBasePageClass : BasePageClass
         FilmModel.StudioId = FilmDisplayModel.StudioId;
         FilmModel.DirectorId = FilmDisplayModel.DirectorId;
         FilmModel.BoxCover = FilmDisplayModel.BoxCover;
+        FilmModel.ReleaseDate = FilmDisplayModel.ReleaseDate;
         FilmModel.FilmPerson = [];
         foreach (var selectedCastMemberId in FilmDisplayModel.SelectedCastMemberIds)
         {            
@@ -71,6 +72,7 @@ public abstract class FilmsBasePageClass : BasePageClass
         FilmDisplayModel.StudioId = FilmModel.StudioId;
         FilmDisplayModel.DirectorId = FilmModel.DirectorId;
         FilmDisplayModel.BoxCover = FilmModel.BoxCover;
+        FilmDisplayModel.ReleaseDate = FilmModel.ReleaseDate;
         foreach (var filmPerson in FilmModel.FilmPerson ?? [])
         {
             FilmDisplayModel.SelectedCastMemberIds = FilmDisplayModel.SelectedCastMemberIds.Append(filmPerson.PersonId).ToList();

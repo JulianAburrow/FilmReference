@@ -15,6 +15,8 @@
 
         public byte[]? BoxCover { get; set; }
 
+        public DateOnly? ReleaseDate { get; set; }
+
         [Range(1, int.MaxValue, ErrorMessage = "{0} is required")]
         [Display(Name = "Genre")]
         public int GenreId { get; set; }
