@@ -35,8 +35,8 @@ public class PersonTests
             PersonId = 1,
             FirstName = "Test",
             LastName = "Person",
-            DateOfBirth = new DateTime(1975, 5, 20),
-            DateOfDeath = new DateTime(2020, 1, 1)
+            DateOfBirth = new DateOnly(1975, 5, 20),
+            DateOfDeath = new DateOnly(2020, 1, 1)
         };
 
         await handler.CreatePersonAsync(person);
@@ -44,8 +44,8 @@ public class PersonTests
         var result = await context.People.FindAsync(new object[] { 1 }, CT.Token);
 
         result.Should().NotBeNull();
-        result.DateOfBirth.Should().Be(new DateTime(1975, 5, 20));
-        result.DateOfDeath.Should().Be(new DateTime(2020, 1, 1));
+        result.DateOfBirth.Should().Be(new DateOnly(1975, 5, 20));
+        result.DateOfDeath.Should().Be(new DateOnly(2020, 1, 1));
     }
 
     // ----------------------------------------------------------------------
@@ -134,7 +134,7 @@ public class PersonTests
             PersonId = 1,
             FirstName = "Old",
             LastName = "Name",
-            DateOfBirth = new DateTime(1970, 1, 1),
+            DateOfBirth = new DateOnly(1970, 1, 1),
             DateOfDeath = null
         };
 
@@ -150,8 +150,8 @@ public class PersonTests
             PersonId = 1,
             FirstName = "Old",
             LastName = "Name",
-            DateOfBirth = new DateTime(1980, 2, 2),
-            DateOfDeath = new DateTime(2020, 3, 3)
+            DateOfBirth = new DateOnly(1980, 2, 2),
+            DateOfDeath = new DateOnly(2020, 3, 3)
         };
 
         await handler.UpdatePersonAsync(updated);
@@ -159,8 +159,8 @@ public class PersonTests
         var result = await context.People.FindAsync(new object[] { 1 }, CT.Token);
 
         result.Should().NotBeNull();
-        result.DateOfBirth.Should().Be(new DateTime(1980, 2, 2));
-        result.DateOfDeath.Should().Be(new DateTime(2020, 3, 3));
+        result.DateOfBirth.Should().Be(new DateOnly(1980, 2, 2));
+        result.DateOfDeath.Should().Be(new DateOnly(2020, 3, 3));
     }
 
     // ----------------------------------------------------------------------
@@ -393,8 +393,8 @@ public class PersonTests
         {
             FirstName = "Test",
             LastName = "Person",
-            DateOfBirth = new DateTime(1990, 10, 10),
-            DateOfDeath = new DateTime(2020, 10, 10)
+            DateOfBirth = new DateOnly(1990, 10, 10),
+            DateOfDeath = new DateOnly(2020, 10, 10)
         };
 
         context.People.Add(person);
@@ -403,8 +403,8 @@ public class PersonTests
         var handler = new PersonHandler(factory);
         var result = await handler.GetPersonAsync(person.PersonId);
 
-        result.DateOfBirth.Should().Be(new DateTime(1990, 10, 10));
-        result.DateOfDeath.Should().Be(new DateTime(2020, 10, 10));
+        result.DateOfBirth.Should().Be(new DateOnly(1990, 10, 10));
+        result.DateOfDeath.Should().Be(new DateOnly(2020, 10, 10));
     }
 
     // ----------------------------------------------------------------------
@@ -493,15 +493,14 @@ public class PersonTests
     [Fact]
     public void Age_ShouldCalculateCorrectly_ForLivingPerson()
     {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+
         var person = new PersonModel
         {
-            DateOfBirth = new DateTime(1980, 1, 1),
-            DateOfDeath = null
+            DateOfBirth = today.AddYears(-40)
         };
 
-        var expected = DateTime.Now.Year - 1980;
-
-        person.Age.Should().Be(expected);
+        person.Age.Should().Be(40);
     }
 
     [Fact]
@@ -509,8 +508,8 @@ public class PersonTests
     {
         var person = new PersonModel
         {
-            DateOfBirth = new DateTime(1950, 1, 1),
-            DateOfDeath = new DateTime(2000, 1, 1)
+            DateOfBirth = new DateOnly(1950, 1, 1),
+            DateOfDeath = new DateOnly(2000, 1, 1)
         };
 
         person.Age.Should().Be(50);
@@ -526,6 +525,31 @@ public class PersonTests
         };
 
         person.Age.Should().BeNull();
+    }
+
+
+
+    [Fact]
+    public void Age_ShouldCalculateCorrectly_WhenBirthdayHasNotYetOccurred()
+    {
+        var person = new PersonModel
+        {
+            DateOfBirth = new DateOnly(2000, 12, 31),
+            DateOfDeath = new DateOnly(2020, 1, 1)
+        };
+
+        person.Age.Should().Be(19);
+    }
+
+    [Fact]
+    public void Age_ShouldBeZero_WhenBornToday()
+    {
+        var person = new PersonModel
+        {
+            DateOfBirth = DateOnly.FromDateTime(DateTime.Today)
+        };
+
+        person.Age.Should().Be(0);
     }
 
     // ----------------------------------------------------------------------
@@ -627,7 +651,7 @@ public class PersonTests
                 FirstName = "Birthday",
                 LastName = "Today",
                 IsCastMember = true,
-                DateOfBirth = today
+                DateOfBirth = DateOnly.FromDateTime(today)
             },
             new PersonModel
             {
@@ -635,7 +659,7 @@ public class PersonTests
                 FirstName = "Not",
                 LastName = "Today",
                 IsCastMember = true,
-                DateOfBirth = today.AddDays(-1)
+                DateOfBirth = DateOnly.FromDateTime(today.AddDays(-1))
             },
             new PersonModel
             {
@@ -643,7 +667,7 @@ public class PersonTests
                 FirstName = "Director",
                 LastName = "Only",
                 IsCastMember = false,
-                DateOfBirth = today
+                DateOfBirth = DateOnly.FromDateTime(today)
             }
         );
         await context.SaveChangesAsync(CT.Token);
@@ -673,7 +697,7 @@ public class PersonTests
                 FirstName = "Leap",
                 LastName = "Baby",
                 IsCastMember = true,
-                DateOfBirth = new DateTime(2000, 2, 29)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(2000, 2, 29))
             },
             new PersonModel
             {
@@ -681,7 +705,7 @@ public class PersonTests
                 FirstName = "Normal",
                 LastName = "Person",
                 IsCastMember = true,
-                DateOfBirth = today
+                DateOfBirth = DateOnly.FromDateTime(today)
             },
             new PersonModel
             {
@@ -689,7 +713,7 @@ public class PersonTests
                 FirstName = "Director",
                 LastName = "Only",
                 IsCastMember = false,
-                DateOfBirth = new DateTime(2000, 2, 29)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(2000, 2, 29))
             }
         );
         await context.SaveChangesAsync(CT.Token);
@@ -717,7 +741,7 @@ public class PersonTests
                 FirstName = "Leap",
                 LastName = "Baby",
                 IsCastMember = true,
-                DateOfBirth = new DateTime(2000, 2, 29)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(2000, 2, 29))
             },
             new PersonModel
             {
@@ -725,7 +749,7 @@ public class PersonTests
                 FirstName = "Normal",
                 LastName = "Person",
                 IsCastMember = true,
-                DateOfBirth = new DateTime(2000, 2, 28)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(2000, 2, 28))
             },
             new PersonModel
             {
@@ -733,7 +757,7 @@ public class PersonTests
                 FirstName = "Director",
                 LastName = "Only",
                 IsCastMember = false,
-                DateOfBirth = new DateTime(2000, 2, 29)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(2000, 2, 29))
             }
         );
         await context.SaveChangesAsync(CT.Token);
@@ -762,7 +786,7 @@ public class PersonTests
                 FirstName = "Alice",
                 LastName = "Example",
                 IsCastMember = true,
-                DateOfBirth = new DateTime(1990, 1, 1)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(1990, 1, 1))
             },
             new PersonModel
             {
@@ -770,7 +794,7 @@ public class PersonTests
                 FirstName = "Bob",
                 LastName = "Example",
                 IsCastMember = true,
-                DateOfBirth = new DateTime(1985, 12, 31)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(1985, 12, 31))
             },
             new PersonModel
             {
@@ -778,7 +802,7 @@ public class PersonTests
                 FirstName = "Charlie",
                 LastName = "Director",
                 IsCastMember = false,
-                DateOfBirth = new DateTime(1970, 5, 20)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(1970, 5, 20))
             }
         );
 
@@ -814,7 +838,7 @@ public class PersonTests
                 FirstName = "Valid",
                 LastName = "Birthday",
                 IsCastMember = true,
-                DateOfBirth = new DateTime(1990, targetMonth, targetDay)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(1990, targetMonth, targetDay))
             }
         );
 
@@ -843,7 +867,7 @@ public class PersonTests
                 FirstName = "Charlie",
                 LastName = "Zulu",
                 IsCastMember = true,
-                DateOfBirth = new DateTime(1990, targetMonth, targetDay)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(1990, targetMonth, targetDay))
             },
             new PersonModel
             {
@@ -851,7 +875,7 @@ public class PersonTests
                 FirstName = "Alice",
                 LastName = "Bravo",
                 IsCastMember = true,
-                DateOfBirth = new DateTime(1980, targetMonth, targetDay)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(1980, targetMonth, targetDay))
             },
             new PersonModel
             {
@@ -859,7 +883,7 @@ public class PersonTests
                 FirstName = "Alice",
                 LastName = "Alpha",
                 IsCastMember = true,
-                DateOfBirth = new DateTime(1970, targetMonth, targetDay)
+                DateOfBirth = DateOnly.FromDateTime(new DateTime(1970, targetMonth, targetDay))
             }
         );
 

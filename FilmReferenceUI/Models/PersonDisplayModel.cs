@@ -24,9 +24,9 @@ public class PersonDisplayModel
 
     public int? NationalityId { get; set; }
 
-    public DateTime? DateOfBirth { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
 
-    public DateTime? DateOfDeath { get; set; }
+    public DateOnly? DateOfDeath { get; set; }
 
     public int? Age { get; set; }
 

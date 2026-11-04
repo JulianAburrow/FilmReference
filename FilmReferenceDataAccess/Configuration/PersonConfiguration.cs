@@ -22,8 +22,8 @@ public class PersonConfiguration : IEntityTypeConfiguration<PersonModel>
             .IsRequired(false)
             .OnDelete(DeleteBehavior.NoAction);
         builder.Property(e => e.DateOfBirth)
-            .HasColumnType("DATETIME2");
+            .HasColumnType("date");
         builder.Property(e => e.DateOfDeath)
-            .HasColumnType("DATETIME2");
+            .HasColumnType("date");
     }
 }
