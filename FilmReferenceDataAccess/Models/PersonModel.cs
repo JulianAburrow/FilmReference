@@ -20,9 +20,9 @@ public class PersonModel
 
     public NationalityModel? Nationality { get; set; }
 
-    public DateTime? DateOfBirth { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
 
-    public DateTime? DateOfDeath { get; set; }
+    public DateOnly? DateOfDeath { get; set; }
 
     public int? Age
     {
@@ -31,7 +31,7 @@ public class PersonModel
             if (DateOfBirth is null)
                 return null;
 
-            var end = DateOfDeath ?? DateTime.Now;
+            var end = DateOfDeath ?? DateOnly.FromDateTime(DateTime.Today);
 
             var age = end.Year - DateOfBirth.Value.Year;
 

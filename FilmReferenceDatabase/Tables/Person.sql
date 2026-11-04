@@ -7,8 +7,8 @@
 	IsCastMember BIT NOT NULL,
 	IsDirector BIT NOT NULL,
 	NationalityId INT NULL,
-	DateOfBirth DATETIME2 NULL,
-	DateOfDeath DATETIME2 NULL,
+	DateOfBirth DATE NULL,
+	DateOfDeath DATE NULL,
 	Picture VARBINARY(MAX) NULL,
 	CONSTRAINT PK_Person PRIMARY KEY (PersonId),
 	CONSTRAINT FK_Person_Nationality FOREIGN KEY (NationalityId)

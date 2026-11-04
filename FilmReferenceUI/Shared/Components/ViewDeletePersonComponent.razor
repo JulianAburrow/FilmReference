@@ -24,14 +24,24 @@
                     <MudText><b>Nationality:</b> @PersonModel.Nationality.Name</MudText>
                 }
 
-                @if (PersonModel.DateOfBirth is not null)
+                @if (PersonModel.DateOfBirth is { } dateOfBirth)
                 {
-                    <MudText><b>Date of birth:</b> @PersonModel.DateOfBirth?.ToString("dd/MM/yyyy")</MudText>
+                    var dayOfBirth = IntExtensions.ToDayOrdinal(dateOfBirth.Day);
+                    var monthOfBirth = MonthHelper.GetMonthName(dateOfBirth.Month);
+
+                    <MudText>
+                        <b>Date of birth:</b> @dayOfBirth @monthOfBirth @dateOfBirth.Year
+                    </MudText>
                 }
 
-                @if (PersonModel.DateOfDeath is not null)
+                @if (PersonModel.DateOfDeath is { } dateOfDeath)
                 {
-                    <MudText><b>Date of death:</b> @PersonModel.DateOfDeath?.ToString("dd/MM/yyyy")</MudText>
+                    var dayOfDeath = IntExtensions.ToDayOrdinal(dateOfDeath.Day);
+                    var monthOfDeath = MonthHelper.GetMonthName(dateOfDeath.Month);
+
+                    <MudText>
+                        <b>Date of death:</b> @dayOfDeath @monthOfDeath @dateOfDeath.Year
+                    </MudText>
                 }
 
                 @if (PersonModel.Age is not null)
