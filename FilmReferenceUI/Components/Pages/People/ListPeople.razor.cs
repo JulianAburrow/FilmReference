@@ -101,7 +101,12 @@ public partial class ListPeople
             FilterMode.Nationalities =>
                 AllPersonModels
                     .GroupBy(p => p.Nationality?.Name ?? "Unknown")
-                    .ToDictionary(g => g.Key, g => g.Count())
+                    .ToDictionary(g => g.Key, g => g.Count()),
+
+            _ => throw new InvalidEnumArgumentException(
+                nameof(CurrentFilterMode),
+                (int)CurrentFilterMode,
+                typeof(FilterMode))
         };
     }
 
@@ -162,7 +167,12 @@ public partial class ListPeople
 
             FilterMode.Nationalities => value == "All"
                 ? $"{count} {plural} found."
-                : $"{count} {value} {plural} found."
+                : $"{count} {value} {plural} found.",
+
+            _ => throw new InvalidEnumArgumentException(
+                nameof(CurrentFilterMode),
+                (int)CurrentFilterMode,
+                typeof(FilterMode))
         };
 
         Snackbar.Add(message, count > 0 ? Severity.Info : Severity.Warning);
@@ -201,14 +211,18 @@ public partial class ListPeople
         {
             FilterMode.Initials => FilterMode.Nationalities,
             FilterMode.Nationalities => FilterMode.Initials,
+
+            _ => throw new InvalidEnumArgumentException(
+                nameof(CurrentFilterMode),
+                (int)CurrentFilterMode,
+                typeof(FilterMode))
         };
 
         // Update UI label
-        InitialsOrNationalities = CurrentFilterMode switch
-        {
-            FilterMode.Initials => FilterMode.Nationalities.ToString(),
-            FilterMode.Nationalities => FilterMode.Initials.ToString(),
-        };
+        InitialsOrNationalities =
+            CurrentFilterMode == FilterMode.Initials
+                ? nameof(FilterMode.Nationalities)
+                : nameof(FilterMode.Initials);
 
         BuildFilterOptions();
         ApplyFilter("All");
