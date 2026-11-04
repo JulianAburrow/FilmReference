@@ -52,7 +52,7 @@ public class FavouriteHandler(IDbContextFactory<FilmReferenceContext> filmRefere
             var entityTypeId = group.Key;
             var entityIds = group.Select(f => f.EntityId).ToList();
 
-            Dictionary<int, (string Name, string EntityDescription, byte[]? Image)> lookup;
+            Dictionary<int, (string Name, string? EntityDescription, byte[]? Image)> lookup;
 
             switch (entityTypeId)
             {
