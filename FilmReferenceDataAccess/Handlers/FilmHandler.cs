@@ -16,6 +16,7 @@ public class FilmHandler(IDbContextFactory<FilmReferenceContext> factory) : IFil
             DirectorId = film.DirectorId,
             GenreId = film.GenreId,
             BoxCover = film.BoxCover,
+            ReleaseDate = film.ReleaseDate,
         };
 
         context.Films.Add(filmToAdd);
@@ -144,6 +145,7 @@ public class FilmHandler(IDbContextFactory<FilmReferenceContext> factory) : IFil
         filmToUpdate.DirectorId = film.DirectorId;
         filmToUpdate.GenreId = film.GenreId;
         filmToUpdate.BoxCover = film.BoxCover;
+        filmToUpdate.ReleaseDate = film.ReleaseDate;
 
         context.FilmPeople.RemoveRange(
             context.FilmPeople.Where(fp => fp.FilmId == filmToUpdate.FilmId));

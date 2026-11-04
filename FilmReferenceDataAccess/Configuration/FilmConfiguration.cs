@@ -26,6 +26,7 @@ public class FilmConfiguration : IEntityTypeConfiguration<FilmModel>
             .HasForeignKey(e => e.FilmId)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.NoAction);
-
+        builder.Property(e => e.ReleaseDate)
+            .HasColumnType("date");
     }
 }

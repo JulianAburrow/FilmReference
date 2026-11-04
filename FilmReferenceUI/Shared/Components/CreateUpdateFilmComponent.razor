@@ -23,8 +23,10 @@
                     <CKEditorComponent @bind-Value="FilmDisplayModel.Notes" />
                 </div>
 
-
             </MudItem>
+
+            <MudTextField Label="Release Date"
+                            @bind-Value=FilmDisplayModel.ReleaseDate" />
 
             <MudSelect T="int"
                        Label="Genre"
