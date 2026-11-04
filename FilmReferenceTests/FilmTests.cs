@@ -11,7 +11,9 @@ public class FilmTests
         await using var context = await factory.CreateDbContextAsync(CT.Token);
         var handler = new FilmHandler(factory);
 
-        var film = new FilmModel { Name = "Test Film", Description = "Desc", GenreId = 1, StudioId = 1 };
+        var releaseDate = new DateOnly(2026, 11, 4);
+
+        var film = new FilmModel { Name = "Test Film", Description = "Desc", GenreId = 1, StudioId = 1, ReleaseDate = releaseDate };
 
         await handler.CreateFilmAsync(film, []);
 
@@ -19,6 +21,8 @@ public class FilmTests
         result.Should().NotBeNull();
         result.Name.Should().Be("Test Film");
         result.Description.Should().Be("Desc");
+        result.ReleaseDate.Should().NotBeNull();
+        result.ReleaseDate.Should().Be(releaseDate);
     }
 
     [Fact]
@@ -147,6 +151,45 @@ public class FilmTests
         var result = await context.Films.Include(f => f.FilmPerson).SingleAsync(CT.Token);
         result.Name.Should().Be("New Name");
         result.FilmPerson.Should().ContainSingle(fp => fp.PersonId == person.PersonId);
+    }
+
+    [Fact]
+    public async Task UpdateFilmAsync_ShouldUpdateReleaseDate()
+    {
+        var factory = DbContextHelper.GetInMemoryFactory();
+
+        await using (var context = await factory.CreateDbContextAsync(CT.Token))
+        {
+            var film = new FilmModel
+            {
+                Name = "Film",
+                GenreId = 1,
+                StudioId = 1,
+                ReleaseDate = new DateOnly(2000, 1, 1)
+            };
+
+            context.Films.Add(film);
+            await context.SaveChangesAsync(CT.Token);
+
+            var handler = new FilmHandler(factory);
+
+            await handler.UpdateFilmAsync(
+                new FilmModel
+                {
+                    FilmId = film.FilmId,
+                    Name = "Film",
+                    GenreId = 1,
+                    StudioId = 1,
+                    ReleaseDate = new DateOnly(2026, 11, 4)
+                },
+                []);
+        }
+
+        await using var verify = await factory.CreateDbContextAsync(CT.Token);
+
+        var updated = await verify.Films.SingleAsync(CT.Token);
+
+        updated.ReleaseDate.Should().Be(new DateOnly(2026, 11, 4));
     }
 
     [Fact]
