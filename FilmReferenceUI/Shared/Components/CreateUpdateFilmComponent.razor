@@ -14,19 +14,24 @@
 
             <MudTextField Label="Description"
                           @bind-Value="FilmDisplayModel.Description" />
+            
+            <div class="my-4"></div>            
+            
 
             <MudItem xs="12">
-
-                <MudText Typo="Typo.caption" Class="mb-1">Notes</MudText>
                 
                 <div class="mb-3" style="height:240px;">
                     <CKEditorComponent @bind-Value="FilmDisplayModel.Notes" />
                 </div>
 
             </MudItem>
+            
+            <div class="my-4"></div>
 
-            <MudTextField Label="Release Date"
-                            @bind-Value=FilmDisplayModel.ReleaseDate" />
+            <MudTextField T="DateOnly?"
+                            Label="Release Date"
+                            @bind-Value="FilmDisplayModel.ReleaseDate"
+                            Format="dd/MM/yyyy" />
 
             <MudSelect T="int"
                        Label="Genre"
