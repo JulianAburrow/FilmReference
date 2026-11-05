@@ -17,16 +17,18 @@
 
             <MudTextField Label="Description"
                           @bind-Value="PersonDisplayModel.Description" />
+            
+            <div class="my-4"></div>
 
             <MudItem xs="12">
-
-                <MudText Typo="Typo.caption" Class="mb-1">Notes</MudText>
                 
                 <div class="mb-3" style="height:240px;">
                     <CKEditorComponent @bind-Value="PersonDisplayModel.Notes" />
                 </div>
 
             </MudItem>
+            
+            <div class="my-4"></div>
 
             <MudSelect T="int?"
                         Label="Nationality"
@@ -51,15 +53,15 @@
                 </MudItem>
             </MudGrid>
 
-            <MudTextField Label="Date of birth"
+            <MudTextField T="DateOnly?"
+                          Label="Date of birth"
                           @bind-Value="PersonDisplayModel.DateOfBirth"
                           Format="dd/MM/yyyy" />
 
-            <MudTextField Label="Date of death"
+            <MudTextField T="DateOnly?"
+                          Label="Date of death"
                           @bind-Value="PersonDisplayModel.DateOfDeath"
                           Format="dd/MM/yyyy" />
-            
-            <div class="my-4"></div>
 
             <MudFileUpload T="IBrowserFile"
                            FilesChanged="LocalUploadImage"
